@@ -81,3 +81,12 @@ test("demo login selects the buyer workspace through an HTTP-only session", asyn
   const cookie=(await page.context().cookies()).find(item=>item.name==="proof-demo-role");
   expect(cookie?.httpOnly).toBe(true);
 });
+
+test("each demo role receives a distinct next-task dashboard", async ({ page }) => {
+  const roles=[
+    {button:"SME workspace Create and track evidence",heading:"Good morning, Amara."},
+    {button:"Buyer workspace Confirm delivery requests",heading:"Two suppliers are waiting."},
+    {button:"Funder workspace Review simulated offers",heading:"Evidence ready for review."},
+  ];
+  for(const role of roles){await page.goto("/login");await page.getByRole("button",{name:role.button,exact:true}).click();await expect(page.getByRole("heading",{level:1,name:role.heading})).toBeVisible();}
+});

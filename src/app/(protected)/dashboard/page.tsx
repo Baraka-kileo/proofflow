@@ -1,4 +1,8 @@
 import type { Metadata } from "next";
-import { Alert } from "@/components/ui/alert";
+import { BuyerDashboard } from "@/features/dashboard/buyer-dashboard";
+import { FunderDashboard } from "@/features/dashboard/funder-dashboard";
+import { SmeDashboard } from "@/features/dashboard/sme-dashboard";
+import { getDemoDashboard } from "@/lib/demo/repository";
+import { getDemoSession } from "@/lib/demo/session";
 export const metadata:Metadata={title:"Overview"};
-export default function DashboardFoundation() { return <div className="page-enter mx-auto max-w-6xl"><span className="text-xs font-bold uppercase tracking-[.12em] text-[var(--primary)]">Workspace overview</span><h1 className="mt-3 text-4xl font-semibold tracking-[-.05em] sm:text-5xl">Good morning, Amara.</h1><p className="mt-4 max-w-2xl text-base leading-7 text-[var(--muted)]">Your role-specific evidence queue and next action are being assembled in the next completed build unit.</p><Alert className="mt-8 max-w-2xl" title="Foundation ready">The navigation is intentionally limited to Overview until each destination is functional and verified.</Alert></div>; }
+export default async function DashboardPage(){const user=await getDemoSession();const data=await getDemoDashboard(user.role);if(data.role==="buyer")return <BuyerDashboard data={data}/>;if(data.role==="funder")return <FunderDashboard data={data}/>;return <SmeDashboard data={data}/>;}

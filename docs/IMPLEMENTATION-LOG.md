@@ -81,3 +81,14 @@ Commit/CI link:
 - **Automated evidence:** thirteen unit assertions passed, including invalid/valid login behavior and password toggle. Seven Chromium tests passed; buyer demo entry redirected to `/dashboard`, rendered buyer context, and set an HTTP-only cookie.
 - **Security/demo boundary:** The role cookie is HTTP-only, same-site lax, secure in production, validated against a fixed enum, and explicitly a demo adapter—not production authorization. No demo passwords are embedded.
 - **Remaining:** Supabase authentication/server authorization belongs to P2. Live sign-in clearly says it is not connected.
+
+## 2026-09-05 — P1-07 role dashboards and Phase 1 gate
+
+- **Work unit IDs:** P1-07; Phase 1 gate
+- **Outcome:** Built distinct SME, buyer, and funder dashboards over a typed server-only demo repository. SME sees evidence progress; buyer sees age-ordered confirmations; funder sees buyer-confirmed evidence and simulated-offer context.
+- **Changed areas:** dashboard page/features, typed demo repository, shared metric/queue presentation, page heading, login/session-aware dashboard test.
+- **Automated evidence:** lint, typecheck, unit tests, browser suite, and production build passed. Chromium proved all three role selections land on distinct H1/next-task dashboards. Required 390/768/1440 overflow checks pass.
+- **Manual visual evidence:** Inspected login and SME dashboard in the in-app browser. Fixed explicit logo and active-navigation contrast; computed colors are white on dark green. Final console warning/error log was empty.
+- **Interaction boundary:** Workflow actions whose routes are scheduled for P3/P6/P7 are real disabled buttons with explanations, not dead links. Nav destinations remain disabled until implemented.
+- **Security/demo boundary:** Dashboard data comes from a named server-only demo adapter. No claim of live Supabase isolation is made.
+- **Remaining:** P2 requires credentials for live Supabase proof. No P2 unit is checked.

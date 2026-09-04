@@ -188,7 +188,7 @@ Dependencies: P0.
   - Accept: manually force each state; no dead recovery button; status changes use `aria-live`.
 - [x] **P1-06 MUST — Login UI.** Build `/login` with normal sign-in form, validation, safe generic errors, show/hide password control, and clearly labelled demo-role quick-fill controls.
   - Accept: keyboard-only completion works; buyer/funder public registration is absent; no credentials are hard-coded into client source.
-- [ ] **P1-07 MUST — Role dashboards.** Implement `sme-dashboard.tsx`, `buyer-dashboard.tsx`, and `funder-dashboard.tsx` using a temporary typed repository adapter until P2 is live.
+- [x] **P1-07 MUST — Role dashboards.** Implement `sme-dashboard.tsx`, `buyer-dashboard.tsx`, and `funder-dashboard.tsx` using a temporary typed repository adapter until P2 is live.
   - Accept: each dashboard has one dominant next action, accurate empty/loading/error states, and no enabled action pointing to a missing route.
 
 **P1 gate:** `npm run lint && npm run typecheck && npm run test:unit && npm run build`; visual inspection at all three widths; zero console errors. Do not check P1 complete merely because the public landing page exists.
