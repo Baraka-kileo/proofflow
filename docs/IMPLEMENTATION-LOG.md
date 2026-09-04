@@ -36,3 +36,12 @@ Commit/CI link:
 - **Automated evidence:** `npm audit --omit=dev` reported zero vulnerabilities. `npm run lint`, `npm run typecheck`, and `npm run build` passed with Next.js 16.3.4 and Node 24.
 - **Assumptions:** Packages are installed but external Supabase/Gemini services are not configured or claimed working.
 - **Remaining:** P1-02 must replace the temporary `test` alias with genuine unit and browser smoke test commands.
+
+## 2026-09-05 — P1-02 real test harness
+
+- **Work unit IDs:** P1-02
+- **Outcome:** Configured genuine Vitest/jsdom unit testing and Playwright Chromium browser testing; CI now executes unit tests.
+- **Changed files:** `package.json`, `package-lock.json`, `vitest.config.mts`, `playwright.config.ts`, `tests/setup.ts`, `tests/unit/landing-page.test.tsx`, `tests/e2e/landing.spec.ts`, `.github/workflows/ci.yml`.
+- **Automated evidence:** lint and typecheck passed; Vitest ran one semantic landing test; Playwright ran one 390px landing/overflow test in Chromium. Both passed without configuration or server warnings after cleanup.
+- **Manual/browser scope:** Playwright asserts the product heading, simulation boundary, and exact mobile scroll width.
+- **Remaining:** This is a harness, not coverage of unbuilt role workflows. Feature tests must be added with each later unit.
