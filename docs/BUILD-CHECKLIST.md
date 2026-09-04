@@ -178,7 +178,7 @@ Dependencies: P0.
   - Accept: lockfile committed; `npm audit --omit=dev` findings reviewed; lint/typecheck/build still pass.
 - [x] **P1-02 MUST — Test commands.** Configure `test:unit`, `test:e2e`, and `test` scripts; add minimal passing unit and browser smoke tests so commands are real rather than aliases.
   - Accept: each command runs independently and CI invokes lint, typecheck, unit test, and build.
-- [ ] **P1-03 MUST — Tokens and primitives.** Convert design tokens from `DESIGN-SYSTEM.md` into CSS variables; create Button, Card, Badge/StatusBadge, Input, Select, Checkbox, Dialog/Sheet, Progress, Alert, Skeleton, Toast, Tooltip, and accessible FormField primitives.
+- [x] **P1-03 MUST — Tokens and primitives.** Convert design tokens from `DESIGN-SYSTEM.md` into CSS variables; create Button, Card, Badge/StatusBadge, Input, Select, Checkbox, Dialog/Sheet, Progress, Alert, Skeleton, Toast, Tooltip, and accessible FormField primitives.
   - Files: `src/app/globals.css`, `src/components/ui/*`, `src/components/status-badge.tsx`, `src/components/error-summary.tsx`.
   - Accept: components expose typed variants; no copied color values inside feature pages; focus/reduced-motion states proven in browser.
 - [ ] **P1-04 MUST — App shell.** Create protected layout, responsive desktop rail, tablet/mobile navigation, organization/role context, skip link, and main content landmark.

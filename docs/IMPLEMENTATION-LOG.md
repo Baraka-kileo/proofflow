@@ -45,3 +45,12 @@ Commit/CI link:
 - **Automated evidence:** lint and typecheck passed; Vitest ran one semantic landing test; Playwright ran one 390px landing/overflow test in Chromium. Both passed without configuration or server warnings after cleanup.
 - **Manual/browser scope:** Playwright asserts the product heading, simulation boundary, and exact mobile scroll width.
 - **Remaining:** This is a harness, not coverage of unbuilt role workflows. Feature tests must be added with each later unit.
+
+## 2026-09-05 — P1-03 design tokens and primitives
+
+- **Work unit IDs:** P1-03
+- **Outcome:** Added typed ProofFlow Button, Card, StatusBadge, Input, Select, Checkbox, Dialog, Progress, Alert, Skeleton, Toast, Tooltip, FormField, ErrorSummary, and class-merging utilities; expanded the documented color/motion tokens.
+- **Changed areas:** `src/components/ui`, `src/components/status-badge.tsx`, `src/components/error-summary.tsx`, `src/lib/utils.ts`, root layout/global CSS, landing page.
+- **Automated evidence:** lint, typecheck, production build, and five unit assertions passed. Two Chromium tests passed at 390px, including zero horizontal overflow, visible keyboard focus, and reduced animation duration when reduced motion is requested.
+- **Manual/UI boundary:** The landing evidence status now uses the shared StatusBadge. Feature forms will exercise the remaining primitives in P1-04 through P1-07.
+- **Remaining:** App shell, route states, login, and role dashboards are not implemented yet.

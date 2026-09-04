@@ -1,0 +1,2 @@
+import { Alert } from "@/components/ui/alert";
+export function ErrorSummary({ errors }: { errors: Array<{ id: string; message: string }> }) { if (!errors.length) return null; return <Alert tone="error" title="Please fix the following"><ul className="list-disc space-y-1 pl-4">{errors.map((error)=><li key={error.id}><a className="underline underline-offset-2" href={`#${error.id}`}>{error.message}</a></li>)}</ul></Alert>; }

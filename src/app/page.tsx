@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { StatusBadge } from "@/components/status-badge";
 
 const Arrow = () => (
   <svg aria-hidden="true" viewBox="0 0 20 20" className="size-4" fill="none">
@@ -53,7 +54,7 @@ export default function Home() {
               <span className="overline">Application PF-2048</span>
               <h2>Invoice evidence</h2>
             </div>
-            <span className="status"><Check /> Buyer confirmed</span>
+            <StatusBadge status="success">Buyer confirmed</StatusBadge>
           </div>
           <div className="amount-row">
             <div><span>Invoice value</span><strong>R 48,750.00</strong></div>

@@ -1,0 +1,3 @@
+import type { ReactNode } from "react";
+import { cn } from "@/lib/utils";
+export function FormField({ id, label, hint, error, required, children, className }: { id: string; label: string; hint?: string; error?: string; required?: boolean; children: ReactNode; className?: string }) { const helpId=`${id}-help`; return <div className={cn("space-y-2",className)}><label htmlFor={id} className="block text-sm font-bold">{label}{required && <span aria-hidden="true" className="ml-1 text-[var(--error)]">*</span>} {required && <span className="sr-only">required</span>}</label>{hint && <p id={helpId} className="text-xs leading-5 text-[var(--muted)]">{hint}</p>}{children}{error && <p id={`${id}-error`} className="text-xs font-semibold text-[var(--error)]">{error}</p>}</div>; }
