@@ -1,5 +1,6 @@
 import "server-only";
 
+import { cookies } from "next/headers";
 import type { Role, SessionUser } from "@/types/domain";
 
 const demoUsers: Record<Role, SessionUser> = {
@@ -8,6 +9,8 @@ const demoUsers: Record<Role, SessionUser> = {
   funder: { id: "demo-funder", name: "Thandi Khumalo", organization: "Demo Capital", role: "funder" },
 };
 
-export async function getDemoSession(role: Role = "sme"): Promise<SessionUser> {
-  return demoUsers[role];
+export async function getDemoSession(role?: Role): Promise<SessionUser> {
+  const stored=(await cookies()).get("proof-demo-role")?.value;
+  const selected=role ?? (stored && stored in demoUsers ? stored as Role : "sme");
+  return demoUsers[selected];
 }

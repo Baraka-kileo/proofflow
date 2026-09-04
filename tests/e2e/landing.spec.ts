@@ -71,3 +71,13 @@ test("system states provide clear recovery", async ({ page, context }) => {
   await expect(page.getByRole("alert").filter({ hasText: "You are offline" })).toContainText("You are offline");
   await context.setOffline(false);
 });
+
+test("demo login selects the buyer workspace through an HTTP-only session", async ({ page }) => {
+  await page.goto("/login");
+  await expect(page.getByRole("heading", { name: "Sign in to ProofFlow" })).toBeVisible();
+  await page.getByRole("button", { name: "Buyer workspace Confirm delivery requests", exact:true }).click();
+  await expect(page).toHaveURL(/\/dashboard$/);
+  await expect(page.getByText("buyer workspace", { exact:true })).toBeVisible();
+  const cookie=(await page.context().cookies()).find(item=>item.name==="proof-demo-role");
+  expect(cookie?.httpOnly).toBe(true);
+});

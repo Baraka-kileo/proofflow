@@ -186,7 +186,7 @@ Dependencies: P0.
   - Accept: correct navigation list for each role; active route announced; 390/768/1440 layouts have no overflow.
 - [x] **P1-05 MUST — Global route states.** Implement root/protected loading skeletons, error recovery, not-found, empty-state, and offline/retry patterns.
   - Accept: manually force each state; no dead recovery button; status changes use `aria-live`.
-- [ ] **P1-06 MUST — Login UI.** Build `/login` with normal sign-in form, validation, safe generic errors, show/hide password control, and clearly labelled demo-role quick-fill controls.
+- [x] **P1-06 MUST — Login UI.** Build `/login` with normal sign-in form, validation, safe generic errors, show/hide password control, and clearly labelled demo-role quick-fill controls.
   - Accept: keyboard-only completion works; buyer/funder public registration is absent; no credentials are hard-coded into client source.
 - [ ] **P1-07 MUST — Role dashboards.** Implement `sme-dashboard.tsx`, `buyer-dashboard.tsx`, and `funder-dashboard.tsx` using a temporary typed repository adapter until P2 is live.
   - Accept: each dashboard has one dominant next action, accurate empty/loading/error states, and no enabled action pointing to a missing route.

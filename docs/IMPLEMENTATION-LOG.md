@@ -72,3 +72,12 @@ Commit/CI link:
 - **Automated evidence:** eleven unit assertions passed, including loading announcement, functional reset callback, and valid empty-state action. Six Chromium tests passed, including forced 404 and offline states with visible recovery.
 - **Accessibility evidence:** loading uses a named live status; failures use alert semantics; the offline alert announces assertively; recovery controls are keyboard-native.
 - **Remaining:** Feature-specific empty/error states must still be implemented with their feature routes.
+
+## 2026-09-05 — P1-06 honest login and demo roles
+
+- **Work unit IDs:** P1-06
+- **Outcome:** Built responsive split login, persistent labelled fields, Zod validation, linked error summary, password visibility control, generic live-auth unavailable notice, and validated demo-role entry.
+- **Changed areas:** `/login`, login feature/schema/server action, demo session adapter, login layout CSS, root scroll behavior marker.
+- **Automated evidence:** thirteen unit assertions passed, including invalid/valid login behavior and password toggle. Seven Chromium tests passed; buyer demo entry redirected to `/dashboard`, rendered buyer context, and set an HTTP-only cookie.
+- **Security/demo boundary:** The role cookie is HTTP-only, same-site lax, secure in production, validated against a fixed enum, and explicitly a demo adapter—not production authorization. No demo passwords are embedded.
+- **Remaining:** Supabase authentication/server authorization belongs to P2. Live sign-in clearly says it is not connected.
