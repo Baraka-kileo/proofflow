@@ -54,3 +54,12 @@ Commit/CI link:
 - **Automated evidence:** lint, typecheck, production build, and five unit assertions passed. Two Chromium tests passed at 390px, including zero horizontal overflow, visible keyboard focus, and reduced animation duration when reduced motion is requested.
 - **Manual/UI boundary:** The landing evidence status now uses the shared StatusBadge. Feature forms will exercise the remaining primitives in P1-04 through P1-07.
 - **Remaining:** App shell, route states, login, and role dashboards are not implemented yet.
+
+## 2026-09-05 — P1-04 responsive role shell
+
+- **Work unit IDs:** P1-04
+- **Outcome:** Added a typed demo-session DTO, protected route group, desktop rail, tablet/mobile bottom navigation, organization/role context, skip link, top bar, and main content landmark.
+- **Changed areas:** `src/app/(protected)`, `src/components/app-shell.tsx`, `src/components/navigation.tsx`, `src/components/logo.tsx`, `src/lib/demo/session.ts`, `src/types/domain.ts`, global CSS.
+- **Automated evidence:** lint/typecheck passed; eight unit assertions passed including exact SME/buyer/funder navigation; five Chromium checks passed including shell widths 390, 768, and 1440 with `scrollWidth === clientWidth`.
+- **Security/demo boundary:** The adapter is named and labelled demo-only. It is not represented as authentication; P2 must replace it with Supabase/DAL authorization.
+- **Remaining:** Unbuilt destinations are exposed as non-interactive `aria-disabled` items rather than dead links. They become links only when their routes are implemented.

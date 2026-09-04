@@ -181,7 +181,7 @@ Dependencies: P0.
 - [x] **P1-03 MUST — Tokens and primitives.** Convert design tokens from `DESIGN-SYSTEM.md` into CSS variables; create Button, Card, Badge/StatusBadge, Input, Select, Checkbox, Dialog/Sheet, Progress, Alert, Skeleton, Toast, Tooltip, and accessible FormField primitives.
   - Files: `src/app/globals.css`, `src/components/ui/*`, `src/components/status-badge.tsx`, `src/components/error-summary.tsx`.
   - Accept: components expose typed variants; no copied color values inside feature pages; focus/reduced-motion states proven in browser.
-- [ ] **P1-04 MUST — App shell.** Create protected layout, responsive desktop rail, tablet/mobile navigation, organization/role context, skip link, and main content landmark.
+- [x] **P1-04 MUST — App shell.** Create protected layout, responsive desktop rail, tablet/mobile navigation, organization/role context, skip link, and main content landmark.
   - Files: `src/app/(protected)/layout.tsx`, `src/components/app-shell.tsx`, `src/components/navigation.tsx`.
   - Accept: correct navigation list for each role; active route announced; 390/768/1440 layouts have no overflow.
 - [ ] **P1-05 MUST — Global route states.** Implement root/protected loading skeletons, error recovery, not-found, empty-state, and offline/retry patterns.

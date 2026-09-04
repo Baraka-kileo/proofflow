@@ -39,3 +39,24 @@ test("landing interactions expose focus and respect reduced motion", async ({ pa
   expect(Number.parseFloat(presentation.outlineWidth)).toBeGreaterThan(0);
   expect(Number.parseFloat(presentation.animationDuration)).toBeLessThanOrEqual(0.01);
 });
+
+test("protected shell is usable on mobile without overflow", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/dashboard");
+  await expect(page.getByRole("heading", { level: 1, name: "Good morning, Amara." })).toBeVisible();
+  await expect(page.getByRole("navigation", { name: "Mobile navigation" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Overview" })).toHaveAttribute("aria-current", "page");
+  const widths=await page.evaluate(()=>({client:document.documentElement.clientWidth,scroll:document.documentElement.scrollWidth}));
+  expect(widths.scroll).toBe(widths.client);
+});
+
+for (const viewport of [{ width: 768, height: 1024 }, { width: 1440, height: 900 }]) {
+  test(`protected shell fits ${viewport.width}px without overflow`, async ({ page }) => {
+    await page.setViewportSize(viewport);
+    await page.goto("/dashboard");
+    const navigationName=viewport.width>=1024?"Workspace navigation":"Mobile navigation";
+    await expect(page.getByRole("navigation", { name:navigationName })).toBeVisible();
+    const widths=await page.evaluate(()=>({client:document.documentElement.clientWidth,scroll:document.documentElement.scrollWidth}));
+    expect(widths.scroll).toBe(widths.client);
+  });
+}
