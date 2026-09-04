@@ -1,0 +1,4 @@
+"use client";
+import { AlertTriangle } from "lucide-react";
+import { Button } from "@/components/ui/button";
+export function RouteError({ reset }: { reset:()=>void }) { return <div className="mx-auto flex min-h-[60vh] max-w-xl items-center justify-center"><div className="w-full rounded-3xl border border-[var(--border)] bg-[var(--surface)] p-8 text-center"><span className="mx-auto grid size-12 place-items-center rounded-2xl bg-[var(--error-soft)] text-[var(--error)]"><AlertTriangle aria-hidden="true" className="size-5" /></span><h1 className="mt-5 text-2xl font-bold tracking-tight">We could not load this page</h1><p className="mt-3 text-sm leading-6 text-[var(--muted)]">Your information has not been changed. Try loading the page again.</p><Button className="mt-6" onClick={reset}>Try again</Button></div></div>; }

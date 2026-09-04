@@ -1,0 +1,2 @@
+import { Skeleton } from "@/components/ui/skeleton";
+export function RouteLoading() { return <div role="status" aria-live="polite" aria-label="Loading page" className="mx-auto max-w-6xl space-y-8"><span className="sr-only">Loading page</span><div className="space-y-3"><Skeleton className="h-4 w-28" /><Skeleton className="h-12 w-full max-w-lg" /><Skeleton className="h-5 w-full max-w-2xl" /></div><div className="grid gap-4 md:grid-cols-3">{[1,2,3].map(item=><Skeleton key={item} className="h-40" />)}</div><Skeleton className="h-72" /></div>; }

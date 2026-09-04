@@ -60,3 +60,14 @@ for (const viewport of [{ width: 768, height: 1024 }, { width: 1440, height: 900
     expect(widths.scroll).toBe(widths.client);
   });
 }
+
+test("system states provide clear recovery", async ({ page, context }) => {
+  await page.goto("/a-route-that-does-not-exist");
+  await expect(page.getByRole("heading", { name: "This page is not part of the evidence trail." })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Return to overview" })).toHaveAttribute("href", "/dashboard");
+  await page.goto("/dashboard");
+  await context.setOffline(true);
+  await page.evaluate(() => window.dispatchEvent(new Event("offline")));
+  await expect(page.getByRole("alert").filter({ hasText: "You are offline" })).toContainText("You are offline");
+  await context.setOffline(false);
+});

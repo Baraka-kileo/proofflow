@@ -63,3 +63,12 @@ Commit/CI link:
 - **Automated evidence:** lint/typecheck passed; eight unit assertions passed including exact SME/buyer/funder navigation; five Chromium checks passed including shell widths 390, 768, and 1440 with `scrollWidth === clientWidth`.
 - **Security/demo boundary:** The adapter is named and labelled demo-only. It is not represented as authentication; P2 must replace it with Supabase/DAL authorization.
 - **Remaining:** Unbuilt destinations are exposed as non-interactive `aria-disabled` items rather than dead links. They become links only when their routes are implemented.
+
+## 2026-09-05 — P1-05 global route states
+
+- **Work unit IDs:** P1-05
+- **Outcome:** Implemented geometry-stable loading skeletons, executable error reset, not-found recovery, reusable empty state, and online/offline recovery banner in root/protected boundaries.
+- **Changed areas:** root/protected `loading.tsx` and `error.tsx`, `not-found.tsx`, route-loading/error, empty-state, connection-status, app shell.
+- **Automated evidence:** eleven unit assertions passed, including loading announcement, functional reset callback, and valid empty-state action. Six Chromium tests passed, including forced 404 and offline states with visible recovery.
+- **Accessibility evidence:** loading uses a named live status; failures use alert semantics; the offline alert announces assertively; recovery controls are keyboard-native.
+- **Remaining:** Feature-specific empty/error states must still be implemented with their feature routes.
