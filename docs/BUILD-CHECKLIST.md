@@ -174,7 +174,7 @@ Overall result: any `fail` → `fail`; otherwise any `review` → `review`; othe
 
 Dependencies: P0.
 
-- [ ] **P1-01 MUST — Install only approved dependencies.** Add Supabase browser/server SDK, Zod, Gemini SDK, Lucide icons, shadcn utilities/primitives, Vitest, Testing Library, and Playwright. Record exact installed packages in the log. Do not install duplicate UI/form/state libraries.
+- [x] **P1-01 MUST — Install only approved dependencies.** Add Supabase browser/server SDK, Zod, Gemini SDK, Lucide icons, shadcn utilities/primitives, Vitest, Testing Library, and Playwright. Record exact installed packages in the log. Do not install duplicate UI/form/state libraries.
   - Accept: lockfile committed; `npm audit --omit=dev` findings reviewed; lint/typecheck/build still pass.
 - [ ] **P1-02 MUST — Test commands.** Configure `test:unit`, `test:e2e`, and `test` scripts; add minimal passing unit and browser smoke tests so commands are real rather than aliases.
   - Accept: each command runs independently and CI invokes lint, typecheck, unit test, and build.

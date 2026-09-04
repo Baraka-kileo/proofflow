@@ -27,3 +27,12 @@ Commit/CI link:
 - **Manual evidence:** Landing page inspected at desktop and 375px-wide mobile. Mobile `scrollWidth` equalled `clientWidth`; no console warnings/errors were observed. Motion settled correctly and reduced-motion CSS is present.
 - **Security/demo boundary:** Repository is private. `.env.local`/`.env*` are ignored except the empty `.env.example`. Landing copy states no real money moves.
 - **Remaining:** P1 and later application functionality is not implemented. The landing page alone is not evidence that the role portals work.
+
+## 2026-09-05 — P1-01 approved dependencies
+
+- **Work unit IDs:** P1-01
+- **Outcome:** Installed the approved Supabase, Gemini, Zod, Lucide, Radix/shadcn utility, toast, Vitest, Testing Library, and Playwright dependencies without adding a second form, state, or UI system.
+- **Changed files:** `package.json`, `package-lock.json`.
+- **Automated evidence:** `npm audit --omit=dev` reported zero vulnerabilities. `npm run lint`, `npm run typecheck`, and `npm run build` passed with Next.js 16.3.4 and Node 24.
+- **Assumptions:** Packages are installed but external Supabase/Gemini services are not configured or claimed working.
+- **Remaining:** P1-02 must replace the temporary `test` alias with genuine unit and browser smoke test commands.
