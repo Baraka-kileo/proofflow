@@ -28,6 +28,7 @@ test("landing page renders its primary story without overflow", async ({ page })
     }),
   ).toBeVisible();
   await expect(page.getByText("Hackathon demo · no real money moves")).toBeVisible();
+  await expect(page.getByRole("link", { name: "Log in" })).toHaveAttribute("href", "/login");
 
   const widths = await page.evaluate(() => ({
     client: document.documentElement.clientWidth,

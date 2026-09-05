@@ -32,9 +32,14 @@ export default function Home() {
           <a href="#workflow">How it works</a>
           <a href="#why">Why ProofFlow</a>
         </nav>
-        <a className="button button-small button-quiet" href="https://github.com/Baraka-kileo/proofflow" target="_blank" rel="noreferrer">
-          View build <Arrow />
-        </a>
+        <div className="site-actions">
+          <a className="build-link button button-small button-quiet" href="https://github.com/Baraka-kileo/proofflow" target="_blank" rel="noreferrer">
+            View build <Arrow />
+          </a>
+          <Link className="button button-small button-primary" href="/login">
+            Log in
+          </Link>
+        </div>
       </header>
 
       <section className="hero" aria-labelledby="hero-title">

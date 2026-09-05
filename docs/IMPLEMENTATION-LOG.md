@@ -344,3 +344,9 @@ Commit/CI link:
 - **Database note:** No Phase 9 schema or policy change exists. A final optional linked CLI lint/dry-run recheck was unavailable because the locally cached database login password was rejected; the same hosted policies were exercised successfully by all three authenticated integration suites, and the most recent schema-changing Phase 7/8 gates already recorded clean linked lint and dry-run evidence.
 - **Remaining limitations:** The live Gemini provider still needs a production server key; electronic-signature enforceability, identity assurance, retention/POPIA review, formal assistive-technology testing, independent security review, regulated underwriting, agreements, money rails, and operational monitoring remain explicit production work. The sample render PNGs were QA intermediates only and are ignored; the nine PDFs and expected JSON are the committed evidence artifacts.
 - **Phase 9 result:** All P9 MUST units pass. Phase 10 is the only remaining phase: final suite/CI/security review, deployment verification, three timed rehearsals, judging evidence, clean/tagged repository state, and proof that the deployed commit matches the tag.
+
+## 2026-09-05 — Public landing login action
+
+- **Outcome:** Added a prominent `Log in` action beside `View build` in the public header. It uses the real Next.js `/login` route and remains the primary visible header action on mobile.
+- **Responsive evidence:** At desktop width, both actions remain aligned with the central navigation. At 390×844, `View build` is intentionally hidden to preserve the brand and login action; `Log in` remains a 44px touch target, the page has no horizontal overflow, and clicking it reaches the ProofFlow sign-in screen.
+- **Automated evidence:** Lint, typecheck, and the production build passed. The browser smoke assertion now requires the public login link to target `/login`.
