@@ -7,6 +7,8 @@ This index separates the final product decisions from the chronological build re
 | Document | Purpose |
 |---|---|
 | [Judging guide](JUDGING-GUIDE.md) | Maps every scoring category to working product and repository evidence |
+| [Visual feature guide](FEATURE-GUIDE.md) | Shows the three portals, checks, certificate and funder responsibilities |
+| [Document-check guide](VERIFICATION-CHECKS.md) | Explains every V001–V012 audit label in plain language |
 | [Product scope](PRODUCT-SCOPE.md) | Defines what the MVP does and does not do |
 | [Product plan](PRODUCT-PLAN.md) | Records responsibilities, commercial model and pilot plan |
 | [User flows](USER-FLOWS.md) | Describes the three role journeys |

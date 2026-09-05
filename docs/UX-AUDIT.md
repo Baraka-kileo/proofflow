@@ -4,7 +4,7 @@ Audit date: 5 September 2026
 
 ## Current result
 
-The public, SME, large-customer, and funder surfaces implement one production-style workflow. The application no longer offers an alternate mode or automated document extraction. Manual evidence entry, deterministic V001-V012 checks, authenticated customer confirmation, external funder-owned compliance, and independent funding proposals are presented as separate responsibilities.
+The public, SME, large-customer, and funder surfaces implement one production-style workflow. The application no longer offers an alternate mode or automated document extraction. Manual evidence entry, 12 transparent document checks, authenticated customer confirmation, external funder-owned compliance, and independent funding proposals are presented as separate responsibilities.
 
 Automated verification completed for this implementation:
 

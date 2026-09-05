@@ -67,7 +67,7 @@ export async function generateSystemVerificationCertificate(
     font: bold,
     color: white,
   });
-  page.drawText("Automated verification complete", {
+  page.drawText("Customer-system verification complete", {
     x: 42,
     y: 724,
     size: 23,
@@ -113,7 +113,7 @@ export async function generateSystemVerificationCertificate(
     });
   });
   y -= rows.length * 27 + 11;
-  label(page, bold, "DETERMINISTIC CHECKS", y);
+  label(page, bold, "CUSTOMER RECORD CHECKS", y);
   y -= 23;
   data.checks.forEach((check, index) => {
     const column = index % 2,

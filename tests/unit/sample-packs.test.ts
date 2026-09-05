@@ -4,7 +4,7 @@ import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { runVerificationRulesV1 } from "@/lib/verification/rules-v1";
 
-const root = path.resolve("samples/evidence-packs");
+const root = path.resolve("samples/sample-documents-for-testing");
 const names = ["purchase-order.pdf", "delivery-evidence.pdf", "invoice.pdf"];
 const hash = (value: Buffer) => createHash("sha256").update(value).digest("hex");
 

@@ -26,9 +26,9 @@ The SME creates an application, uploads one purchase order, one delivery record,
 
 Every field has a persistent label and supporting-document association. ProofFlow records the entering user and timestamp. The SME reviews all fields and accepts a final declaration before submission. The server validates the complete 21-field payload and saves it atomically; partial submissions never advance the application.
 
-## Deterministic verification
+## Twelve transparent document checks
 
-The application page presents V001-V012 checks with pass, review, or fail outcomes, the values compared, and plain explanations. Verification is distinct from funding approval. Corrections return the SME to evidence entry, while a valid package can proceed to large-customer verification.
+The application explains that ProofFlow compares names, references, currency, totals, invoice arithmetic, date order, delivery acknowledgement, exact file fingerprints, invoice identity and customer confirmation. Each result shows pass, review or fail, the values compared, a plain explanation and a secondary audit ID such as V005. The IDs are traceability labels, not a score. Verification is distinct from funding approval. Corrections return the SME to evidence entry, while a clean package can proceed to large-customer verification.
 
 ## Large-customer verification
 

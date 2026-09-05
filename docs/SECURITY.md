@@ -59,7 +59,7 @@ Only the status and reference needed to coordinate external compliance are store
 
 ### Verification and external systems
 
-- V001–V012 checks are deterministic and versioned.
+- The 12 document comparisons are fixed, inspectable and versioned; V001–V012 are audit identifiers only.
 - Outcomes record compared inputs and plain-language reasons.
 - An unauthorised or unavailable connector never produces a successful external response.
 - Customer confirmation requires an authenticated user and versioned declaration.

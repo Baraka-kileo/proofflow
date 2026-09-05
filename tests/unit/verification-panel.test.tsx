@@ -70,10 +70,10 @@ describe("VerificationPanel", () => {
       />,
     );
     expect(
-      screen.getByText("Automated verification is blocked"),
+      screen.getByText("Customer verification is blocked"),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("button", { name: "Run automated verification" }),
+      screen.getByRole("button", { name: "Check authorised customer records" }),
     ).toBeDisabled();
     expect(
       screen.getByRole("button", { name: "Run document checks again" }),
@@ -104,7 +104,7 @@ describe("VerificationPanel", () => {
       screen.getByRole("heading", { name: "Large customer signature requested" }),
     ).toBeInTheDocument();
     expect(
-      screen.queryByRole("button", { name: "Run automated verification" }),
+      screen.queryByRole("button", { name: "Check authorised customer records" }),
     ).not.toBeInTheDocument();
     expect(screen.getByText("Waiting for customer")).toBeInTheDocument();
   });

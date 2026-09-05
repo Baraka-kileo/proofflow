@@ -123,8 +123,8 @@ export function deriveApplicationProgress(
     },
     {
       id: "buyer",
-      label: "Automated verification",
-      description: "Match customer records or request a signature",
+      label: "Customer verification",
+      description: "Match authorised records or request confirmation",
       lockedReason: "Complete the document checks first.",
     },
   ];

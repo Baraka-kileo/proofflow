@@ -9,7 +9,7 @@
 
 ProofFlow is a privacy-first evidence workflow for invoice finance. It turns a purchase order, delivery evidence, an invoice and authenticated customer confirmation into one structured, traceable package that a funding partner can independently review.
 
-**[Open the live application](https://proofflow-sepia.vercel.app)** · **[Judge's guide](docs/JUDGING-GUIDE.md)** · **[Documentation index](docs/README.md)** · **[Security model](docs/SECURITY.md)**
+**[Open the live application](https://proofflow-sepia.vercel.app)** · **[Visual feature guide](docs/FEATURE-GUIDE.md)** · **[Judge's guide](docs/JUDGING-GUIDE.md)** · **[Documentation index](docs/README.md)** · **[Security model](docs/SECURITY.md)**
 
 ![ProofFlow landing page showing a confirmed invoice-evidence package](docs/assets/proofflow-home.png)
 
@@ -22,7 +22,7 @@ An SME may have completed real work and issued a valid invoice, yet still wait w
 ProofFlow creates a shared evidence trail without pretending to replace regulated judgement:
 
 - the **SME** uploads three private documents, enters 21 required facts and makes a declaration;
-- **ProofFlow** applies 12 fixed, explainable consistency checks;
+- **ProofFlow** runs 12 transparent checks across names, references, currency, amounts, arithmetic, dates, delivery acknowledgement and duplicates;
 - the **large customer** confirms or disputes the underlying transaction;
 - the **funding partner** performs KYC/KYB and underwriting externally, then records its independent proposal or decline.
 
@@ -32,7 +32,7 @@ Allow about five minutes:
 
 1. Open the [live application](https://proofflow-sepia.vercel.app) and review the problem, workflow, pricing and trust boundary.
 2. Select **Log in**. The optional **Sample credentials for testing** panel offers SME, large-customer and funder accounts; selecting a role fills the form but never signs in automatically.
-3. As the SME, inspect the application journey, private evidence, deterministic check results and Trust Passport.
+3. As the SME, inspect the application journey, private evidence, 12 document-check results and Trust Passport.
 4. Sign out and inspect the large-customer confirmation workspace.
 5. Sign out and inspect the funder's external-compliance and proposal workspace.
 6. Open the public [security page](https://proofflow-sepia.vercel.app/security).
@@ -44,7 +44,7 @@ All hosted records are fictional. They exercise the same role-based workflow as 
 ```mermaid
 flowchart LR
     SME["SME supplier"] -->|"Uploads PO, delivery evidence and invoice"| ENTRY["Manual evidence entry"]
-    ENTRY --> RULES["Deterministic V001-V012 checks"]
+    ENTRY --> RULES["12 transparent document checks"]
     RULES --> BUYER["Authenticated customer confirmation"]
     BUYER --> PACKAGE["Traceable funding package"]
     PACKAGE --> FUNDER["Independent funder review"]
@@ -57,7 +57,7 @@ flowchart LR
 | Stage | Accountable party | What ProofFlow does |
 |---|---|---|
 | Evidence submission | SME | Private upload, structured manual entry and declaration |
-| Consistency verification | ProofFlow | Runs versioned V001–V012 rules and records an audit trail |
+| Evidence checking | ProofFlow | Compares names, references, amounts, dates, delivery acknowledgement and duplicates, then records the result |
 | Transaction confirmation | Large customer | Supports authorised system evidence or authenticated confirmation |
 | KYC/KYB and AML | Funder or approved provider | Stores only workflow status and an external reference |
 | Credit, pricing and underwriting | Funding partner | Presents evidence; never makes or disguises the decision |
@@ -68,7 +68,7 @@ flowchart LR
 ProofFlow's novelty is the combination of a compact, multi-party workflow and a deliberately narrow trust boundary:
 
 - **Evidence lineage, not a black-box score.** Each entered fact retains its source document, actor and timestamp.
-- **Explainable checks.** Every result names the compared values and rule rather than returning an opaque confidence score.
+- **Explainable checks.** Every result shows the compared values and why it passed, needs review or failed rather than returning an opaque score.
 - **Privacy-minimising design.** Sensitive files are not sent to an AI service; KYC/KYB documents and screening reasoning remain with the regulated party.
 - **No manufactured certainty.** Missing integrations fail closed and route to authenticated confirmation. “Evidence verified” never becomes “funding approved.”
 - **One product, three perspectives.** SME, customer and funder views share the same application and audit history while enforcing different permissions.
@@ -95,7 +95,7 @@ flowchart TB
 | Authorisation | Server checks plus Row Level Security | Defence in depth across organization and role boundaries |
 | Documents | Private Supabase Storage | Controlled paths and short-lived signed access rather than public URLs |
 | Validation | Zod plus database constraints | Complete payload validation before atomic persistence |
-| Verification | Deterministic TypeScript V001–V012 rules | Repeatable, inspectable outcomes suitable for financial evidence |
+| Evidence checks | Published TypeScript comparisons | The same 12 checks run every time and show the values and reason a person can challenge |
 | Delivery | Vercel and GitHub Actions | Reproducible production builds and automated quality gates |
 
 Historical database names relating to earlier prototypes remain only where required for migration compatibility. The current application contains no AI processing or interactive simulated connector.
@@ -114,7 +114,7 @@ ProofFlow keeps the essential trust workflow accessible and charges where automa
 
 | Offer | Customer | Included | Revenue |
 |---|---|---|---|
-| **Core** | SME | Evidence upload, manual entry, deterministic checks, customer confirmation, funding application and Trust Passport | Free |
+| **Core** | SME | Evidence upload, manual entry, 12 transparent checks, customer confirmation, funding application and Trust Passport | Free |
 | **Connect** | Large customer / enterprise | Authorised ERP integration, automatic lookup, bulk suppliers, exception handling, API/webhooks, reporting and multi-entity controls | Contract subscription and integration fee |
 | **Funding Partner** | Bank or alternative funder | Review workspace, external-compliance status, portfolio tools, API/webhooks and reporting | Platform fee and/or agreed share of the funder's collected financing fee after successful funding |
 
@@ -127,7 +127,7 @@ ProofFlow does **not** take a percentage of the invoice principal or the SME adv
 ├── .github/                 CI and responsible disclosure guidance
 ├── docs/                    Product, architecture, security, UX and judging evidence
 │   └── assets/              Current product screenshots used in this README
-├── samples/evidence-packs/  Fictional valid, mismatch and duplicate test fixtures
+├── samples/sample-documents-for-testing/  Fictional consistent, mismatch and duplicate PDFs
 ├── scripts/                 User provisioning and fixture generation
 ├── src/app/                 Next.js routes, layouts, actions and public pages
 ├── src/components/          Shared accessible UI building blocks
@@ -186,6 +186,41 @@ npm run test:e2e
 
 GitHub Actions runs lint, type checking, all unit tests and the production build on every push to `main` and every pull request. Database integration scripts under `tests/integration/` require a configured Supabase environment.
 
+## See the product before reading the code
+
+### SME portal
+
+![SME portal with evidence progress and current application](docs/assets/sme-portal.png)
+
+The SME builds the package: three private source documents, 21 manually entered facts, 12 understandable checks, customer confirmation, funding proposals and a reusable Trust Passport.
+
+### Large-customer portal
+
+![Large-customer portal with confirmation and decision-history tasks](docs/assets/customer-portal.png)
+
+The customer confirms the real-world transaction through six questions, a reviewed declaration and signature. The completed decision becomes an immutable receipt and downloadable certificate.
+
+### Funder / Bank portal
+
+![Funder portal with review-ready evidence and recorded decisions](docs/assets/funder-portal.png)
+
+The funder reviews the evidence, performs KYC/KYB and underwriting externally, records limited compliance progress and makes its own proposal or decline.
+
+See the illustrated [feature guide](docs/FEATURE-GUIDE.md) for the document checks, certificate lifecycle and funder-review screen.
+
+## What are V001–V012?
+
+They are simply audit IDs for 12 published checks—not a credit score and not AI. The checks answer questions such as:
+
+- Do the customer, supplier and purchase-order references agree across all three documents?
+- Does the invoice amount fit the order and does subtotal plus tax equal the total?
+- Do the order, delivery and invoice dates occur in a sensible sequence?
+- Is the delivery acknowledged?
+- Has the exact file or invoice identity already been submitted?
+- Has the large customer confirmed the receivable?
+
+Every result displays **Pass**, **Review** or **Fail**, the values compared and a plain reason. Read the [complete check guide](docs/VERIFICATION-CHECKS.md).
+
 ## Current scope and limitations
 
 The implemented MVP includes the complete role-aware evidence journey, external-compliance status boundary and independent funding proposal boundary. The following deliberately remain outside the submission:
@@ -203,6 +238,8 @@ See [ROADMAP.md](docs/ROADMAP.md) for the authorised-integration path.
 | Read this | For |
 |---|---|
 | [Judging guide](docs/JUDGING-GUIDE.md) | Direct evidence for every scoring category |
+| [Visual feature guide](docs/FEATURE-GUIDE.md) | Screenshots and plain-language portal tour |
+| [Document-check guide](docs/VERIFICATION-CHECKS.md) | Meaning of all 12 transparent checks |
 | [Product scope](docs/PRODUCT-SCOPE.md) | MVP boundaries and non-goals |
 | [Product plan](docs/PRODUCT-PLAN.md) | Responsibility model, business model and pilot plan |
 | [User flows](docs/USER-FLOWS.md) | SME, customer and funder journeys |

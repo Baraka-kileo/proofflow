@@ -1,5 +1,7 @@
 # Implementation evidence log
 
+> This file is the historical engineering record, so older terminology is preserved where it documents what was actually tested at the time. For the current product structure, start with [Architecture](ARCHITECTURE.md), [Feature guide](FEATURE-GUIDE.md), and [Build checklist](BUILD-CHECKLIST.md).
+
 This is an append-only record of proof for completed checklist units. Do not erase failed checks; add the fix and rerun result beneath them. Never include credentials, tokens, personal data, or confidential document contents.
 
 ## Entry template
@@ -427,3 +429,13 @@ Commit/CI link:
 - **Copy cleanup:** Replaced remaining visible extraction terminology with manual evidence-entry language, made customer-system exception copy provider-neutral and renamed the login-only helper to `Sample credentials for testing`.
 - **Automated gate:** `git diff --check`, ESLint and TypeScript passed. All 25 Vitest files and 124 assertions passed. The Next.js production build passed with 16 generated pages. All six Chromium journeys passed, including mobile overflow, truthful partner routes, security boundaries, signed-out protection, generic authentication errors and login-only sample credentials. The production-dependency audit reported zero known vulnerabilities.
 - **Hosted integration evidence:** Hosted application-draft, customer-confirmation and Trust Passport tests passed after aligning their account fixtures with the current login-only test accounts. Service-role integration suites were not rerun because the local release environment intentionally does not retain the production service-role secret; earlier schema/RLS evidence remains recorded above.
+
+## 2026-09-05 — Judge-readable architecture and visual product tour
+
+- **Current source of truth:** Rebuilt the architecture, product scope, user flows, roadmap and build checklist around the unified non-AI product. Added a visual feature guide and a separate plain-language guide to all twelve document checks. The historical implementation log now points readers to the current documents first.
+- **Repository navigation:** Renamed `samples/evidence-packs/` to `samples/sample-documents-for-testing/`, updated every code and documentation reference, and described the consistent, mismatch and exact-duplicate sets as fictional testing material rather than product modes.
+- **Hosted record cleanup:** Applied migrations `20260905181000_submission_fixture_cleanup.sql` and `20260905182000_plain_language_fixture_checks.sql`. The first attempt to rewrite a completed customer confirmation was correctly rejected by its immutability trigger; the migration was revised to preserve that signed record and normalize its obsolete suffix only in the authorized display/PDF layer. A later SQL join error in the plain-language check migration was corrected before successful application. A final dry run reported the remote database up to date.
+- **Truthful presentation:** Removed obsolete `DEMO`, synthetic-check, indicative-offer and technical audit labels from current product views. Four canonical fictional applications remain. An older record without retained source files now states that previews are unavailable instead of showing a contradictory empty upload panel. Accepted terms stop at funding-partner confirmation and never imply disbursement.
+- **Visual evidence:** Captured fresh hosted screenshots for the SME portal, customer portal, funder portal, all twelve document checks, signed customer confirmation/certificate controls and funder review. Browser inspection confirmed no legacy check labels, technical audit wording or `0 / 3 uploaded` contradiction on the completed example.
+- **Release gates:** ESLint passed. TypeScript strict checking passed. Vitest passed 25 files and 124 assertions. The Next.js production build passed with 16 routes. The first six-test Chromium run had one sample-credential click timing failure; the isolated retry passed and a complete rerun then passed all 6 tests. The production dependency audit reported zero vulnerabilities, `git diff --check` passed and all local Markdown links resolved.
+- **Deployment:** Vercel deployments `dpl_2nn65g9n29nz2iuGhGr6vEu7epcL` and `dpl_22AiLRhBetSA8jQQinUVoperPmZf` reached `READY`; the latter contains the final judge-facing wording and is aliased to `https://proofflow-sepia.vercel.app`.

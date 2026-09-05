@@ -113,7 +113,7 @@ export function FunderApplicationReview(props: Props) {
               <StatusBadge status="success">
                 {props.confirmation
                   ? "Large customer confirmed ✓"
-                  : "Automated verification ✓"}
+                  : "Customer records verified ✓"}
               </StatusBadge>
             </div>
             <dl className="mt-6 grid gap-3 rounded-xl bg-[var(--soft)] p-4 sm:grid-cols-3">
@@ -166,7 +166,7 @@ export function FunderApplicationReview(props: Props) {
           <div className="flex items-end justify-between gap-3">
             <div>
               <span className="text-xs font-bold uppercase tracking-[.12em] text-[var(--primary)]">
-                Deterministic checks
+                12 transparent document checks
               </span>
               <h2 className="mt-2 text-xl font-bold">
                 Why this package is ready
@@ -266,11 +266,11 @@ export function FunderApplicationReview(props: Props) {
               ))}
             </div>
           ) : (
-            <Alert title="Previously entered evidence">
+            <Alert title="Source file previews unavailable">
               <p>
-                This seeded package predates uploaded source files. Newly
-                submitted applications show all three private previews and
-                reviewed fields here.
+                This historical record preserves the reviewed values but does
+                not include source-file previews. New applications show all
+                three private previews and reviewed fields here.
               </p>
             </Alert>
           )}

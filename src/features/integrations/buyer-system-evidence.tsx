@@ -34,7 +34,7 @@ export function BuyerSystemEvidence({
   const passed = checks.length - issues.length;
   const title =
     outcome === "system_verified"
-      ? "Automated verification complete"
+      ? "Customer-system verification complete"
       : outcome === "blocked"
         ? "Application cannot proceed"
         : "Large customer review needed";
@@ -44,7 +44,7 @@ export function BuyerSystemEvidence({
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div>
             <span className="text-xs font-bold uppercase tracking-[.12em] text-[var(--primary)]">
-              Automated verification
+              Customer-system verification
             </span>
             <h2 className="mt-2 text-2xl font-bold tracking-[-.03em]">
               {title}

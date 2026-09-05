@@ -1,15 +1,6 @@
 import { CheckCircle2, Clock3 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-
-const labels: Record<string, string> = {
-  "application.created": "Application created",
-  "application.documents_uploaded": "Evidence documents uploaded",
-  "application.fields_extracted": "Evidence details entered",
-  "application.fields_reviewed": "SME review completed",
-  "application.verification_completed": "Verification completed",
-  "application.sent_to_buyer": "Sent to large customer",
-  "integration.coupa_checked": "Automated verification completed",
-};
+import { presentAuditAction } from "@/lib/display/audit-events";
 
 export function ApplicationActivity({
   events,
@@ -53,10 +44,7 @@ export function ApplicationActivity({
                   </span>
                   <div className="pt-1">
                     <h3 className="text-sm font-bold">
-                      {labels[event.action] ??
-                        event.action
-                          .replaceAll(".", " · ")
-                          .replaceAll("_", " ")}
+                      {presentAuditAction(event.action)}
                     </h3>
                     <p className="mt-1 flex items-center gap-1 text-xs text-[var(--muted)]">
                       <Clock3 className="size-3.5" aria-hidden="true" />

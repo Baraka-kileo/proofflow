@@ -148,7 +148,7 @@ export function VerificationPanel({
           {failed > 0 && (
             <Alert
               tone="error"
-              title="Automated verification is blocked"
+              title="Customer verification is blocked"
               className="mt-5"
             >
               <p>
@@ -200,7 +200,7 @@ export function VerificationPanel({
         </Alert>
       )}
       {systemState.status === "success" && (
-        <Alert tone="success" title="Automated verification complete">
+        <Alert tone="success" title="Customer-system verification complete">
           <p>{systemState.message}</p>
         </Alert>
       )}
@@ -217,7 +217,7 @@ export function VerificationPanel({
                   {pendingBuyer
                     ? "Large customer signature requested"
                     : canCheck
-                      ? "Run automated verification"
+                      ? "Check authorised customer records"
                       : "Correct the document issue first"}
                 </h3>
                 <p className="mt-1 max-w-2xl text-sm leading-6 text-[var(--muted)]">
@@ -225,7 +225,7 @@ export function VerificationPanel({
                     ? "customer system was unavailable, so the large customer received the six-question signature flow."
                     : canCheck
                       ? "ProofFlow will match the PO, invoice, amount, delivery and payment status against authorised customer-system records."
-                      : "Automated verification becomes available when the document checks have no blocking failures."}
+                      : "Customer verification becomes available when the document checks have no blocking failures."}
                 </p>
               </div>
               {pendingBuyer ? (
@@ -234,7 +234,7 @@ export function VerificationPanel({
                 <form action={systemAction}>
                   <Button type="submit" loading={checking} disabled={!canCheck}>
                     <RefreshCw className="size-4" aria-hidden="true" />
-                    {checking ? "Checking…" : "Run automated verification"}
+                    {checking ? "Checking…" : "Check authorised customer records"}
                   </Button>
                 </form>
               )}

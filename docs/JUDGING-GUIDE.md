@@ -6,7 +6,7 @@ This page maps the published judging criteria directly to evidence in the workin
 
 | Criterion | Weight | ProofFlow evidence |
 |---|---:|---|
-| Innovation and Creativity | 20 | Multi-party evidence lineage; deterministic, explainable checks; privacy-minimising KYC/KYB boundary |
+| Innovation and Creativity | 20 | Multi-party evidence lineage; 12 transparent document checks; privacy-minimising KYC/KYB boundary |
 | Technical Implementation | 20 | One role-based Next.js application; server authorisation; RLS; private storage; atomic evidence persistence; automated gates |
 | Best Use of Tools | 15 | Tools selected for traceability and privacy; no AI processing of sensitive documents; fail-closed adapters |
 | Security and Data Privacy | 15 | Threat model, tenant isolation, signed document access, validation, audit trail and explicit production gaps |
@@ -19,7 +19,7 @@ ProofFlow does not treat an uploaded invoice as sufficient proof and does not cr
 
 The privacy decision is part of the innovation: confidential financial documents are not sent to an AI processor, and raw KYC/KYB material stays with the regulated funder or approved provider.
 
-**Evidence:** landing-page workflow at `/`; manual evidence interface in `src/features/applications/evidence-entry-workspace.tsx`; V001–V012 rules in `src/lib/integrations/rules-v1.ts`; customer journey in `src/features/dashboard/buyer-dashboard.tsx`; Trust Passport in `src/lib/trust-passport/`.
+**Evidence:** [visual feature guide](FEATURE-GUIDE.md); manual evidence interface in `src/features/applications/evidence-entry-workspace.tsx`; [plain-language check guide](VERIFICATION-CHECKS.md); executable rules in `src/lib/verification/rules-v1.ts`; customer journey in `src/features/dashboard/buyer-dashboard.tsx`; Trust Passport in `src/lib/trust-passport/`.
 
 If validated with funders and enterprise buyers, ProofFlow can reduce repeated evidence requests, make exceptions visible earlier and give SMEs a reusable transaction history. The MVP demonstrates the workflow; it does not claim measured market impact yet.
 
@@ -40,7 +40,7 @@ The interface provides one primary action per stage, a five-step journey, clear 
 |---|---|---|
 | Full-stack product | Next.js + TypeScript | Shared types and server-side protected operations in one deployable application |
 | Identity, relational data and policy | Supabase | Auth, Postgres, transactional functions, storage and Row Level Security work together |
-| Evidence consistency | Deterministic rules | Financial evidence needs repeatable results and a reason a human can challenge |
+| Evidence consistency | 12 published comparisons | Financial evidence needs repeatable results, visible values and a reason a human can challenge |
 | Payload validation | Zod + database constraints | Reject malformed or incomplete writes before state changes |
 | UI primitives | Radix-based components | Accessible keyboard and focus behaviour for complex controls |
 | Verification | Vitest, Testing Library and Playwright | Domain, interaction and browser-level coverage |
@@ -72,7 +72,7 @@ The first commercial measurements are cost per verified application, time to dec
 
 - Tenant and role boundaries allow additional organizations without cloning the product.
 - Currency and dates use structured codes/formats rather than display text.
-- V001–V012 rules are versioned, so results remain explainable as policy evolves.
+- The 12 document checks are versioned, so results keep their meaning as policy evolves; V001–V012 are only their audit IDs.
 - External compliance uses a provider-neutral lifecycle and reference instead of storing provider-specific confidential reports.
 - Customer and funding connections sit behind authorised server-side adapter contracts.
 - Authenticated customer confirmation remains a truthful fallback when an integration is unavailable.

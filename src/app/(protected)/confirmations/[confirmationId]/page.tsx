@@ -11,6 +11,7 @@ import {
   type ConfirmationKey,
 } from "@/lib/confirmations/confirmation-v1";
 import { getUser, requireRole } from "@/lib/auth/dal";
+import { presentLegacyFixtureLabel } from "@/lib/display/legacy-fixtures";
 import { createClient } from "@/lib/supabase/server";
 import { z } from "zod";
 
@@ -102,7 +103,9 @@ export default async function ConfirmationPage({
           explanations: parseExplanations(confirmation.answer_explanations),
           representativeName: confirmation.representative_name,
           representativeJobTitle: confirmation.representative_job_title,
-          representativeCompany: confirmation.representative_company,
+          representativeCompany: presentLegacyFixtureLabel(
+            confirmation.representative_company,
+          ),
           representativeEmail: confirmation.representative_email,
           decidedAt: confirmation.decided_at,
           approvalId: confirmation.approval_id,

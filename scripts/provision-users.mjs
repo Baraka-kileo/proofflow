@@ -14,9 +14,9 @@ const { error: organizationsError } = await admin.from("organizations").upsert([
 ]);
 if (organizationsError) throw organizationsError;
 const identities = [
-  { email: "sme.test@proofflow.example", name: "Amara Ndlovu", role: "sme", organization_id: "11111111-1111-4111-8111-111111111111" },
-  { email: "buyer.test@proofflow.example", name: "Lebo Molefe", role: "buyer", organization_id: "22222222-2222-4222-8222-222222222222" },
-  { email: "funder.test@proofflow.example", name: "Thandi Khumalo", role: "funder", organization_id: "33333333-3333-4333-8333-333333333333" },
+  { email: "sme.demo@proofflow.example", name: "Amara Ndlovu", role: "sme", organization_id: "11111111-1111-4111-8111-111111111111" },
+  { email: "buyer.demo@proofflow.example", name: "Lebo Molefe", role: "buyer", organization_id: "22222222-2222-4222-8222-222222222222" },
+  { email: "funder.demo@proofflow.example", name: "Thandi Khumalo", role: "funder", organization_id: "33333333-3333-4333-8333-333333333333" },
 ];
 const usersByRole = {};
 
@@ -54,10 +54,10 @@ if (applicationsError) throw applicationsError;
 
 const yesAnswers={poIssued:true,deliveryAccepted:true,invoiceRecognized:true,amountCorrect:true,invoiceOutstanding:true,paymentDateCorrect:true};
 const confirmations = [
-  { id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1", application_id: applications[0].id, buyer_organization_id: "22222222-2222-4222-8222-222222222222", status: "confirmed", order_recognized: true, delivery_received: true, amount_recognized: true, answers:yesAnswers,answer_explanations:{},transaction_snapshot:{buyer:"Ubuntu Retail Group",supplier:"Ndlovu Office Supplies",purchaseOrder:"PO-2039",invoice:"INV-2039",currency:"ZAR",invoiceAmountMinor:4875000,outstandingAmountMinor:4875000,expectedPaymentDate:"2026-10-19"},declaration_version:"buyer-declaration-v1",representative_name:"Lebo Molefe",representative_job_title:"Accounts Payable Manager",representative_company:"Ubuntu Retail Group",representative_email:"buyer.test@proofflow.example",signature_strokes:[[{x:.08,y:.65},{x:.23,y:.25},{x:.4,y:.72},{x:.61,y:.3},{x:.9,y:.55}]],approval_id:"eeeeeeee-eeee-4eee-8eee-eeeeeeeeeee1",decision_payload_hash:"seed-confirmation-1",decided_by: usersByRole.buyer, decided_at: "2026-09-05T05:48:00Z" },
+  { id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb1", application_id: applications[0].id, buyer_organization_id: "22222222-2222-4222-8222-222222222222", status: "confirmed", order_recognized: true, delivery_received: true, amount_recognized: true, answers:yesAnswers,answer_explanations:{},transaction_snapshot:{buyer:"Ubuntu Retail Group",supplier:"Ndlovu Office Supplies",purchaseOrder:"PO-2039",invoice:"INV-2039",currency:"ZAR",invoiceAmountMinor:4875000,outstandingAmountMinor:4875000,expectedPaymentDate:"2026-10-19"},declaration_version:"buyer-declaration-v1",representative_name:"Lebo Molefe",representative_job_title:"Accounts Payable Manager",representative_company:"Ubuntu Retail Group",representative_email:"buyer.demo@proofflow.example",signature_strokes:[[{x:.08,y:.65},{x:.23,y:.25},{x:.4,y:.72},{x:.61,y:.3},{x:.9,y:.55}]],approval_id:"eeeeeeee-eeee-4eee-8eee-eeeeeeeeeee1",decision_payload_hash:"seed-confirmation-1",decided_by: usersByRole.buyer, decided_at: "2026-09-05T05:48:00Z" },
   { id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2", application_id: applications[1].id, buyer_organization_id: "22222222-2222-4222-8222-222222222222", status: "pending" },
   { id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb3", application_id: applications[2].id, buyer_organization_id: "22222222-2222-4222-8222-222222222222", status: "pending" },
-  { id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb4", application_id: applications[3].id, buyer_organization_id: "22222222-2222-4222-8222-222222222222", status: "confirmed", order_recognized: true, delivery_received: true, amount_recognized: true, answers:yesAnswers,answer_explanations:{},transaction_snapshot:{buyer:"Ubuntu Retail Group",supplier:"Mokoena Catering Services",purchaseOrder:"PO-1180",invoice:"INV-1180",currency:"ZAR",invoiceAmountMinor:8230000,outstandingAmountMinor:8230000,expectedPaymentDate:"2026-10-09"},declaration_version:"buyer-declaration-v1",representative_name:"Lebo Molefe",representative_job_title:"Finance Manager",representative_company:"Ubuntu Retail Group",representative_email:"buyer.test@proofflow.example",signature_strokes:[[{x:.08,y:.65},{x:.23,y:.25},{x:.4,y:.72},{x:.61,y:.3},{x:.9,y:.55}]],approval_id:"eeeeeeee-eeee-4eee-8eee-eeeeeeeeeee4",decision_payload_hash:"seed-confirmation-4",decided_by: usersByRole.buyer, decided_at: "2026-09-05T04:00:00Z" },
+  { id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb4", application_id: applications[3].id, buyer_organization_id: "22222222-2222-4222-8222-222222222222", status: "confirmed", order_recognized: true, delivery_received: true, amount_recognized: true, answers:yesAnswers,answer_explanations:{},transaction_snapshot:{buyer:"Ubuntu Retail Group",supplier:"Mokoena Catering Services",purchaseOrder:"PO-1180",invoice:"INV-1180",currency:"ZAR",invoiceAmountMinor:8230000,outstandingAmountMinor:8230000,expectedPaymentDate:"2026-10-09"},declaration_version:"buyer-declaration-v1",representative_name:"Lebo Molefe",representative_job_title:"Finance Manager",representative_company:"Ubuntu Retail Group",representative_email:"buyer.demo@proofflow.example",signature_strokes:[[{x:.08,y:.65},{x:.23,y:.25},{x:.4,y:.72},{x:.61,y:.3},{x:.9,y:.55}]],approval_id:"eeeeeeee-eeee-4eee-8eee-eeeeeeeeeee4",decision_payload_hash:"seed-confirmation-4",decided_by: usersByRole.buyer, decided_at: "2026-09-05T04:00:00Z" },
 ];
 const { error: confirmationsError } = await admin.from("confirmations").upsert(confirmations,{onConflict:"id",ignoreDuplicates:true});
 if (confirmationsError) throw confirmationsError;
@@ -65,7 +65,21 @@ if (confirmationsError) throw confirmationsError;
 const runs = applications.map((application,index)=>({id:`cccccccc-cccc-4ccc-9ccc-ccccccccccc${index+1}`,application_id:application.id,initiated_by:usersByRole.sme,status:"completed",started_at:"2026-09-04T09:05:00Z",completed_at:"2026-09-04T09:06:00Z",rule_version:"verification-v1",overall_result:"pass"}));
 const { error: runsError } = await admin.from("verification_runs").upsert(runs);
 if (runsError) throw runsError;
-const checkRows=runs.flatMap((run,runIndex)=>Array.from({length:12},(_,ruleIndex)=>{const ruleCode=`V${String(ruleIndex+1).padStart(3,"0")}`;return{id:`${String(runIndex+1).repeat(8)}-${String(ruleIndex+1).padStart(4,"0")}-4ddd-8ddd-${String(runIndex+1).repeat(11)}${(ruleIndex+1)%10}`,verification_run_id:run.id,application_id:run.application_id,rule_code:ruleCode,result:ruleCode==="V012"&&[1,2].includes(runIndex)?"review":"pass",explanation:ruleCode==="V012"?"Buyer confirmation is awaiting a decision.":`Deterministic ${ruleCode} evidence is consistent.`,evidence:{ruleId:ruleCode,version:"verification-v1",status:ruleCode==="V012"&&[1,2].includes(runIndex)?"review":"pass",severity:ruleCode==="V012"&&[1,2].includes(runIndex)?"warning":"info",title:`Rule ${ruleCode}`,explanation:`Recorded ${ruleCode} result.`,comparedValues:{source:"seeded_record"},sourceDocumentIds:[]}};}));
+const sampleCheckDefinitions = [
+  ["Large customer identity", "The same large customer appears across the reviewed evidence."],
+  ["Supplier identity", "The same supplier appears across the reviewed evidence."],
+  ["Purchase order reference", "The purchase order reference agrees across the reviewed evidence."],
+  ["Currency", "The purchase order and invoice use the same currency."],
+  ["Invoice versus order total", "The invoice total does not exceed the purchase order total."],
+  ["Invoice arithmetic", "Subtotal plus tax agrees with the invoice total."],
+  ["Purchase order timing", "The purchase order predates delivery and invoicing."],
+  ["Delivery versus invoice timing", "Delivery occurred on or before the invoice date."],
+  ["Exact document duplicate", "No earlier identical file was found for this supplier organization."],
+  ["Invoice identity duplicate", "This invoice identity is unique for the supplier organization."],
+  ["Delivery acknowledgement", "The delivery evidence includes a receiver or signature acknowledgement."],
+  ["Customer confirmation", "The large customer has confirmed the receivable in ProofFlow."],
+];
+const checkRows=runs.flatMap((run,runIndex)=>sampleCheckDefinitions.map(([title,passExplanation],ruleIndex)=>{const ruleCode=`V${String(ruleIndex+1).padStart(3,"0")}`;const waiting=ruleCode==="V012"&&[1,2].includes(runIndex);const explanation=waiting?"Customer confirmation is still pending.":passExplanation;const application=applications[runIndex];return{id:`${String(runIndex+1).repeat(8)}-${String(ruleIndex+1).padStart(4,"0")}-4ddd-8ddd-${String(runIndex+1).repeat(11)}${(ruleIndex+1)%10}`,verification_run_id:run.id,application_id:run.application_id,rule_code:ruleCode,result:waiting?"review":"pass",explanation,evidence:{ruleId:ruleCode,version:"verification-v1",status:waiting?"review":"pass",severity:waiting?"warning":"info",title,explanation,comparedValues:ruleCode==="V003"?{"Purchase order":application.purchase_order_reference}:ruleCode==="V004"?{Currency:application.currency}:ruleCode==="V010"?{"Invoice number":application.invoice_number,"Duplicate found":"No"}:ruleCode==="V012"?{"Customer status":waiting?"Pending":"Confirmed"}:{Result:"Consistent"},sourceDocumentIds:[]}};}));
 const { error: checksError } = await admin.from("verification_checks").upsert(checkRows);
 if (checksError) throw checksError;
 

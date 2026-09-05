@@ -23,6 +23,7 @@ import { ExternalCompliancePanel } from "@/features/offers/external-compliance-p
 import { requireApplicationAccess } from "@/lib/auth/dal";
 import { deriveApplicationProgress } from "@/lib/applications/progress";
 import { createClient } from "@/lib/supabase/server";
+import { presentAuditAction } from "@/lib/display/audit-events";
 import type {
   VerificationCheck,
   VerificationStatus,
@@ -232,7 +233,7 @@ export default async function ApplicationPage({
         <PageHeading
           eyebrow={`Funder review · ${application.id.slice(0, 8).toUpperCase()}`}
           title={application.invoice_number ?? "Evidence package"}
-          description="Review the source evidence, deterministic checks, and large-customer evidence before making your own independent funding decision."
+          description="Review the source evidence, the 12 transparent document checks, and the large-customer confirmation before making your own independent funding decision."
         />
         {systemRun && (
           <div className="mt-8">
@@ -286,7 +287,7 @@ export default async function ApplicationPage({
             }
             audit={(auditEvents ?? []).map((event) => ({
               id: event.id,
-              label: event.action.replaceAll("_", " ").replaceAll(".", " · "),
+              label: presentAuditAction(event.action),
               time: event.created_at,
             }))}
           />
@@ -323,10 +324,10 @@ export default async function ApplicationPage({
               offer.decision_kind === "decline"
                 ? "Funder declined this application"
                 : offer.status === "offered"
-                  ? "Indicative offer ready"
+                  ? "Funding proposal ready"
                   : offer.status === "accepted"
-                    ? "Indicative offer accepted"
-                    : "Indicative offer declined"
+                    ? "Funding proposal accepted"
+                    : "Funding proposal declined"
             }
             className="mt-6"
           >
@@ -339,7 +340,7 @@ export default async function ApplicationPage({
               href={`/offers/${offer.id}`}
               className="mt-3 inline-flex min-h-11 items-center rounded-xl border border-[var(--border)] bg-white px-4 font-bold text-[var(--primary)]"
             >
-              View indicative offer
+              View funding proposal
             </Link>
           </Alert>
         )}
@@ -429,11 +430,21 @@ export default async function ApplicationPage({
           </div>
         )}
         <div className="mt-8">
-          <DocumentUploadPanel
-            applicationId={application.id}
-            status={application.status}
-            documents={storedDocuments}
-          />
+          {storedDocuments.length === 0 && latestRun ? (
+            <Alert title="Source file previews unavailable">
+              <p>
+                This historical record preserves the reviewed values and check
+                results, but not the source-file previews. New applications
+                retain all three private documents in this workspace.
+              </p>
+            </Alert>
+          ) : (
+            <DocumentUploadPanel
+              applicationId={application.id}
+              status={application.status}
+              documents={storedDocuments}
+            />
+          )}
         </div>
         <div className="mt-8">
           <ApplicationActivity
@@ -455,8 +466,8 @@ function primitive(value: unknown): string | boolean | null {
 
 function applicationStatusLabel(status: string) {
   const labels: Record<string, string> = {
-    buyer_system_checking: "Automated verification running",
-    buyer_system_verified: "Automated verification complete",
+    buyer_system_checking: "Checking authorised customer records",
+    buyer_system_verified: "Customer records verified",
     buyer_exception_review: "Large customer review needed",
     buyer_system_blocked: "Application cannot proceed",
   };

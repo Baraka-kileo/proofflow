@@ -9,7 +9,7 @@ from reportlab.platypus import Paragraph, SimpleDocTemplate, Spacer, Table, Tabl
 
 
 ROOT = Path(__file__).resolve().parents[1]
-OUTPUT = ROOT / "samples" / "evidence-packs"
+OUTPUT = ROOT / "samples" / "sample-documents-for-testing"
 GREEN = colors.HexColor("#0B6B57")
 INK = colors.HexColor("#17201D")
 MUTED = colors.HexColor("#64706B")

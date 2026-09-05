@@ -17,7 +17,7 @@ const checks = [
   },
 ];
 describe("buyer-system evidence UI", () => {
-  it("summarises automated verification and offers a certificate only after verification", () => {
+  it("summarises customer-system verification and offers a certificate only after verification", () => {
     render(
       <BuyerSystemEvidence
         applicationId="00000000-0000-4000-8000-000000000001"
@@ -28,7 +28,7 @@ describe("buyer-system evidence UI", () => {
       />,
     );
     expect(
-      screen.getByRole("heading", { name: "Automated verification complete" }),
+      screen.getByRole("heading", { name: "Customer-system verification complete" }),
     ).toBeInTheDocument();
     expect(screen.getByText("customer system")).toBeInTheDocument();
     expect(

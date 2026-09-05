@@ -9,7 +9,7 @@ ProofFlow is one production-style, role-aware application. Fictional records pop
 | Stage | Responsible party | ProofFlow's role |
 |---|---|---|
 | Evidence submission | SME | Private upload, structured manual entry and declaration |
-| Evidence verification | ProofFlow | Deterministic V001–V012 checks and audit trail |
+| Evidence verification | ProofFlow | Twelve published checks across identity, references, amounts, dates, acknowledgements and duplicates, with an audit trail |
 | Transaction confirmation | Large customer | Authorised record check or authenticated confirmation |
 | KYC/KYB and AML | Funding partner/provider | Display status and external reference only |
 | Credit, pricing and underwriting | Funding partner | Present evidence; never make the decision |
@@ -39,7 +39,7 @@ The monetisation principle is to keep the crucial trust workflow accessible and 
 
 | Offer | Buyer | Value | Revenue mechanism |
 |---|---|---|---|
-| Core | SME | Submission, manual evidence entry, deterministic checks, customer confirmation, funding application and Trust Passport | Free |
+| Core | SME | Submission, manual evidence entry, 12 transparent checks, customer confirmation, funding application and Trust Passport | Free |
 | Connect | Large customer / enterprise | Authorised ERP lookup, bulk suppliers, exceptions, API/webhooks, reporting, multi-entity controls and support | Contract subscription plus scoped integration/onboarding fee |
 | Funding Partner | Bank / alternative funder | Evidence workspaces, compliance-status integration, portfolio workflow, API/webhooks and reporting | Platform fee and/or contracted share of collected financing fees after successful funding |
 

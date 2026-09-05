@@ -107,15 +107,15 @@ const statuses: Record<
   checks_complete: {
     label: "Checks complete",
     progress: 65,
-    next: "Run automated verification",
+    next: "Verify with the large customer",
   },
   buyer_system_checking: {
-    label: "Running automated verification",
+    label: "Checking customer records",
     progress: 68,
-    next: "Waiting for automated verification",
+    next: "Waiting for customer verification",
   },
   buyer_system_verified: {
-    label: "Automated verification complete",
+    label: "Customer records verified",
     progress: 75,
     next: "Waiting for funder review",
   },

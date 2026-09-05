@@ -154,7 +154,7 @@ function FunderApplicationList({ data }: { data: FunderData }) {
               <b>{application.supplier}</b>
               <StatusBadge status="success">
                 {application.buyerEvidence === "system"
-                  ? "Automated verification ✓"
+                  ? "Customer records verified ✓"
                   : "Large customer confirmed ✓"}
               </StatusBadge>
               <StatusBadge status={application.warnings ? "review" : "success"}>

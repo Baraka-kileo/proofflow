@@ -56,7 +56,7 @@ export default async function SystemEvidencePage({
       </Link>
       <div className="mt-5">
         <PageHeading
-          eyebrow="Automated verification · customer system"
+          eyebrow="Customer-system verification"
           title={
             run.outcome === "system_verified"
               ? "Verification details"

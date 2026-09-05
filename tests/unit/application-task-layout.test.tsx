@@ -28,7 +28,7 @@ describe("application task layout", () => {
       "Documents",
       "Review",
       "Document checks",
-      "Automated verification",
+      "Customer verification",
     ])
       expect(
         within(desktop).getByText(label, { selector: "b" }),
