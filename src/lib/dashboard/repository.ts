@@ -6,9 +6,10 @@ import type { SessionUser } from "@/types/domain";
 type Metric = { label: string; value: string; note: string };
 type BuyerHistory = { id: string; supplier: string; invoice: string; amount: string; status: "confirmed" | "disputed"; decided: string; href: string };
 type FunderOffer = { id: string; supplier: string; buyer: string; invoice: string; net: string; status: string; kind: "offer" | "decline"; href: string; created: string };
+type SmeApplication = { id: string; href: string; buyer: string; amount: string; status: string; invoice: string };
 
 export type DashboardData =
-  | { role: "sme"; metrics: Metric[]; application: { id: string; href: string; buyer: string; amount: string; status: string; progress: number; next: string } | null }
+  | { role: "sme"; metrics: Metric[]; application: ({ progress: number; next: string } & SmeApplication) | null; applications: SmeApplication[] }
   | { role: "buyer"; metrics: Metric[]; requests: { id: string; reference: string; href: string; supplier: string; invoice: string; amount: string; age: string; warnings: number }[]; history: BuyerHistory[] }
   | { role: "funder"; metrics: Metric[]; applications: { id: string; href: string; supplier: string; buyer: string; amount: string; dueDate: string; confirmed: string; warnings: number; certificateHref: string | null }[]; offers: FunderOffer[] };
 
@@ -48,7 +49,7 @@ export async function getDashboard(session: SessionUser): Promise<DashboardData>
   if (session.role === "sme") {
     const { data, error } = await supabase
       .from("applications")
-      .select("id,status,invoice_total_minor,submitted_at,buyer:organizations!applications_buyer_organization_id_fkey(name)")
+      .select("id,status,invoice_number,invoice_total_minor,submitted_at,buyer:organizations!applications_buyer_organization_id_fkey(name)")
       .eq("owner_organization_id", session.organizationId)
       .order("submitted_at", { ascending: false, nullsFirst: false });
     assertQuery(error, "your applications");
@@ -56,6 +57,7 @@ export async function getDashboard(session: SessionUser): Promise<DashboardData>
     const current = rows[0];
     const confirmed = rows.filter((row) => ["buyer_confirmed", "funder_review", "offer_made", "offer_accepted", "funded_simulated"].includes(row.status));
     const state = current ? statuses[current.status] : null;
+    const applications = rows.map((row) => ({ id: shortId("PF", row.id), href: `/applications/${row.id}`, buyer: row.buyer.name, amount: formatMoney(row.invoice_total_minor), status: statuses[row.status]?.label ?? row.status, invoice: row.invoice_number ?? "Invoice not set" }));
     return {
       role: "sme",
       metrics: [
@@ -63,7 +65,8 @@ export async function getDashboard(session: SessionUser): Promise<DashboardData>
         { label: "Verified value", value: formatMoney(confirmed.reduce((sum, row) => sum + (row.invoice_total_minor ?? 0), 0)), note: `Across ${confirmed.length} buyer-confirmed ${confirmed.length === 1 ? "invoice" : "invoices"}` },
         { label: "Buyer confirmations", value: String(confirmed.length), note: "RLS-filtered to your organization" },
       ],
-      application: current && state ? { id: shortId("PF", current.id), href: `/applications/${current.id}`, buyer: current.buyer.name, amount: formatMoney(current.invoice_total_minor), status: state.label, progress: state.progress, next: state.next } : null,
+      application: current && state ? { ...applications[0], progress: state.progress, next: state.next } : null,
+      applications,
     };
   }
 

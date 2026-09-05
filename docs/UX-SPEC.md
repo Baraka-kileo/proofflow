@@ -6,9 +6,9 @@ Desktop uses a quiet cream canvas, persistent role-aware rail, compact organizat
 
 ### Role navigation
 
-- SME: Overview, Applications, Trust Passport, Help, Account
-- Buyer: Overview, Confirmations, History, Help, Account
-- Funder: Overview, Applications, Offers, Help, Account
+- SME: Overview, Applications, Trust Passport, Help, Account. Applications opens `/applications`; creation is a separate action.
+- Buyer: Overview, Confirmations, History, Help, Account. Confirmations and History open separate pages.
+- Funder: Overview, Applications, Offers, Help, Account. Applications and Offers open separate pages.
 
 ## `/login`
 
@@ -19,10 +19,14 @@ Split desktop composition: concise ProofFlow value statement/evidence motif on t
 The greeting is secondary; the next task is dominant.
 
 - SME: hero status card with `Continue application`/`Start application`, three small metrics, recent applications, and Trust Passport progress.
-- Buyer: urgent pending-confirmation queue, SLA age, supplier/amount summary, then history.
-- Funder: buyer-confirmed review queue, total requested, risk/check summary, `Buyer Confirmed` state, and a working `View Confirmation Certificate` action before recent offers.
+- Buyer: short status and metrics, then clear links to the separate confirmation queue and decision history.
+- Funder: short status and metrics, then clear links to the separate application queue and offer history.
 
 Cards enter with a short stagger. Skeletons reproduce their final geometry to prevent layout shift.
+
+## `/applications`, `/confirmations`, `/confirmations/history`, and `/offers`
+
+List work is separated from Overview. SME and funder Applications show only their relevant rows. Buyer Confirmations shows only pending requests, while History contains read-only completed decisions. Funder Offers contains only recorded simulated decisions. Each page has one clear heading, a count, a concise empty state, and direct record actions; sidebar navigation never uses an in-page hash as a substitute for a page.
 
 ## `/applications/new`
 
@@ -40,7 +44,7 @@ Desktop uses document preview left and editable normalized fields right. Mobile 
 
 ## `/confirmations/[id]`
 
-Buyer sees a focused three-stage confirmation rather than an approval button. Stage 1 presents six numbered `Yes`/`No` questions with the relevant supplier, PO, invoice, amount, outstanding amount, due date, or delivery evidence immediately beside the question. Selecting `No` reveals a persistent explanation field beside that answer. Progress survives moving forward/back within the page.
+Buyer sees a focused three-stage confirmation rather than an approval button. Stage 1 presents one of six numbered `Yes`/`No` questions at a time with `Question n of 6`, a progress bar, Back/Next controls, and the relevant supplier, PO, invoice, amount, outstanding amount, due date, or delivery evidence beside it. Selecting `No` reveals a persistent explanation field. Progress and answers survive moving forward/back.
 
 Stage 2 presents `You are confirming that` with a generated plain-language summary and the actions `Confirm & Continue` and `Go Back & Correct`. Any `No` instead presents the disputed facts and a single `Submit dispute` action; it never displays confirmation language.
 

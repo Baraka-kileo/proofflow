@@ -92,10 +92,14 @@ The agent must not:
 | `/` | Public | Product explanation and honest scope |
 | `/login` | Public | Demo login and secure sign-in entry |
 | `/dashboard` | All | Server-selected dashboard for current role |
+| `/applications` | SME/Funder | Role-specific application list |
 | `/applications/new` | SME | Create draft, upload, review, verify, send |
 | `/applications/[id]` | SME/Funder | Authorized evidence package and timeline |
+| `/confirmations` | Buyer | Pending buyer-confirmation queue |
+| `/confirmations/history` | Buyer | Read-only confirmation and dispute history |
 | `/confirmations/[id]` | Buyer | Answer six questions, review, sign, or dispute once |
 | `/confirmations/[id]/certificate` | Buyer, SME, funder | View/download the immutable confirmation certificate |
+| `/offers` | Funder | Read-only simulated decision history |
 | `/offers/[id]` | SME/Funder | Create or respond to simulated terms |
 | `/trust-passport` | SME | Evidence-based history; not a credit score |
 | `/account` | All | Identity, organization, role, sign-out |

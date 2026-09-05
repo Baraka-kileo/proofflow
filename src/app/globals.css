@@ -17,7 +17,7 @@ button, input, select, textarea { font: inherit; }
 .mobile-bar { display:none; }
 .page-enter { animation:reveal .25s both cubic-bezier(.2,.8,.2,1); }
 .login-layout { min-height:100vh; display:grid; grid-template-columns:minmax(420px,.9fr) minmax(520px,1.1fr); }
-.login-story { display:flex; flex-direction:column; justify-content:space-between; gap:64px; background:var(--primary-pressed); padding:clamp(32px,5vw,72px); }
+.login-story { display:flex; flex-direction:column; justify-content:space-between; gap:64px; background-color:var(--primary-pressed); background-image:linear-gradient(180deg,rgba(4,54,45,.22),rgba(4,54,45,.82)),url("/images/proofflow-login-evidence.webp"); background-position:center; background-size:cover; padding:clamp(32px,5vw,72px); }
 .login-panel { display:grid; place-items:center; padding:48px 24px; }
 a { text-decoration:none; }
 button, a { -webkit-tap-highlight-color:transparent; }

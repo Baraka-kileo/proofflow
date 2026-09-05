@@ -10,7 +10,7 @@ import { Metrics, QueueButton } from "./shared";
 
 export function SmeDashboard({data}:{data:Extract<DashboardData,{role:"sme"}>}) {
   return <div className="page-enter mx-auto max-w-6xl">
-    <PageHeading eyebrow="SME overview" title="Good morning, Amara." description="Your next step is always shown first. Build the evidence once, then follow it through confirmation and review." action={<Link href="/applications/new" className="inline-flex h-12 items-center justify-center rounded-xl bg-[var(--primary)] px-4 text-sm font-semibold text-white hover:bg-[var(--primary-pressed)]">Start application</Link>} />
+    <PageHeading eyebrow="SME overview" title="Good morning, Amara." description="See your next step and keep each application moving." action={<Link href="/applications/new" className="inline-flex h-12 items-center justify-center rounded-xl bg-[var(--primary)] px-4 text-sm font-semibold text-white hover:bg-[var(--primary-pressed)]">Start application</Link>} />
     <Metrics items={data.metrics}/>
     <section className="mt-8 grid gap-6 lg:grid-cols-[1.3fr_.7fr]">
       <Card><CardContent className="pt-6">{data.application?<>
@@ -21,5 +21,12 @@ export function SmeDashboard({data}:{data:Extract<DashboardData,{role:"sme"}>}) 
       </>:<EmptyState title="No applications yet" description="Your first application will appear here after you start it." />}</CardContent></Card>
       <Card className="bg-[var(--primary-pressed)] text-white"><CardContent className="pt-6"><FileText className="size-6 text-[#9fd4c5]"/><h2 className="mt-10 text-2xl font-semibold tracking-tight">Your proof is reusable.</h2><p className="mt-3 text-sm leading-6 text-[#c7d9d3]">Every buyer-confirmed application adds explainable evidence to your Trust Passport—not an opaque credit score.</p><Link href="/trust-passport" className="mt-6 inline-flex min-h-11 items-center rounded-xl bg-white px-4 text-sm font-bold text-[var(--primary-pressed)] hover:bg-[var(--soft)]">View Trust Passport</Link></CardContent></Card>
     </section>
+  </div>;
+}
+
+export function SmeApplicationsView({data}:{data:Extract<DashboardData,{role:"sme"}>}) {
+  return <div className="page-enter mx-auto max-w-5xl">
+    <PageHeading eyebrow="SME" title="Applications" description="Continue an application or start a new one." action={<Link href="/applications/new" className="inline-flex min-h-11 items-center rounded-xl bg-[var(--primary)] px-4 text-sm font-bold text-white hover:bg-[var(--primary-pressed)]">Start application</Link>} />
+    <Card className="mt-8"><CardContent className="pt-6">{data.applications.length?<div className="divide-y divide-[var(--border)]">{data.applications.map(application=><article key={application.id} className="grid gap-4 py-5 sm:grid-cols-[1fr_auto] sm:items-center"><div><div className="flex flex-wrap items-center gap-2"><b>{application.invoice}</b><StatusBadge status="neutral">{application.status}</StatusBadge></div><p className="mt-2 text-sm text-[var(--muted)]">{application.buyer} · {application.amount} · {application.id}</p></div><QueueButton label="Open application" href={application.href}/></article>)}</div>:<EmptyState title="No applications yet" description="Start your first evidence application." action={{label:"Start application",href:"/applications/new"}}/>}</CardContent></Card>
   </div>;
 }

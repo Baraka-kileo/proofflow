@@ -26,30 +26,28 @@ interface NavItem {
 const navByRole: Record<Role, NavItem[]> = {
   sme: [
     { label: "Overview", href: "/dashboard", icon: Home },
-    { label: "Applications", href: "/applications/new", icon: FileText },
+    { label: "Applications", href: "/applications", icon: FileText },
     { label: "Trust Passport", href: "/trust-passport", icon: Fingerprint },
     { label: "Help", href: "/help", icon: CircleHelp },
     { label: "Account", href: "/account", icon: UserRound },
   ],
   buyer: [
     { label: "Overview", href: "/dashboard", icon: Home },
-    { label: "Confirmations", href: "/dashboard#confirmations", icon: FileCheck2 },
-    { label: "History", href: "/dashboard#history", icon: History },
+    { label: "Confirmations", href: "/confirmations", icon: FileCheck2 },
+    { label: "History", href: "/confirmations/history", icon: History },
     { label: "Help", href: "/help", icon: CircleHelp },
     { label: "Account", href: "/account", icon: UserRound },
   ],
   funder: [
     { label: "Overview", href: "/dashboard", icon: Home },
-    { label: "Applications", href: "/dashboard#applications", icon: FileText },
-    { label: "Offers", href: "/dashboard#offers", icon: HandCoins },
+    { label: "Applications", href: "/applications", icon: FileText },
+    { label: "Offers", href: "/offers", icon: HandCoins },
     { label: "Help", href: "/help", icon: CircleHelp },
     { label: "Account", href: "/account", icon: UserRound },
   ],
 };
 
-function NavEntry({ item, mobile = false }: { item: NavItem; mobile?: boolean }) {
-  const pathname = usePathname();
-  const active = Boolean(item.href && (pathname === item.href || pathname.startsWith(`${item.href}/`)));
+function NavEntry({ item, mobile = false, active = false }: { item: NavItem; mobile?: boolean; active?: boolean }) {
   const Icon = item.icon;
   const styles = cn(
     "group flex min-h-11 items-center gap-3 rounded-xl px-3.5 text-sm font-semibold transition-colors duration-150 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-[var(--focus)] motion-reduce:transition-none",
@@ -70,8 +68,12 @@ function NavEntry({ item, mobile = false }: { item: NavItem; mobile?: boolean })
 }
 
 export function Navigation({ role, mobile = false }: { role: Role; mobile?: boolean }) {
+  const pathname = usePathname();
   const items = navByRole[role];
   const shown = mobile ? items.slice(0, 4) : items;
+  const activeHref = [...items]
+    .filter((item) => pathname === item.href || pathname.startsWith(`${item.href}/`))
+    .sort((a, b) => b.href.length - a.href.length)[0]?.href;
 
   return (
     <nav
@@ -82,7 +84,7 @@ export function Navigation({ role, mobile = false }: { role: Role; mobile?: bool
       )}
     >
       {shown.map((item) => (
-        <NavEntry key={item.label} item={item} mobile={mobile} />
+        <NavEntry key={item.label} item={item} mobile={mobile} active={item.href === activeHref} />
       ))}
     </nav>
   );
