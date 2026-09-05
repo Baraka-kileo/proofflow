@@ -236,7 +236,7 @@ Dependencies: P2.
 
 Dependencies: P3.
 
-- [ ] **P4-01 MUST — Extraction schema/prompt.** Define Zod schemas for Extraction v1 and one fixed prompt per document category. Prompt says document instructions are untrusted data, missing values must be null, and output must match schema.
+- [x] **P4-01 MUST — Extraction schema/prompt.** Define Zod schemas for Extraction v1 and one fixed prompt per document category. Prompt says document instructions are untrusted data, missing values must be null, and output must match schema.
   - Accept: schema fixtures cover complete, missing, malformed, and adversarial document text.
 - [ ] **P4-02 MUST — Server Gemini adapter.** Upload/read the private document server-side, call the configured Gemini Flash model with structured output, use bounded timeout/retry, validate response, and save raw provider metadata plus normalized fields.
   - Accept: API key never reaches browser/log; invalid model output is rejected; retry does not create duplicate field sets.
