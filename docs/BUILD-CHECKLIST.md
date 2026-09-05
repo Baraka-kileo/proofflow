@@ -253,20 +253,20 @@ Dependencies: P3.
 
 Dependencies: P4.
 
-- [ ] **P5-01 MUST — Normalizers.** Implement pure normalization for names, references, ISO dates, currency codes, and integer minor units. Do not use locale-dependent floating-point parsing for stored money.
+- [x] **P5-01 MUST — Normalizers.** Implement pure normalization for names, references, ISO dates, currency codes, and integer minor units. Do not use locale-dependent floating-point parsing for stored money.
   - Accept: table-driven unit tests cover punctuation/case/whitespace, invalid dates, decimal currencies, and null values.
-- [ ] **P5-02 MUST — Rules V001–V012.** Implement each table rule as a pure typed function with no database/AI/network access.
+- [x] **P5-02 MUST — Rules V001–V012.** Implement each table rule as a pure typed function with no database/AI/network access.
   - Accept: every rule has pass/review/fail fixtures where logically applicable and returns source IDs/compared values/explanation.
-- [ ] **P5-03 MUST — Orchestrator/versioning.** Run a frozen rule version over reviewed fields/hashes and persist one run with its checks and overall result transactionally.
+- [x] **P5-03 MUST — Orchestrator/versioning.** Run a frozen rule version over reviewed fields/hashes and persist one run with its checks and overall result transactionally.
   - Accept: rerun creates an auditable new version/run without rewriting old results; partial database failure writes nothing.
-- [ ] **P5-04 MUST — Duplicate invoice identity.** Query by supplier organization + normalized invoice number; protect with database uniqueness as well as UI warning.
+- [x] **P5-04 MUST — Duplicate invoice identity.** Query by supplier organization + normalized invoice number; protect with database uniqueness as well as UI warning.
   - Accept: same invoice number for another supplier is allowed; same supplier duplicate fails without exposing the other application.
-- [ ] **P5-05 MUST — Verification UI.** `/applications/[id]` shows overall evidence-consistency result, each check, compared values, explanations, document sources, next action, and audit timeline.
+- [x] **P5-05 MUST — Verification UI.** `/applications/[id]` shows overall evidence-consistency result, each check, compared values, explanations, document sources, next action, and audit timeline.
   - Accept: status never says `approved for finance`; color is paired with icon/text; loading/empty/failure/rerun states work.
-- [ ] **P5-06 MUST — Send to buyer.** Only a reviewed application with a completed check run may transition to `buyer_pending`; create one confirmation request and audit event.
+- [x] **P5-06 MUST — Send to buyer.** Only a reviewed application with a completed check run may transition to `buyer_pending`; create one confirmation request and audit event.
   - Accept: repeated submit cannot create multiple requests; failed checks remain visible and policy for sending a failed pack is explicit (MVP: blocked until corrected/rerun).
 
-**P5 gate:** deterministic test suite is green; valid fixture is pass/review as designed; mismatch and duplicate fixtures fail; every displayed claim links back to compared values.
+**P5 gate: PASS.** The versioned deterministic suite is green; consistent, uncertain, contradictory, exact-hash, and normalized-invoice fixtures return the designed results; hosted transactions are atomic and idempotent; and the responsive report links every document-backed claim to its private evidence card.
 
 ### P6 — Buyer confirmation portal
 

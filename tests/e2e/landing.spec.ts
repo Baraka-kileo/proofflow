@@ -1,5 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import { readFile } from "node:fs/promises";
+import { PDFDocument } from "pdf-lib";
 
 test.describe.configure({ mode: "serial" });
 
@@ -8,6 +9,12 @@ async function enterDemoRole(page: Page, role: "SME" | "Buyer" | "Funder") {
   await page.getByRole("button", { name: new RegExp(`^${role} workspace`) }).click();
   await expect(page).toHaveURL(/\/dashboard$/, { timeout: 15_000 });
   await expect(page.locator("#main-content")).toBeVisible({ timeout: 15_000 });
+}
+
+async function uniquePdf(path:string,label:string){
+  const pdf=await PDFDocument.load(await readFile(path));
+  pdf.setTitle(`${label}-${Date.now()}-${Math.random()}`);
+  return Buffer.from(await pdf.save());
 }
 
 test("landing page renders its primary story without overflow", async ({ page }) => {
@@ -152,15 +159,17 @@ test("SME creates a validated private application draft", async ({ page }) => {
   await expect(invoiceSlot.getByRole("alert")).toContainText("larger than the 10 MB limit");
   const purchaseOrderSlot=page.getByTestId("document-slot-purchase_order");
   const deliverySlot=page.getByTestId("document-slot-delivery_evidence");
-  const purchaseBytes=await readFile("output/pdf/proofflow-demo-purchase-order.pdf");
-  await purchaseOrderSlot.getByLabel("Upload Purchase order").setInputFiles("output/pdf/proofflow-demo-purchase-order.pdf");
+  const purchaseBytes=await uniquePdf("output/pdf/proofflow-demo-purchase-order.pdf","purchase-order-e2e");
+  const deliveryBytes=await uniquePdf("output/pdf/proofflow-demo-delivery-evidence.pdf","delivery-e2e");
+  const invoiceBytes=await uniquePdf("output/pdf/proofflow-demo-invoice.pdf","invoice-e2e");
+  await purchaseOrderSlot.getByLabel("Upload Purchase order").setInputFiles({name:"proofflow-demo-purchase-order.pdf",mimeType:"application/pdf",buffer:purchaseBytes});
   await expect(purchaseOrderSlot).toContainText("1 page",{timeout:25_000});
   await deliverySlot.getByLabel("Upload Delivery evidence").setInputFiles({name:"renamed-delivery-proof.pdf",mimeType:"application/pdf",buffer:purchaseBytes});
   await expect(deliverySlot.getByRole("alert")).toContainText("V009 · Exact duplicate file",{timeout:25_000});
   await expect(page.getByText("1 / 3 uploaded")).toBeVisible();
-  await deliverySlot.getByLabel("Upload Delivery evidence").setInputFiles("output/pdf/proofflow-demo-delivery-evidence.pdf");
+  await deliverySlot.getByLabel("Upload Delivery evidence").setInputFiles({name:"proofflow-demo-delivery-evidence.pdf",mimeType:"application/pdf",buffer:deliveryBytes});
   await expect(deliverySlot).toContainText("1 page",{timeout:25_000});
-  await invoiceSlot.getByLabel("Upload Invoice").setInputFiles("output/pdf/proofflow-demo-invoice.pdf");
+  await invoiceSlot.getByLabel("Upload Invoice").setInputFiles({name:"proofflow-demo-invoice.pdf",mimeType:"application/pdf",buffer:invoiceBytes});
   await expect(invoiceSlot).toContainText("1 page",{timeout:25_000});
   await expect(page.getByText("3 / 3 uploaded")).toBeVisible();
   await expect(page.getByRole("complementary",{name:"Application progress"})).toContainText("2 of 5 complete");

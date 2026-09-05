@@ -12,6 +12,31 @@ export type Database = {
   __InternalSupabase: {
     PostgrestVersion: "14.5"
   }
+  graphql_public: {
+    Tables: {
+      [_ in never]: never
+    }
+    Views: {
+      [_ in never]: never
+    }
+    Functions: {
+      graphql: {
+        Args: {
+          extensions?: Json
+          operationName?: string
+          query?: string
+          variables?: Json
+        }
+        Returns: Json
+      }
+    }
+    Enums: {
+      [_ in never]: never
+    }
+    CompositeTypes: {
+      [_ in never]: never
+    }
+  }
   public: {
     Tables: {
       applications: {
@@ -26,6 +51,7 @@ export type Database = {
           invoice_issued_on: string | null
           invoice_number: string | null
           invoice_total_minor: number | null
+          normalized_invoice_number: string | null
           owner_organization_id: string
           purchase_order_reference: string | null
           requested_amount_minor: number | null
@@ -45,6 +71,7 @@ export type Database = {
           invoice_issued_on?: string | null
           invoice_number?: string | null
           invoice_total_minor?: number | null
+          normalized_invoice_number?: string | null
           owner_organization_id: string
           purchase_order_reference?: string | null
           requested_amount_minor?: number | null
@@ -64,6 +91,7 @@ export type Database = {
           invoice_issued_on?: string | null
           invoice_number?: string | null
           invoice_total_minor?: number | null
+          normalized_invoice_number?: string | null
           owner_organization_id?: string
           purchase_order_reference?: string | null
           requested_amount_minor?: number | null
@@ -615,6 +643,8 @@ export type Database = {
           created_at: string
           id: string
           initiated_by: string
+          overall_result: Database["public"]["Enums"]["check_result"] | null
+          rule_version: string | null
           started_at: string | null
           status: Database["public"]["Enums"]["verification_run_status"]
           updated_at: string
@@ -625,6 +655,8 @@ export type Database = {
           created_at?: string
           id?: string
           initiated_by: string
+          overall_result?: Database["public"]["Enums"]["check_result"] | null
+          rule_version?: string | null
           started_at?: string | null
           status?: Database["public"]["Enums"]["verification_run_status"]
           updated_at?: string
@@ -635,6 +667,8 @@ export type Database = {
           created_at?: string
           id?: string
           initiated_by?: string
+          overall_result?: Database["public"]["Enums"]["check_result"] | null
+          rule_version?: string | null
           started_at?: string | null
           status?: Database["public"]["Enums"]["verification_run_status"]
           updated_at?: string
@@ -696,6 +730,16 @@ export type Database = {
         }
         Returns: undefined
       }
+      persist_verification_run_v1: {
+        Args: {
+          checks: Json
+          target_application_id: string
+          target_normalized_invoice_number: string
+          target_overall_result: Database["public"]["Enums"]["check_result"]
+          target_rule_version: string
+        }
+        Returns: string
+      }
       record_exact_document_duplicate: {
         Args: {
           attempted_filename: string
@@ -704,7 +748,15 @@ export type Database = {
         }
         Returns: string
       }
+      send_application_to_buyer: {
+        Args: { target_application_id: string }
+        Returns: string
+      }
       submit_application_field_review: {
+        Args: { reviewed_fields: Json; target_application_id: string }
+        Returns: Json
+      }
+      submit_application_field_review_once: {
         Args: { reviewed_fields: Json; target_application_id: string }
         Returns: Json
       }
@@ -863,6 +915,9 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
+  graphql_public: {
+    Enums: {},
+  },
   public: {
     Enums: {
       application_status: [
