@@ -115,7 +115,7 @@ buyer_pending -> buyer_confirmed | buyer_disputed
 buyer_confirmed -> funder_review
 funder_review -> offered | declined
 offered -> accepted | offer_declined | expired
-accepted -> simulated_funded
+accepted -> funded_simulated
 ```
 
 Only the declared forward transition is allowed. Retry may return `extracting` to `review_required`; it must not skip human review. Completed buyer and funder decisions are immutable.
@@ -294,18 +294,18 @@ Dependencies: P5.
 
 Dependencies: P6 confirmed path.
 
-- [ ] **P7-01 MUST — Funder queue.** Show only buyer-confirmed/funder-review applications available to the seeded funder with evidence status, amount, due date, buyer confirmation time, and warning count.
+- [x] **P7-01 MUST — Funder queue.** Show only buyer-confirmed/funder-review applications available to the seeded funder with evidence status, amount, due date, buyer confirmation time, and warning count.
   - Accept: unconfirmed/disputed packages absent; wrong role/tenant denied.
-- [ ] **P7-02 MUST — Evidence review.** Funder application view is read-only and includes original previews, reviewed fields, V001–V012 results, buyer receipt, duplicates, and audit timeline.
+- [x] **P7-02 MUST — Evidence review.** Funder application view is read-only and includes original previews, reviewed fields, V001–V012 results, buyer receipt, duplicates, and audit timeline.
   - Accept: funder cannot modify SME evidence or buyer decision; every warning is explainable.
-- [ ] **P7-03 MUST — Offer form/calculation.** Collect advance percentage, fee percentage, and expiry; calculate/show invoice, gross advance, fee, net disbursement, and due date using the fixed contract above.
+- [x] **P7-03 MUST — Offer form/calculation.** Collect advance percentage, fee percentage, and expiry; calculate/show invoice, gross advance, fee, net disbursement, and due date using the fixed contract above.
   - Accept: boundary and rounding unit tests pass; invalid/negative/excess amounts and past expiry fail server validation.
-- [ ] **P7-04 MUST — Offer or decline.** Authorized funder creates one immutable simulated offer or records a decline reason; application status and audit event update transactionally.
+- [x] **P7-04 MUST — Offer or decline.** Authorized funder creates one immutable simulated offer or records a decline reason; application status and audit event update transactionally.
   - Accept: all relevant UI says `Simulated offer`; retries/double submits are idempotent; terms cannot be changed after issue.
-- [ ] **P7-05 MUST — SME response.** SME sees a plain-language term summary and accepts or declines once in a confirmation dialog.
+- [x] **P7-05 MUST — SME response.** SME sees a plain-language term summary and accepts or declines once in a confirmation dialog.
   - Accept: accepted → `accepted` then explicit demo action/status `simulated_funded`; declined → `offer_declined`; expired offers cannot be accepted.
 
-**P7 gate:** funder review→offer→SME acceptance works end-to-end; calculations match tests; nothing implies a real credit approval, contract, payment, or ABSA endorsement.
+**P7 gate: PASS.** Funder review→offer→SME acceptance and explicit simulated funding work end-to-end; the decline alternative, deterministic calculations, immutable retries, authorization, audit trail, and simulation disclosures are proven.
 
 ### P8 — Trust Passport
 

@@ -484,16 +484,21 @@ export type Database = {
       offers: {
         Row: {
           advance_amount_minor: number
+          advance_bps: number
           application_id: string
           created_at: string
           currency: string
+          decision_kind: string
+          decision_payload_hash: string | null
           expires_at: string
           fee_amount_minor: number
           fee_bps: number
           funder_organization_id: string
           id: string
+          invoice_amount_minor: number | null
           made_by: string
           net_advance_minor: number
+          payment_due_on: string | null
           responded_at: string | null
           responded_by: string | null
           response_reason: string | null
@@ -502,16 +507,21 @@ export type Database = {
         }
         Insert: {
           advance_amount_minor: number
+          advance_bps?: number
           application_id: string
           created_at?: string
           currency?: string
+          decision_kind?: string
+          decision_payload_hash?: string | null
           expires_at: string
           fee_amount_minor: number
           fee_bps: number
           funder_organization_id: string
           id?: string
+          invoice_amount_minor?: number | null
           made_by: string
           net_advance_minor: number
+          payment_due_on?: string | null
           responded_at?: string | null
           responded_by?: string | null
           response_reason?: string | null
@@ -520,16 +530,21 @@ export type Database = {
         }
         Update: {
           advance_amount_minor?: number
+          advance_bps?: number
           application_id?: string
           created_at?: string
           currency?: string
+          decision_kind?: string
+          decision_payload_hash?: string | null
           expires_at?: string
           fee_amount_minor?: number
           fee_bps?: number
           funder_organization_id?: string
           id?: string
+          invoice_amount_minor?: number | null
           made_by?: string
           net_advance_minor?: number
+          payment_due_on?: string | null
           responded_at?: string | null
           responded_by?: string | null
           response_reason?: string | null
@@ -744,6 +759,20 @@ export type Database = {
         Args: { object_name: string }
         Returns: boolean
       }
+      complete_simulated_funding: {
+        Args: { target_offer_id: string }
+        Returns: Json
+      }
+      create_funder_decision_v1: {
+        Args: {
+          target_advance_bps?: number
+          target_application_id: string
+          target_decline_reason?: string
+          target_expiry_date?: string
+          target_fee_bps?: number
+        }
+        Returns: Json
+      }
       has_organization_role: {
         Args: {
           target_organization_id: string
@@ -781,9 +810,21 @@ export type Database = {
         }
         Returns: string
       }
+      respond_to_simulated_offer_v1: {
+        Args: {
+          target_decision: string
+          target_offer_id: string
+          target_reason?: string
+        }
+        Returns: Json
+      }
       send_application_to_buyer: {
         Args: { target_application_id: string }
         Returns: string
+      }
+      start_funder_review: {
+        Args: { target_application_id: string }
+        Returns: Json
       }
       submit_application_field_review: {
         Args: { reviewed_fields: Json; target_application_id: string }
