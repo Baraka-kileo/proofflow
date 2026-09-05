@@ -204,16 +204,16 @@ Dependencies: P1-01, P1-02, P1-04, P1-06.
   - Accept: clean local/remote migration applies twice safely through reset/recreate workflow; generated TypeScript database types are saved.
 - [x] **P2-03 MUST — Private storage.** Create private `application-documents` bucket and path convention `{organizationId}/{applicationId}/{documentId}/{safeFilename}`.
   - Accept: anonymous/public URL fails; authorized signed preview expires; type/size/path constraints are enforced.
-- [ ] **P2-04 MUST — RLS policies.** Enable RLS on every business table. SME sees/changes its organization's allowed drafts; buyer sees only confirmation requests addressed to its organization; funder sees only buyer-confirmed/review records allowed to funder; audit/check facts cannot be rewritten by ordinary clients.
+- [x] **P2-04 MUST — RLS policies.** Enable RLS on every business table. SME sees/changes its organization's allowed drafts; buyer sees only confirmation requests addressed to its organization; funder sees only buyer-confirmed/review records allowed to funder; audit/check facts cannot be rewritten by ordinary clients.
   - Accept: automated two-tenant tests prove allowed access succeeds and ID substitution fails for select/insert/update/delete.
-- [ ] **P2-05 MUST — Authentication helpers.** Implement browser/server Supabase clients, `getUser`, `requireUser`, `requireRole`, `requireApplicationAccess`, and sign-out. Follow installed Next.js proxy/session documentation rather than memory.
+- [x] **P2-05 MUST — Authentication helpers.** Implement browser/server Supabase clients, `getUser`, `requireUser`, `requireRole`, `requireApplicationAccess`, and sign-out. Follow installed Next.js proxy/session documentation rather than memory.
   - Accept: protected route redirects when signed out; wrong role/tenant returns generic denial; authorization is repeated in mutation handlers.
-- [ ] **P2-06 MUST — Seed data.** Seed fictional SME, buyer, funder organizations and profiles plus a documented safe method to create demo auth users outside committed SQL secrets.
+- [x] **P2-06 MUST — Seed data.** Seed fictional SME, buyer, funder organizations and profiles plus a documented safe method to create demo auth users outside committed SQL secrets.
   - Accept: seed can be rerun; names/data say “Demo”; no real email, identity, bank, or customer information is committed.
-- [ ] **P2-07 MUST — Replace temporary dashboard repository.** Dashboards load typed server data from Supabase while preserving loading/empty/error presentation.
+- [x] **P2-07 MUST — Replace temporary dashboard repository.** Dashboards load typed server data from Supabase while preserving loading/empty/error presentation.
   - Accept: each demo role receives only its own queue and metrics.
 
-**P2 gate:** migration/seed reproducible, RLS isolation tests green, three-role sign-in proven in separate browser sessions, and no secret appears in Git history or browser output.
+**P2 gate: PASS.** Migration/seed reproducible, RLS isolation tests green, three-role sign-in proven in separate browser sessions, and no secret appears in Git history or browser output.
 
 ### P3 — SME draft and secure document upload
 

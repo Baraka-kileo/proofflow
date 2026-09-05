@@ -125,3 +125,46 @@ Commit/CI link:
 - **Cleanup evidence:** The integration probe removes its object, application, organization, profile/auth user and also removes exact-name stale probe records from interrupted prior runs. A second complete run passed with cleanup in place.
 - **Security boundary:** Credentials are obtained transiently from the authenticated CLI, injected only into the test process, and never displayed, written to a file, or committed. All test identities use randomized `example.invalid` addresses and Demo-labelled data.
 - **Remaining:** P2-04 must define and prove table-level role/tenant policies across select, insert, update, and delete.
+
+## 2026-09-05 — P2-04 hosted tenant isolation
+
+- **Work unit IDs:** P2-04
+- **Outcome:** Added server-enforced role/organization helpers and explicit RLS policies for all eleven business tables. SMEs can read their own tenant and mutate only editable drafts; buyers see and decide only requests addressed to their organization; funders see only buyer-confirmed or later packages; verification checks and audit events expose no ordinary-client write policy.
+- **Changed areas:** `supabase/migrations/20260905031500_tenant_rls_policies.sql`, `supabase/migrations/20260905032000_nullable_identity_constraints.sql`, `tests/integration/rls-two-tenant.mjs`, regenerated `src/types/database.ts`.
+- **Schema correction:** Pre-test review found the initial `NULLS NOT DISTINCT` constraints would permit only one no-registration organization per kind and one no-invoice draft per owner/buyer pair. A corrective hosted migration replaced them with partial unique indexes that enforce identity only when the identifying value exists.
+- **Failed checks retained:** The first policy run used an already occupied invoice document slot; the test now uses the purchase-order slot. The second expected a denied update to return an error, while PostgREST safely returned zero affected rows; the final assertion now proves zero rows changed and independently verifies the stored check remains unchanged. The nullable-constraint migration initially used an assumed/truncated generated constraint name twice; it was replaced by catalog lookup and then applied successfully.
+- **Hosted evidence:** Both policy and constraint migrations applied successfully and linked database lint reports zero errors. The final randomized two-tenant suite passed twice from clean synthetic users. It proves own-tenant select/insert/update/delete succeeds, cross-tenant ID substitution returns no rows or a policy violation, addressed buyers cannot view/decide another buyer's request, funders cannot view draft or buyer-pending packages, and ordinary users cannot rewrite/delete verification facts or fabricate audit events.
+- **Cleanup/security:** Every run deletes its applications, organizations, profiles, and randomized `example.invalid` auth users. Project credentials are injected transiently from the authenticated CLI and are never displayed, persisted, or committed. Fresh generated TypeScript types exactly match the hosted schema.
+- **Remaining:** P2-05 authentication clients and server authorization helpers are next.
+
+## 2026-09-05 — P2-05 hosted authentication and authorization helpers
+
+- **Work unit IDs:** P2-05
+- **Outcome:** Replaced the fake role cookie with Supabase SSR browser/server clients, Next.js request proxy refresh, verified-user lookup, role and tenant DAL guards, live credential sign-in, hosted one-click Demo sign-in, and sign-out. Protected layouts repeat the server role check after the optimistic proxy check; application access is looked up through RLS and invalid/wrong-tenant IDs receive the same not-found response.
+- **Changed areas:** `src/lib/supabase`, `src/lib/auth`, `src/proxy.ts`, protected layout/dashboard, login action/form, app shell, browser tests.
+- **Documentation basis:** Read the installed Next.js 16 authentication, proxy, cookies, and redirect guides plus installed `@supabase/ssr` guidance. Current official Supabase SSR guidance was checked: the proxy uses `getClaims()` rather than trusting `getSession()`, while the DAL uses the fresh network-backed `getUser()` requested by this unit.
+- **Failed checks retained:** The first production build rejected a non-function export from a `use server` module; initial state moved to the client component. One asynchronous form unit test queried before the action state settled and now awaits the accessible result. The first browser suite still expected unauthenticated dashboard access and the deleted fake cookie; tests now authenticate before protected checks and verify a real Supabase cookie. A later offline-state check started before the streamed dashboard finished; the shared login helper now waits for `#main-content`.
+- **Automated/browser evidence:** Final lint, typecheck, 16 unit assertions, and production build passed. Ten serial Chromium checks passed, including signed-out redirect, generic invalid-credential messaging, sign-out followed by denied re-entry, 390/768/1440 layouts, and three role dashboards in separate browser contexts.
+- **Security boundary:** No client code receives the demo password or service role. Browser authorization is never trusted: proxy, DAL, mutation helper, and database RLS form independent layers. Live authentication failures do not reveal whether the email or password was wrong.
+- **Remaining:** Dashboard data is still the explicitly named temporary repository until P2-07.
+
+## 2026-09-05 — P2-06 reproducible synthetic hosted identities
+
+- **Work unit IDs:** P2-06
+- **Outcome:** Added rerunnable SQL for fixed Demo SME, buyer, and funder organizations and a rerunnable admin provisioning script for the corresponding fictional profiles/auth users/memberships.
+- **Changed areas:** `supabase/seed.sql`, `scripts/provision-demo-users.mjs`, environment template/schema, demo login action, package script.
+- **Hosted evidence:** The seed applied to the linked project. The provisioning script passed twice, creating on first run and safely updating the same three identities on rerun. All names include Demo context at the organization or account workflow level, and addresses use the reserved `.example` domain.
+- **Secret handling:** The generated password exists only in ignored `.env.local`; the provisioning service credential was injected transiently from the authenticated CLI. Neither appears in repository files, command output, browser output, or Git.
+- **Remaining:** P2-07 must add representative synthetic application rows and replace hard-coded dashboard metrics/queues with typed RLS-filtered Supabase queries.
+
+## 2026-09-05 — P2-07 live dashboards and Phase 2 gate
+
+- **Work unit IDs:** P2-07; Phase 2 gate
+- **Outcome:** Deleted the temporary demo session/repository and replaced it with a typed server-only Supabase dashboard repository. SME metrics and current application, buyer confirmation queue, and funder buyer-confirmed queue are calculated from hosted RLS-filtered rows. Empty collections render explicit empty states; query failures throw generic errors into the existing protected error boundary; route loading remains geometry-stable.
+- **Seed expansion:** The safe provisioning script now idempotently upserts four Demo organizations, three hosted Demo identities/memberships, four synthetic applications, confirmation states, and explainable check results. No bank, government identity, real customer, or real email data is used.
+- **Failed check retained:** After `supabase/seed.sql` changed, the hosted CLI updated its recorded seed hash but did not insert the new fourth organization; the following application upsert correctly failed its foreign key. Provisioning now upserts the same organization fixtures before dependent records, passed twice consecutively, and no longer relies on ambiguous remote seed-hash behavior.
+- **Automated evidence:** Final lint, typecheck, 16 unit assertions, production build, and ten Chromium tests passed. Hosted database lint reports no errors. The randomized RLS suite passed select/insert/update/delete isolation; the storage suite passed private/public, expiry, path, MIME, and size checks; provisioning reran successfully.
+- **Role/browser evidence:** Three clean browser contexts separately entered SME, buyer, and funder accounts. Each received its expected heading and a role-specific hosted row; each was explicitly checked not to render a row outside its permitted workflow/tenant. Signed-out redirect, generic bad-login error, real session cookie, sign-out, and denied post-sign-out re-entry also passed.
+- **Secret evidence:** `.env.local` is ignored. Client static assets contain neither the local demo-password value nor server-only environment names. Repository working files contain no `sb_secret_` value or assigned demo password. Service credentials were transient only.
+- **Phase 2 result:** All P2-01 through P2-07 acceptance checks are complete against the linked hosted Supabase project. No local Supabase service was used.
+- **Remaining:** Phase 3 begins with the SME application draft form and secure three-document upload workflow.

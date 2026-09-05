@@ -14,6 +14,8 @@ const environmentSchema = z.object({
   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: optionalSecret,
   SUPABASE_SERVICE_ROLE_KEY: optionalSecret,
   GEMINI_API_KEY: optionalSecret,
+  PROOFFLOW_ENABLE_DEMO_ACCESS: z.enum(["true", "false"]).default("false"),
+  PROOFFLOW_DEMO_PASSWORD: optionalSecret,
 });
 
 export type ServerEnvironment = z.infer<typeof environmentSchema>;
@@ -26,6 +28,8 @@ function readEnvironment(): Record<keyof ServerEnvironment, string | undefined> 
       process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
     SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
     GEMINI_API_KEY: process.env.GEMINI_API_KEY,
+    PROOFFLOW_ENABLE_DEMO_ACCESS: process.env.PROOFFLOW_ENABLE_DEMO_ACCESS,
+    PROOFFLOW_DEMO_PASSWORD: process.env.PROOFFLOW_DEMO_PASSWORD,
   };
 }
 
@@ -87,4 +91,12 @@ export function getGeminiEnvironment() {
   }
 
   return { GEMINI_API_KEY: environment.GEMINI_API_KEY };
+}
+
+export function getDemoAuthEnvironment() {
+  const environment = getServerEnvironment();
+  if (environment.PROOFFLOW_ENABLE_DEMO_ACCESS !== "true" || !environment.PROOFFLOW_DEMO_PASSWORD) {
+    throw new Error("ProofFlow one-click demo access is disabled or missing its server-only demo password.");
+  }
+  return { PROOFFLOW_DEMO_PASSWORD: environment.PROOFFLOW_DEMO_PASSWORD };
 }

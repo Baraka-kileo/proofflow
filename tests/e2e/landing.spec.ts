@@ -1,4 +1,13 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
+
+test.describe.configure({ mode: "serial" });
+
+async function enterDemoRole(page: Page, role: "SME" | "Buyer" | "Funder") {
+  await page.goto("/login");
+  await page.getByRole("button", { name: new RegExp(`^${role} workspace`) }).click();
+  await expect(page).toHaveURL(/\/dashboard$/, { timeout: 15_000 });
+  await expect(page.locator("#main-content")).toBeVisible({ timeout: 15_000 });
+}
 
 test("landing page renders its primary story without overflow", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
@@ -40,9 +49,23 @@ test("landing interactions expose focus and respect reduced motion", async ({ pa
   expect(Number.parseFloat(presentation.animationDuration)).toBeLessThanOrEqual(0.01);
 });
 
+test("protected routes redirect signed-out visitors", async ({ page }) => {
+  await page.goto("/dashboard");
+  await expect(page).toHaveURL(/\/login\?reason=signed-out$/);
+  await expect(page.getByRole("heading", { name: "Sign in to ProofFlow" })).toBeVisible();
+});
+
+test("invalid live credentials return a generic error", async ({ page }) => {
+  await page.goto("/login");
+  await page.getByLabel(/^Email address/).fill("unknown@proofflow.example");
+  await page.getByLabel(/^Password/).fill("Not-the-password-123!");
+  await page.getByRole("button", { name: "Sign in" }).click();
+  await expect(page.getByRole("status")).toContainText("Email or password is incorrect");
+});
+
 test("protected shell is usable on mobile without overflow", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
-  await page.goto("/dashboard");
+  await enterDemoRole(page, "SME");
   await expect(page.getByRole("heading", { level: 1, name: "Good morning, Amara." })).toBeVisible();
   await expect(page.getByRole("navigation", { name: "Mobile navigation" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Overview" })).toHaveAttribute("aria-current", "page");
@@ -53,7 +76,7 @@ test("protected shell is usable on mobile without overflow", async ({ page }) =>
 for (const viewport of [{ width: 768, height: 1024 }, { width: 1440, height: 900 }]) {
   test(`protected shell fits ${viewport.width}px without overflow`, async ({ page }) => {
     await page.setViewportSize(viewport);
-    await page.goto("/dashboard");
+    await enterDemoRole(page, "SME");
     const navigationName=viewport.width>=1024?"Workspace navigation":"Mobile navigation";
     await expect(page.getByRole("navigation", { name:navigationName })).toBeVisible();
     const widths=await page.evaluate(()=>({client:document.documentElement.clientWidth,scroll:document.documentElement.scrollWidth}));
@@ -65,28 +88,33 @@ test("system states provide clear recovery", async ({ page, context }) => {
   await page.goto("/a-route-that-does-not-exist");
   await expect(page.getByRole("heading", { name: "This page is not part of the evidence trail." })).toBeVisible();
   await expect(page.getByRole("link", { name: "Return to overview" })).toHaveAttribute("href", "/dashboard");
-  await page.goto("/dashboard");
+  await enterDemoRole(page, "SME");
   await context.setOffline(true);
   await page.evaluate(() => window.dispatchEvent(new Event("offline")));
   await expect(page.getByRole("alert").filter({ hasText: "You are offline" })).toContainText("You are offline");
   await context.setOffline(false);
 });
 
-test("demo login selects the buyer workspace through an HTTP-only session", async ({ page }) => {
+test("demo login selects the buyer workspace through a hosted Supabase session", async ({ page }) => {
   await page.goto("/login");
   await expect(page.getByRole("heading", { name: "Sign in to ProofFlow" })).toBeVisible();
   await page.getByRole("button", { name: "Buyer workspace Confirm delivery requests", exact:true }).click();
   await expect(page).toHaveURL(/\/dashboard$/);
   await expect(page.getByText("buyer workspace", { exact:true })).toBeVisible();
-  const cookie=(await page.context().cookies()).find(item=>item.name==="proof-demo-role");
-  expect(cookie?.httpOnly).toBe(true);
+  const cookies=await page.context().cookies();
+  expect(cookies.some(item=>item.name.startsWith("sb-")&&item.name.includes("auth-token"))).toBe(true);
+  expect(cookies.some(item=>item.name==="proof-demo-role")).toBe(false);
+  await page.getByRole("button", { name: "Sign out" }).click();
+  await expect(page).toHaveURL(/\/login$/);
+  await page.goto("/dashboard");
+  await expect(page).toHaveURL(/\/login\?reason=signed-out$/);
 });
 
-test("each demo role receives a distinct next-task dashboard", async ({ page }) => {
+test("each demo role receives a distinct dashboard in a separate browser session", async ({ browser }) => {
   const roles=[
-    {button:"SME workspace Create and track evidence",heading:"Good morning, Amara."},
-    {button:"Buyer workspace Confirm delivery requests",heading:"Two suppliers are waiting."},
-    {button:"Funder workspace Review simulated offers",heading:"Evidence ready for review."},
+    {button:"SME workspace Create and track evidence",heading:"Good morning, Amara.",visible:"Ubuntu Retail Group Demo",hidden:"Mokoena Catering Demo"},
+    {button:"Buyer workspace Confirm delivery requests",heading:"2 requests are waiting.",visible:"INV-1184-DEMO",hidden:"INV-2039-DEMO"},
+    {button:"Funder workspace Review simulated offers",heading:"Evidence ready for review.",visible:"Mokoena Catering Demo",hidden:"INV-2040-DEMO"},
   ];
-  for(const role of roles){await page.goto("/login");await page.getByRole("button",{name:role.button,exact:true}).click();await expect(page.getByRole("heading",{level:1,name:role.heading})).toBeVisible();}
+  for(const role of roles){const context=await browser.newContext();const page=await context.newPage();await page.goto("/login");await page.getByRole("button",{name:role.button,exact:true}).click();await expect(page.getByRole("heading",{level:1,name:role.heading})).toBeVisible({timeout:15_000});await expect(page.getByText(role.visible,{exact:false}).first()).toBeVisible();await expect(page.getByText(role.hidden,{exact:false})).toHaveCount(0);await context.close();}
 });

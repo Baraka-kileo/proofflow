@@ -625,7 +625,29 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      can_edit_sme_application: {
+        Args: { target_application_id: string }
+        Returns: boolean
+      }
+      can_read_application: {
+        Args: { target_application_id: string }
+        Returns: boolean
+      }
+      can_read_application_document: {
+        Args: { object_name: string }
+        Returns: boolean
+      }
+      can_write_application_document: {
+        Args: { object_name: string }
+        Returns: boolean
+      }
+      has_organization_role: {
+        Args: {
+          target_organization_id: string
+          target_role: Database["public"]["Enums"]["user_role"]
+        }
+        Returns: boolean
+      }
     }
     Enums: {
       application_status:

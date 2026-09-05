@@ -1,5 +1,5 @@
 import { ArrowRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import type { DashboardData } from "@/lib/demo/repository";
+import type { DashboardData } from "@/lib/dashboard/repository";
 export function Metrics({items}:{items:DashboardData["metrics"]}){return <section aria-label="Key metrics" className="mt-10 grid gap-4 md:grid-cols-3">{items.map((item,index)=><Card key={item.label} className="page-enter" style={{animationDelay:`${index*40}ms`}}><CardContent className="pt-6"><span className="text-xs font-semibold text-[var(--muted)]">{item.label}</span><strong className="mt-3 block text-3xl tracking-[-.04em]">{item.value}</strong><p className="mt-2 text-xs leading-5 text-[var(--muted)]">{item.note}</p></CardContent></Card>)}</section>}
 export function QueueButton({label}:{label:string}){return <button disabled title="Enabled when this workflow phase is complete" className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-[var(--border)] px-3 text-sm font-bold text-[var(--muted)] opacity-55">{label}<ArrowRight aria-hidden="true" className="size-4" /></button>}
