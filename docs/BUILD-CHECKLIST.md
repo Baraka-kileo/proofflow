@@ -221,7 +221,7 @@ Dependencies: P2.
 
 - [x] **P3-01 MUST — Create draft.** `/applications/new` business step collects buyer organization, PO reference, invoice number, invoice amount/currency, expected due date, and consent to AI processing.
   - Accept: server creates only an SME-owned `draft`; invalid buyer/amount/date or missing consent returns field messages plus linked error summary.
-- [ ] **P3-02 MUST — Guided task layout.** Implement five-step task list: Details → Documents → Review → Verification → Buyer. Persist current completed step from server data, not local animation state.
+- [x] **P3-02 MUST — Guided task layout.** Implement five-step task list: Details → Documents → Review → Verification → Buyer. Persist current completed step from server data, not local animation state.
   - Accept: refresh/back preserves progress; locked steps explain prerequisites.
 - [ ] **P3-03 MUST — Three upload slots.** Each document type has one named slot with purpose/help, drag/drop and browse, PDF/JPEG/PNG allowlist, configured maximum size, filename sanitization, upload progress, cancel/retry/remove, and preview.
   - Accept: wrong type, too large, duplicate slot, interruption, removal, and successful upload are tested; no public object URL.

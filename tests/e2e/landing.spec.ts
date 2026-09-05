@@ -139,7 +139,17 @@ test("SME creates a validated private application draft", async ({ page }) => {
   await page.getByRole("button",{name:/Create private draft/}).click();
   await expect(page).toHaveURL(/\/applications\/[0-9a-f-]+$/,{timeout:15_000});
   await expect(page.getByRole("heading",{name:invoice})).toBeVisible();
-  await expect(page.getByText("Draft saved securely")).toBeVisible();
+  const progress=page.getByRole("complementary",{name:"Application progress"});
+  await expect(progress).toContainText("1 of 5 complete");
+  await expect(progress.getByText("Documents",{exact:true})).toBeVisible();
+  await expect(progress).toContainText("Upload all three evidence documents first.");
+  await expect(page.getByRole("button",{name:"Upload documents"})).toBeDisabled();
+  await page.reload();
+  await expect(page.getByRole("heading",{name:invoice})).toBeVisible();
+  await expect(page.getByRole("complementary",{name:"Application progress"})).toContainText("1 of 5 complete");
+  await page.goto("/dashboard");
+  await page.goBack();
+  await expect(page.getByRole("complementary",{name:"Application progress"})).toContainText("1 of 5 complete");
 });
 
 test("buyer receives generic denial for the SME draft route",async({page})=>{
