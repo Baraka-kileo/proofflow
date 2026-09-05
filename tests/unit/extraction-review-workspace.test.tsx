@@ -17,13 +17,13 @@ describe("extraction review workspace",()=>{
     expect(screen.getByText("Source: Purchase order · Buyer")).toBeInTheDocument();
     expect(screen.getByText("Please check")).toBeInTheDocument();
     expect(screen.getByText("Normalized format: YYYY-MM-DD")).toBeInTheDocument();
-    const buyer=screen.getByLabelText("Buyer legal name");await user.clear(buyer);await user.type(buyer,"Ubuntu Retail Group Demo");
+    const buyer=screen.getByLabelText("Large customer legal name");await user.clear(buyer);await user.type(buyer,"Ubuntu Retail Group Demo");
     expect(screen.getByText(/Edited by you · Original: Ubuntu Retail/)).toBeInTheDocument();
     await user.click(screen.getByRole("button",{name:"Document"}));
     await user.click(screen.getByRole("tab",{name:"Invoice"}));
     await user.click(screen.getByRole("tab",{name:"Purchase order"}));
     await user.click(screen.getByRole("button",{name:"Fields"}));
-    expect(screen.getByLabelText("Buyer legal name")).toHaveValue("Ubuntu Retail Group Demo");
+    expect(screen.getByLabelText("Large customer legal name")).toHaveValue("Ubuntu Retail Group Demo");
   });
 
   it("shows an expiring signed preview and a safe unavailable state",async()=>{

@@ -6,7 +6,12 @@ test.describe.configure({ mode: "serial" });
 
 async function enterDemoRole(page: Page, role: "SME" | "Buyer" | "Funder") {
   await page.goto("/login");
-  await page.getByRole("button", { name: new RegExp(`^${role} `) }).click();
+  const roleName = {
+    SME: /^SME /,
+    Buyer: /^Large customer /,
+    Funder: /^Funder \/ Bank /,
+  }[role];
+  await page.getByRole("button", { name: roleName }).click();
   await expect(page.getByRole("status")).toContainText("credentials filled in");
   await page.getByRole("button", { name: "Sign in" }).click();
   await expect(page).toHaveURL(/\/dashboard$/, { timeout: 15_000 });
@@ -161,14 +166,16 @@ test("demo login selects the buyer workspace through a hosted Supabase session",
   await expect(
     page.getByRole("heading", { name: "Sign in to ProofFlow" }),
   ).toBeVisible();
-  await page.getByRole("button", { name: /Buyer.*Confirm invoices/ }).click();
+  await page
+    .getByRole("button", { name: /Large customer.*Confirm invoices/ })
+    .click();
   await expect(page.getByLabel(/^Email address/)).toHaveValue(
     "buyer.demo@proofflow.example",
   );
   await page.getByRole("button", { name: "Sign in" }).click();
   await expect(page).toHaveURL(/\/dashboard$/);
   await expect(
-    page.getByText("buyer workspace", { exact: true }),
+    page.getByText("Large customer workspace", { exact: true }),
   ).toBeVisible();
   const cookies = await page.context().cookies();
   expect(
@@ -189,19 +196,19 @@ test("each demo role receives a distinct dashboard in a separate browser session
   const roles = [
     {
       button: /SME.*Create evidence/,
-      workspace: "sme workspace",
+      workspace: "SME workspace",
       visibleNav: "Trust Passport",
       hiddenNav: "Offers",
     },
     {
-      button: /Buyer.*Confirm invoices/,
-      workspace: "buyer workspace",
+      button: /Large customer.*Confirm invoices/,
+      workspace: "Large customer workspace",
       visibleNav: "History",
       hiddenNav: "Trust Passport",
     },
     {
-      button: /Funder.*Review evidence/,
-      workspace: "funder workspace",
+      button: /Funder \/ Bank.*Review applications/,
+      workspace: "Funder / bank workspace",
       visibleNav: "Offers",
       hiddenNav: "Trust Passport",
     },

@@ -7,20 +7,22 @@ Desktop uses a quiet cream canvas, persistent role-aware rail, compact organizat
 ### Role navigation
 
 - SME: Overview, Applications, Trust Passport, Help, Account. Applications opens `/applications`; creation is a separate action.
-- Buyer: Overview, Confirmations, History, Help, Account. Confirmations and History open separate pages.
-- Funder: Overview, Applications, Offers, Help, Account. Applications and Offers open separate pages.
+- Large customer: Overview, Confirmations, History, Help, Account. Confirmations and History open separate pages.
+- Funder / Bank: Overview, Applications, Offers, Help, Account. Applications and Offers open separate pages.
+
+`Large customer` is the user-facing name for the existing internal `buyer` role. Internal role keys, database columns, policies, and audit event names stay unchanged. The signed-in organization and role appear together in the account header and in one compact Demo workspace card at the bottom of the desktop rail.
 
 ## `/login`
 
-Split desktop composition: concise ProofFlow value statement/evidence motif on the left and a focused sign-in card on the right. Mobile shows the card first. Demo-role accounts are visible as clearly labelled quick-fill buttons. Do not allow public buyer/funder role creation.
+Split desktop composition: concise ProofFlow value statement/evidence motif on the left and a focused sign-in card on the right. Mobile shows the card first. The ordinary email, password, and Sign in controls appear before the clearly labelled demo-account quick-fill buttons. Demo choices use distinct SME, Large customer, and Funder / Bank colors, fill the fields above, and never submit automatically. Do not allow public large-customer/funder role creation.
 
 ## `/dashboard`
 
 The greeting is secondary; the next task is dominant.
 
 - SME: hero status card with `Continue application`/`Start application`, three small metrics, recent applications, and Trust Passport progress.
-- Buyer: short status and metrics, then clear links to the separate confirmation queue and decision history.
-- Funder: short status and metrics, then clear links to the separate application queue and offer history.
+- Large customer: short status and metrics, then clear links to the separate confirmation queue and decision history.
+- Funder / Bank: short status and metrics, then clear links to the separate application queue and offer history.
 
 Cards enter with a short stagger. Skeletons reproduce their final geometry to prevent layout shift.
 

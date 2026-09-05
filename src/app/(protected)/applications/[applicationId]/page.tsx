@@ -233,7 +233,7 @@ export default async function ApplicationPage({
         <PageHeading
           eyebrow={`Funder review · ${application.id.slice(0, 8).toUpperCase()}`}
           title={application.invoice_number ?? "Evidence package"}
-          description="Review the source evidence, deterministic checks, and buyer evidence before making your own simulated funding decision."
+          description="Review the source evidence, deterministic checks, and large-customer evidence before making your own simulated funding decision."
         />
         {systemRun && (
           <div className="mt-8">
@@ -251,7 +251,7 @@ export default async function ApplicationPage({
             applicationId={application.id}
             status={application.status}
             supplier={owner?.name ?? "Private supplier"}
-            buyer={buyer?.name ?? "Private buyer"}
+            buyer={buyer?.name ?? "Private customer"}
             invoice={application.invoice_number ?? "Invoice unavailable"}
             purchaseOrder={
               application.purchase_order_reference ?? "PO unavailable"
@@ -300,7 +300,7 @@ export default async function ApplicationPage({
             {applicationStatusLabel(application.status)}
           </StatusBadge>
           <span className="text-xs font-semibold text-[var(--muted)]">
-            {buyer?.name ?? "Private buyer"} · {amount}
+            {buyer?.name ?? "Private customer"} · {amount}
           </span>
         </div>
         <div className="mt-4">
@@ -344,7 +344,7 @@ export default async function ApplicationPage({
         {confirmation?.status === "confirmed" && confirmation.approval_id && (
           <Alert
             tone="success"
-            title="Buyer confirmation completed"
+            title="Large customer confirmation completed"
             className="mt-6"
           >
             <p>
@@ -362,24 +362,24 @@ export default async function ApplicationPage({
         {confirmation?.status === "disputed" && (
           <Alert
             tone="error"
-            title="Buyer disputed this receivable"
+            title="Large customer disputed this receivable"
             className="mt-6"
           >
             <p>
               {confirmation.reason ??
-                "Review the buyer confirmation record for details."}
+                "Review the customer confirmation record for details."}
             </p>
             <Link
               href={`/confirmations/${confirmation.id}`}
               className="mt-3 inline-flex min-h-11 items-center rounded-xl border border-[#efc6c2] bg-white px-4 font-bold text-[var(--error)]"
             >
-              View buyer response
+              View customer response
             </Link>
           </Alert>
         )}
         <div className="mt-8">
           <ApplicationDetailsReceipt
-            buyer={buyer?.name ?? "Private buyer"}
+            buyer={buyer?.name ?? "Private customer"}
             purchaseOrder={application.purchase_order_reference}
             amount={amount}
             dueDate={application.invoice_due_on}
@@ -457,7 +457,7 @@ function applicationStatusLabel(status: string) {
   const labels: Record<string, string> = {
     buyer_system_checking: "Automated verification running",
     buyer_system_verified: "Automated verification complete",
-    buyer_exception_review: "Buyer review needed",
+    buyer_exception_review: "Large customer review needed",
     buyer_system_blocked: "Application cannot proceed",
   };
   return labels[status] ?? status.replaceAll("_", " ");

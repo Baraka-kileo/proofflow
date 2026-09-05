@@ -7,7 +7,7 @@ const labels: Record<string, string> = {
   "application.fields_extracted": "Document fields extracted",
   "application.fields_reviewed": "SME review completed",
   "application.verification_completed": "Verification completed",
-  "application.sent_to_buyer": "Sent to buyer",
+  "application.sent_to_buyer": "Sent to large customer",
   "integration.coupa_checked": "Automated verification completed",
 };
 

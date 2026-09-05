@@ -103,7 +103,7 @@ export function deriveApplicationProgress(
     {
       id: "details",
       label: "Details",
-      description: "Buyer and invoice context",
+      description: "Large customer and invoice",
     },
     {
       id: "documents",
@@ -126,7 +126,7 @@ export function deriveApplicationProgress(
     {
       id: "buyer",
       label: "Automated verification",
-      description: "Match buyer records or request a signature",
+      description: "Match customer records or request a signature",
       lockedReason: "Complete the document checks first.",
     },
   ];

@@ -1,5 +1,9 @@
 # User flows and status model
 
+## User-facing role names
+
+The product calls the purchasing organization a **Large customer** and the finance reviewer a **Funder / Bank**. The existing internal values `buyer` and `funder` remain stable so authorization, Row Level Security, database relationships, and audit history are not renamed or weakened.
+
 ## Core flow
 
 ```text
@@ -31,7 +35,7 @@ Alternative paths: extraction can fail and be retried/manual; automated checks c
 9. Review the funder's simulated terms, including amount, fee, net advance, and repayment source.
 10. Accept or decline, then view updated Trust Passport evidence.
 
-## Buyer journey
+## Large customer journey
 
 1. Sign in to a dashboard showing pending confirmations first.
 2. Open a request and see the supplier, invoice summary, delivery evidence, and warning checks.

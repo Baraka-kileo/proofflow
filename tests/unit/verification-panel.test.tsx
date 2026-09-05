@@ -101,11 +101,11 @@ describe("VerificationPanel", () => {
       />,
     );
     expect(
-      screen.getByRole("heading", { name: "Buyer signature requested" }),
+      screen.getByRole("heading", { name: "Large customer signature requested" }),
     ).toBeInTheDocument();
     expect(
       screen.queryByRole("button", { name: "Run automated verification" }),
     ).not.toBeInTheDocument();
-    expect(screen.getByText("Waiting for buyer")).toBeInTheDocument();
+    expect(screen.getByText("Waiting for customer")).toBeInTheDocument();
   });
 });

@@ -67,7 +67,7 @@ describe("buyer-system evidence UI", () => {
       />,
     );
     expect(
-      screen.getByRole("heading", { name: "Buyer review needed" }),
+      screen.getByRole("heading", { name: "Large customer review needed" }),
     ).toBeInTheDocument();
     expect(
       screen.queryByRole("link", { name: "Verification certificate" }),

@@ -112,12 +112,12 @@ export function FunderApplicationReview(props: Props) {
               </div>
               <StatusBadge status="success">
                 {props.confirmation
-                  ? "Buyer Confirmed ✓"
-                  : "Buyer System Verified ✓"}
+                  ? "Large customer confirmed ✓"
+                  : "Automated verification ✓"}
               </StatusBadge>
             </div>
             <dl className="mt-6 grid gap-3 rounded-xl bg-[var(--soft)] p-4 sm:grid-cols-3">
-              <Fact label="Buyer" value={props.buyer} />
+              <Fact label="Large customer" value={props.buyer} />
               <Fact label="Purchase order" value={props.purchaseOrder} />
               <Fact label="Payment due" value={formatDate(props.dueDate)} />
             </dl>
@@ -130,7 +130,7 @@ export function FunderApplicationReview(props: Props) {
                 <div>
                   <span className="flex items-center gap-2 text-xs font-bold uppercase tracking-[.1em] text-[var(--success)]">
                     <ShieldCheck className="size-4" />
-                    Signed buyer confirmation
+                    Signed customer confirmation
                   </span>
                   <h2 className="mt-3 text-xl font-bold">
                     {props.confirmation.name}
@@ -386,7 +386,7 @@ export function FunderApplicationReview(props: Props) {
                         strong
                       />
                       <FactRow
-                        label="Buyer pays supplier"
+                        label="Large customer pays supplier"
                         value={formatDate(props.dueDate)}
                       />
                     </dl>

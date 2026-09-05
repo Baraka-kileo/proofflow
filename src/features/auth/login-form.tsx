@@ -19,8 +19,14 @@ export type DemoCredential = {
   detail: string;
   email: string;
   password: string;
+  tone: "sme" | "customer" | "funder";
 };
 const initialLoginState: LoginState = { errors: [] };
+const demoTone = {
+  sme: "border-[#9bc8b8] bg-[var(--success-soft)] text-[var(--success)]",
+  customer: "border-[#e8c98f] bg-[var(--review-soft)] text-[var(--review)]",
+  funder: "border-[#b8c5ef] bg-[#edf1ff] text-[#2949a8]",
+};
 
 export function LoginForm({
   action = signIn,
@@ -48,48 +54,6 @@ export function LoginForm({
 
   return (
     <div>
-      {demoCredentials.length > 0 && (
-        <section aria-labelledby="demo-account-heading" className="mb-7">
-          <div className="flex items-end justify-between gap-3">
-            <div>
-              <h3 id="demo-account-heading" className="font-bold">
-                Choose a demo account
-              </h3>
-              <p className="mt-1 text-sm text-[var(--muted)]">
-                This fills the test credentials. Review them, then press Sign
-                in.
-              </p>
-            </div>
-            <span className="shrink-0 rounded-full bg-[var(--review-soft)] px-2.5 py-1 text-xs font-bold text-[var(--review)]">
-              Demo only
-            </span>
-          </div>
-          <div className="mt-3 grid gap-2 sm:grid-cols-3">
-            {demoCredentials.map((credential) => (
-              <button
-                key={credential.role}
-                type="button"
-                aria-pressed={selectedRole === credential.role}
-                onClick={() => fillDemoAccount(credential)}
-                className="min-h-20 rounded-xl border border-[var(--border)] bg-[var(--surface)] p-3 text-left transition-colors hover:bg-[var(--soft)] focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-[var(--focus)] aria-pressed:border-[var(--primary)] aria-pressed:bg-[var(--success-soft)]"
-              >
-                <span className="flex items-center justify-between gap-2 text-sm font-bold">
-                  {credential.label}
-                  {selectedRole === credential.role && (
-                    <Check
-                      aria-hidden="true"
-                      className="size-4 text-[var(--primary)]"
-                    />
-                  )}
-                </span>
-                <span className="mt-1 block text-xs leading-4 text-[var(--muted)]">
-                  {credential.detail}
-                </span>
-              </button>
-            ))}
-          </div>
-        </section>
-      )}
       <form action={formAction} noValidate className="space-y-5">
         <ErrorSummary errors={errors} />
         {state.message && (
@@ -165,6 +129,48 @@ export function LoginForm({
           {pending ? "Signing in…" : "Sign in"}
         </Button>
       </form>
+
+      {demoCredentials.length > 0 && (
+        <section
+          aria-labelledby="demo-account-heading"
+          className="mt-8 border-t border-[var(--border)] pt-6"
+        >
+          <div className="flex items-end justify-between gap-3">
+            <div>
+              <h3 id="demo-account-heading" className="font-bold">
+                Demo accounts
+              </h3>
+              <p className="mt-1 text-sm text-[var(--muted)]">
+                Choose a role to fill the fields above. Then press Sign in.
+              </p>
+            </div>
+            <span className="shrink-0 rounded-full bg-[var(--review-soft)] px-2.5 py-1 text-xs font-bold text-[var(--review)]">
+              Demo only
+            </span>
+          </div>
+          <div className="mt-3 grid gap-2 sm:grid-cols-3">
+            {demoCredentials.map((credential) => (
+              <button
+                key={credential.role}
+                type="button"
+                aria-pressed={selectedRole === credential.role}
+                onClick={() => fillDemoAccount(credential)}
+                className={`min-h-20 rounded-xl border p-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-[var(--focus)] ${demoTone[credential.tone]} ${selectedRole === credential.role ? "ring-2 ring-current" : "opacity-85 hover:opacity-100"}`}
+              >
+                <span className="flex items-center justify-between gap-2 text-sm font-bold">
+                  {credential.label}
+                  {selectedRole === credential.role && (
+                    <Check aria-hidden="true" className="size-4" />
+                  )}
+                </span>
+                <span className="mt-1 block text-xs leading-4 opacity-80">
+                  {credential.detail}
+                </span>
+              </button>
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }

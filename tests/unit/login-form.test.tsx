@@ -63,8 +63,9 @@ describe("login form", () => {
         demoCredentials={[
           {
             role: "buyer",
-            label: "Buyer",
+            label: "Large customer",
             detail: "Confirm invoices",
+            tone: "customer",
             email: "buyer.demo@proofflow.example",
             password: "safe-demo-password",
           },
@@ -72,7 +73,7 @@ describe("login form", () => {
       />,
     );
     await user.click(
-      screen.getByRole("button", { name: /Buyer.*Confirm invoices/ }),
+      screen.getByRole("button", { name: /Large customer.*Confirm invoices/ }),
     );
     expect(screen.getByLabelText(/^Email address/)).toHaveValue(
       "buyer.demo@proofflow.example",

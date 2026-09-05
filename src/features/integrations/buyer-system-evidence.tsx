@@ -37,7 +37,7 @@ export function BuyerSystemEvidence({
       ? "Automated verification complete"
       : outcome === "blocked"
         ? "Application cannot proceed"
-        : "Buyer review needed";
+        : "Large customer review needed";
   return (
     <Card>
       <CardContent className="pt-6">
@@ -54,7 +54,7 @@ export function BuyerSystemEvidence({
                 ? "The purchase order, invoice, amount, delivery and payment status matched."
                 : outcome === "blocked"
                   ? "Demo Coupa reports that this invoice is already paid."
-                  : "Demo Coupa found a difference that needs the buyer’s attention."}
+                  : "Demo Coupa found a difference that needs the large customer’s attention."}
             </p>
           </div>
           <StatusBadge status={status}>
@@ -100,7 +100,7 @@ export function BuyerSystemEvidence({
         {outcome === "system_verified" && (
           <div className="mt-4 flex items-center gap-2 rounded-xl bg-[var(--success-soft)] p-3 text-sm font-semibold text-[var(--success)]">
             <CheckCircle2 aria-hidden="true" className="size-4" />
-            No buyer action is needed.
+            No customer action is needed.
           </div>
         )}
         <div className="mt-5 flex flex-wrap gap-3">

@@ -200,7 +200,7 @@ export async function sendApplicationToBuyer(
   ) {
     return {
       status: "error",
-      message: "This application cannot be sent to the buyer.",
+      message: "This application cannot be sent to the large customer.",
     };
   }
   const supabase = await createClient();
@@ -211,13 +211,13 @@ export async function sendApplicationToBuyer(
     return {
       status: "error",
       message:
-        "Resolve any failed checks before requesting buyer confirmation.",
+        "Resolve any failed checks before requesting customer confirmation.",
     };
   revalidatePath(`/applications/${application.id}`);
   revalidatePath("/dashboard");
   return {
     status: "success",
-    message: "Buyer confirmation requested securely.",
+    message: "Customer confirmation requested securely.",
   };
 }
 
@@ -304,7 +304,7 @@ export async function checkBuyerSystem(
     return {
       status: "error",
       message:
-        "Automated verification is unavailable. Request manual buyer confirmation instead.",
+        "Automated verification is unavailable. Request manual customer confirmation instead.",
     };
   const correlationId = `coupa-${randomUUID()}`;
   const idempotencyKey = `${latestRun?.id ?? application.id}:${connection.data.demo_scenario}`;
@@ -376,10 +376,11 @@ export async function checkBuyerSystem(
   revalidatePath("/confirmations");
   const messages = {
     system_verified: "Automated verification completed using Demo Coupa.",
-    review_required: "Demo Coupa found a difference. Buyer review is required.",
+    review_required:
+      "Demo Coupa found a difference. Customer review is required.",
     blocked: "Demo Coupa reports this invoice cannot proceed.",
     manual_confirmation_required:
-      "Demo Coupa is unavailable. Signed buyer confirmation has been requested.",
+      "Demo Coupa is unavailable. Signed customer confirmation has been requested.",
   };
   return { status: "success", message: messages[outcome] };
 }

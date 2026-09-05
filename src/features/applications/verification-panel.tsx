@@ -215,21 +215,21 @@ export function VerificationPanel({
                 </span>
                 <h3 className="mt-1 text-lg font-bold">
                   {pendingBuyer
-                    ? "Buyer signature requested"
+                    ? "Large customer signature requested"
                     : canCheck
                       ? "Run automated verification"
                       : "Correct the document issue first"}
                 </h3>
                 <p className="mt-1 max-w-2xl text-sm leading-6 text-[var(--muted)]">
                   {pendingBuyer
-                    ? "Demo Coupa was unavailable, so the buyer received the six-question signature flow."
+                    ? "Demo Coupa was unavailable, so the large customer received the six-question signature flow."
                     : canCheck
                       ? "ProofFlow will match the PO, invoice, amount, delivery and payment status against synthetic Demo Coupa records."
                       : "Automated verification becomes available when the document checks have no blocking failures."}
                 </p>
               </div>
               {pendingBuyer ? (
-                <StatusBadge status="review">Waiting for buyer</StatusBadge>
+                <StatusBadge status="review">Waiting for customer</StatusBadge>
               ) : (
                 <form action={systemAction}>
                   <Button type="submit" loading={checking} disabled={!canCheck}>
@@ -339,7 +339,7 @@ function DetailedCheck({
               ))
             ) : (
               <span className="text-[var(--muted)]">
-                Buyer confirmation record
+                Large customer confirmation record
               </span>
             )}
           </div>

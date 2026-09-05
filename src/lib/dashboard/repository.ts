@@ -107,7 +107,7 @@ const statuses: Record<
   checks_complete: {
     label: "Checks complete",
     progress: 65,
-    next: "Request buyer confirmation",
+    next: "Run automated verification",
   },
   buyer_system_checking: {
     label: "Running automated verification",
@@ -120,9 +120,9 @@ const statuses: Record<
     next: "Waiting for funder review",
   },
   buyer_exception_review: {
-    label: "Buyer review required",
+    label: "Large customer review required",
     progress: 70,
-    next: "Waiting for the buyer to resolve a difference",
+    next: "Waiting for the large customer to resolve a difference",
   },
   buyer_system_blocked: {
     label: "Cannot proceed",
@@ -130,19 +130,19 @@ const statuses: Record<
     next: "Review the automated result",
   },
   buyer_pending: {
-    label: "Buyer confirmation pending",
+    label: "Customer confirmation pending",
     progress: 70,
-    next: "Waiting for buyer confirmation",
+    next: "Waiting for customer confirmation",
   },
   buyer_confirmed: {
-    label: "Buyer confirmed",
+    label: "Large customer confirmed",
     progress: 75,
     next: "Waiting for funder review",
   },
   buyer_disputed: {
-    label: "Buyer disputed",
+    label: "Large customer disputed",
     progress: 65,
-    next: "Review the buyer's reason",
+    next: "Review the customer's reason",
   },
   funder_review: {
     label: "Funder review",
@@ -249,10 +249,10 @@ export async function getDashboard(
               0,
             ),
           ),
-          note: `Across ${confirmed.length} buyer-verified ${confirmed.length === 1 ? "invoice" : "invoices"}`,
+          note: `Across ${confirmed.length} customer-verified ${confirmed.length === 1 ? "invoice" : "invoices"}`,
         },
         {
-          label: "Buyer evidence",
+          label: "Customer evidence",
           value: String(confirmed.length),
           note: "Human confirmations and automated checks",
         },
@@ -495,7 +495,7 @@ export async function getDashboard(
       {
         label: "Ready for review",
         value: String(rows.length),
-        note: "Buyer evidence complete",
+        note: "Customer evidence complete",
       },
       {
         label: "Requested value",

@@ -47,7 +47,15 @@ const navByRole: Record<Role, NavItem[]> = {
   ],
 };
 
-function NavEntry({ item, mobile = false, active = false }: { item: NavItem; mobile?: boolean; active?: boolean }) {
+function NavEntry({
+  item,
+  mobile = false,
+  active = false,
+}: {
+  item: NavItem;
+  mobile?: boolean;
+  active?: boolean;
+}) {
   const Icon = item.icon;
   const styles = cn(
     "group flex min-h-11 items-center gap-3 rounded-xl px-3.5 text-sm font-semibold transition-colors duration-150 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-[var(--focus)] motion-reduce:transition-none",
@@ -60,19 +68,31 @@ function NavEntry({ item, mobile = false, active = false }: { item: NavItem; mob
   );
 
   return (
-    <Link href={item.href} className={styles} aria-current={active ? "page" : undefined}>
+    <Link
+      href={item.href}
+      className={styles}
+      aria-current={active ? "page" : undefined}
+    >
       <Icon aria-hidden={true} className="size-5 shrink-0" />
       {item.label}
     </Link>
   );
 }
 
-export function Navigation({ role, mobile = false }: { role: Role; mobile?: boolean }) {
+export function Navigation({
+  role,
+  mobile = false,
+}: {
+  role: Role;
+  mobile?: boolean;
+}) {
   const pathname = usePathname();
   const items = navByRole[role];
   const shown = mobile ? items.slice(0, 4) : items;
   const activeHref = [...items]
-    .filter((item) => pathname === item.href || pathname.startsWith(`${item.href}/`))
+    .filter(
+      (item) => pathname === item.href || pathname.startsWith(`${item.href}/`),
+    )
     .sort((a, b) => b.href.length - a.href.length)[0]?.href;
 
   return (
@@ -84,25 +104,54 @@ export function Navigation({ role, mobile = false }: { role: Role; mobile?: bool
       )}
     >
       {shown.map((item) => (
-        <NavEntry key={item.label} item={item} mobile={mobile} active={item.href === activeHref} />
+        <NavEntry
+          key={item.label}
+          item={item}
+          mobile={mobile}
+          active={item.href === activeHref}
+        />
       ))}
     </nav>
   );
 }
 
-export function OrganizationBadge({ organization, role }: { organization: string; role: Role }) {
+export function OrganizationBadge({
+  organization,
+  role,
+}: {
+  organization: string;
+  role: Role;
+}) {
+  const presentation = {
+    sme: {
+      label: "SME workspace",
+      chip: "bg-[var(--success-soft)] text-[var(--success)]",
+    },
+    buyer: {
+      label: "Large customer workspace",
+      chip: "bg-[var(--review-soft)] text-[var(--review)]",
+    },
+    funder: {
+      label: "Funder / bank workspace",
+      chip: "bg-[#edf1ff] text-[#2949a8]",
+    },
+  }[role];
   return (
     <div
-      className="flex items-start gap-3 rounded-2xl border border-[var(--border)] bg-[var(--surface)] p-3.5 shadow-[0_1px_0_rgba(23,32,29,.03)]"
-      aria-label={`${organization}, ${role} workspace`}
+      className="flex items-start gap-3"
+      aria-label={`${organization}, ${presentation.label}`}
     >
       <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-[var(--soft)] text-[var(--primary)]">
         <Building2 aria-hidden="true" className="size-[18px]" />
       </span>
       <span className="min-w-0 pt-0.5">
-        <b className="block text-[13px] leading-[1.25] tracking-[-.01em]">{organization}</b>
-        <span className="mt-1 block text-[11px] capitalize leading-none text-[var(--muted)]">
-          {role} workspace
+        <b className="block text-[13px] leading-[1.25] tracking-[-.01em]">
+          {organization}
+        </b>
+        <span
+          className={`mt-2 inline-flex rounded-full px-2 py-1 text-[10px] font-bold uppercase tracking-[.06em] ${presentation.chip}`}
+        >
+          {presentation.label}
         </span>
       </span>
     </div>

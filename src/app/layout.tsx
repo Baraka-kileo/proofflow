@@ -20,7 +20,7 @@ export const metadata: Metadata = {
     template: "%s · ProofFlow",
   },
   description:
-    "Buyer-confirmed invoice evidence that helps SMEs become funding-ready faster.",
+    "Large-customer-confirmed invoice evidence that helps SMEs become funding-ready faster.",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
@@ -30,7 +30,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       data-scroll-behavior="smooth"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full">{children}<Toaster /></body>
+      <body className="min-h-full">
+        {children}
+        <Toaster />
+      </body>
     </html>
   );
 }

@@ -21,6 +21,14 @@ ProofFlow should feel calm, trustworthy, fast, and human—not like a dense bank
 | Error | `#B42318` | Failure/destructive only |
 | Focus | `#315EFB` | Accessible focus ring |
 
+### Role and state colors
+
+- SME identity: success green.
+- Large customer identity: review amber.
+- Funder / Bank identity: restrained blue (`#2949A8` on `#EDF1FF`).
+- Application statuses use semantic tones: completed, confirmed, accepted, verified, and funded are green; waiting, checking, review, and offer-ready states are amber; declined, disputed, failed, and blocked states are red; drafts remain neutral.
+- Every colored chip includes a written role or status. Color is reinforcement, never the only signal.
+
 - Font: Inter or a compatible modern sans-serif; tabular numerals for money.
 - Radius: 12px controls, 16px cards, 24–32px major panels/dialogs.
 - Shadows: avoid ornamental shadows; use border and surface contrast. A subtle elevation is allowed only for floating overlays.

@@ -13,7 +13,7 @@ describe("Trust Passport view", () => {
       />,
     );
     expect(screen.getByText("This is not a credit score or funding guarantee.", { exact: false })).toBeInTheDocument();
-    expect(screen.getByRole("heading", { name: "No completed buyer evidence yet" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "No completed customer evidence yet" })).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Start an application" })).toHaveAttribute("href", "/applications/new");
   });
 
@@ -47,6 +47,6 @@ describe("Trust Passport view", () => {
     );
     expect(screen.getByText("R 22 400")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "View application" })).toHaveAttribute("href", "/applications/application-1");
-    expect(screen.getByRole("link", { name: "View buyer receipt" })).toHaveAttribute("href", "/confirmations/confirmation-1");
+    expect(screen.getByRole("link", { name: "View customer receipt" })).toHaveAttribute("href", "/confirmations/confirmation-1");
   });
 });

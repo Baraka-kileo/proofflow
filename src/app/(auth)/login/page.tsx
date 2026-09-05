@@ -14,20 +14,23 @@ export default function LoginPage() {
       detail: "Create evidence",
       email: "sme.demo@proofflow.example",
       password,
+      tone: "sme",
     },
     {
       role: "buyer",
-      label: "Buyer",
+      label: "Large customer",
       detail: "Confirm invoices",
       email: "buyer.demo@proofflow.example",
       password,
+      tone: "customer",
     },
     {
       role: "funder",
-      label: "Funder",
-      detail: "Review evidence",
+      label: "Funder / Bank",
+      detail: "Review applications",
       email: "funder.demo@proofflow.example",
       password,
+      tone: "funder",
     },
   ];
   return (
@@ -42,8 +45,8 @@ export default function LoginPage() {
             One trusted story for every side of the invoice.
           </h1>
           <p className="mt-6 max-w-lg text-base leading-7 text-[#c7d9d3]">
-            SMEs provide the evidence, buyers confirm the work, and funders
-            review one explainable package.
+            SMEs provide the evidence, large customers confirm the work, and
+            funders or banks review one explainable package.
           </p>
         </div>
         <p className="text-xs text-[#9fd4c5]">
@@ -59,7 +62,8 @@ export default function LoginPage() {
             Sign in to ProofFlow
           </h2>
           <p className="mt-3 text-sm leading-6 text-[var(--muted)]">
-            Use your hosted account or choose a fictional demo role below.
+            Use your hosted account. Fictional demo accounts are available below
+            the Sign in button.
           </p>
           <div className="mt-8">
             <LoginForm demoCredentials={demoCredentials} />

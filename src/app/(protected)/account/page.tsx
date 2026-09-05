@@ -15,6 +15,7 @@ import { requireRole, requireUser } from "@/lib/auth/dal";
 import { signOut } from "@/lib/auth/actions";
 import { createClient } from "@/lib/supabase/server";
 import { DemoConnectionControl } from "@/features/integrations/demo-connection-control";
+import type { SessionUser } from "@/types/domain";
 
 export const metadata: Metadata = { title: "Account" };
 
@@ -53,7 +54,9 @@ export default async function AccountPage() {
     session.role === "buyer"
       ? await client
           .from("integration_connections")
-          .select("id,provider,mode,status,demo_scenario,last_successful_sync_at")
+          .select(
+            "id,provider,mode,status,demo_scenario,last_successful_sync_at",
+          )
           .eq("buyer_organization_id", session.organizationId)
           .eq("provider", "coupa")
           .maybeSingle()
@@ -74,7 +77,11 @@ export default async function AccountPage() {
               label="Organization"
               value={session.organization}
             />
-            <Fact icon={ShieldCheck} label="Role" value={session.role} />
+            <Fact
+              icon={ShieldCheck}
+              label="Role"
+              value={roleLabel(session.role)}
+            />
             <Fact
               icon={Mail}
               label="Verified email"
@@ -114,7 +121,7 @@ export default async function AccountPage() {
                 ) : (
                   <p className="mt-2 text-sm text-[var(--muted)]">
                     No Coupa connection is available. Applications use signed
-                    buyer confirmation.
+                    large-customer confirmation.
                   </p>
                 )}
                 {connection && (
@@ -124,7 +131,7 @@ export default async function AccountPage() {
                   />
                 )}
                 <p className="mt-3 text-xs text-[var(--muted)]">
-                  Live Coupa is unavailable until an authorised buyer sandbox
+                  Live Coupa is unavailable until an authorised customer sandbox
                   and read-only credentials are configured.
                 </p>
               </div>
@@ -134,4 +141,12 @@ export default async function AccountPage() {
       )}
     </div>
   );
+}
+
+function roleLabel(role: SessionUser["role"]) {
+  return role === "sme"
+    ? "SME"
+    : role === "buyer"
+      ? "Large customer"
+      : "Funder / Bank";
 }
