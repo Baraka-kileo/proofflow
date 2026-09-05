@@ -12,31 +12,6 @@ export type Database = {
   __InternalSupabase: {
     PostgrestVersion: "14.5"
   }
-  graphql_public: {
-    Tables: {
-      [_ in never]: never
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      graphql: {
-        Args: {
-          extensions?: Json
-          operationName?: string
-          query?: string
-          variables?: Json
-        }
-        Returns: Json
-      }
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
-  }
   public: {
     Tables: {
       applications: {
@@ -260,6 +235,7 @@ export type Database = {
           review_status: Database["public"]["Enums"]["field_review_status"]
           reviewed_at: string | null
           reviewed_by: string | null
+          source_label: string | null
           source_value: Json | null
           updated_at: string
         }
@@ -273,6 +249,7 @@ export type Database = {
           review_status?: Database["public"]["Enums"]["field_review_status"]
           reviewed_at?: string | null
           reviewed_by?: string | null
+          source_label?: string | null
           source_value?: Json | null
           updated_at?: string
         }
@@ -286,6 +263,7 @@ export type Database = {
           review_status?: Database["public"]["Enums"]["field_review_status"]
           reviewed_at?: string | null
           reviewed_by?: string | null
+          source_label?: string | null
           source_value?: Json | null
           updated_at?: string
         }
@@ -311,6 +289,13 @@ export type Database = {
           application_id: string
           byte_size: number
           created_at: string
+          extraction_completed_at: string | null
+          extraction_error_code: string | null
+          extraction_model: string | null
+          extraction_provider: string | null
+          extraction_provider_metadata: Json | null
+          extraction_response: Json | null
+          extraction_schema_version: string | null
           extraction_status: Database["public"]["Enums"]["extraction_status"]
           id: string
           kind: Database["public"]["Enums"]["document_kind"]
@@ -328,6 +313,13 @@ export type Database = {
           application_id: string
           byte_size: number
           created_at?: string
+          extraction_completed_at?: string | null
+          extraction_error_code?: string | null
+          extraction_model?: string | null
+          extraction_provider?: string | null
+          extraction_provider_metadata?: Json | null
+          extraction_response?: Json | null
+          extraction_schema_version?: string | null
           extraction_status?: Database["public"]["Enums"]["extraction_status"]
           id?: string
           kind: Database["public"]["Enums"]["document_kind"]
@@ -345,6 +337,13 @@ export type Database = {
           application_id?: string
           byte_size?: number
           created_at?: string
+          extraction_completed_at?: string | null
+          extraction_error_code?: string | null
+          extraction_model?: string | null
+          extraction_provider?: string | null
+          extraction_provider_metadata?: Json | null
+          extraction_response?: Json | null
+          extraction_schema_version?: string | null
           extraction_status?: Database["public"]["Enums"]["extraction_status"]
           id?: string
           kind?: Database["public"]["Enums"]["document_kind"]
@@ -685,6 +684,17 @@ export type Database = {
         }
         Returns: boolean
       }
+      persist_document_extraction_v1: {
+        Args: {
+          normalized_fields: Json
+          provider_metadata: Json
+          provider_model: string
+          raw_extraction: Json
+          target_actor_profile_id: string
+          target_document_id: string
+        }
+        Returns: undefined
+      }
       record_exact_document_duplicate: {
         Args: {
           attempted_filename: string
@@ -848,9 +858,6 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
-  graphql_public: {
-    Enums: {},
-  },
   public: {
     Enums: {
       application_status: [
