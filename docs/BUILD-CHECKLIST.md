@@ -242,7 +242,7 @@ Dependencies: P3.
   - Accept: API key never reaches browser/log; invalid model output is rejected; retry does not create duplicate field sets.
 - [x] **P4-03 MUST — Honest demo fallback.** Create deterministic extraction fixtures keyed only to bundled synthetic sample documents. Activate only through an explicit demo configuration and display `Demo extraction—not processed by live AI`.
   - Accept: fallback cannot silently activate after a live failure; unknown documents do not receive invented fixture values.
-- [ ] **P4-04 MUST — Review UI.** Show signed document preview and editable extracted fields together. Mark low-confidence/missing fields `Please check`; show source category; preserve original and edited value.
+- [x] **P4-04 MUST — Review UI.** Show signed document preview and editable extracted fields together. Mark low-confidence/missing fields `Please check`; show source category; preserve original and edited value.
   - Accept: every material v1 field can be reviewed; money/date normalization is visible; mobile can switch preview/fields without losing edits.
 - [ ] **P4-05 MUST — Review submission.** Server validates completeness/ownership, writes reviewed fields and audit event, then allows checking. AI cannot mark `userReviewed`.
   - Accept: verification endpoint rejects unreviewed fields; repeat save is idempotent; edit provenance is displayed.

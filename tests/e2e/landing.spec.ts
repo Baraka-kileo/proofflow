@@ -164,7 +164,7 @@ test("SME creates a validated private application draft", async ({ page }) => {
   await expect(invoiceSlot).toContainText("1 page",{timeout:25_000});
   await expect(page.getByText("3 / 3 uploaded")).toBeVisible();
   await expect(page.getByRole("complementary",{name:"Application progress"})).toContainText("2 of 5 complete");
-  await expect(page.getByRole("heading",{name:"Documents are ready for review"})).toBeVisible();
+  await expect(page.getByRole("heading",{name:"Documents are ready for extraction"})).toBeVisible();
   await expect(page.getByRole("status")).toHaveText("Demo extraction—not processed by live AI");
   await expect(invoiceSlot.getByRole("button",{name:"Preview"})).toBeVisible();
   await purchaseOrderSlot.getByRole("button",{name:"Remove"}).click();
