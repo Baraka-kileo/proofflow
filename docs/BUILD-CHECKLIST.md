@@ -311,14 +311,14 @@ Dependencies: P6 confirmed path.
 
 Dependencies: P7.
 
-- [ ] **P8-01 MUST — Server metrics.** Calculate from immutable completed events: confirmed application count, disputed count, verified invoice value, distinct confirming buyers, and dated history.
+- [x] **P8-01 MUST — Server metrics.** Calculate from immutable completed events: confirmed application count, disputed count, verified invoice value, distinct confirming buyers, and dated history.
   - Accept: draft/pending/other-tenant data excluded; money values aggregate in minor units with currency grouping.
-- [ ] **P8-02 MUST — Passport UI.** `/trust-passport` explains each metric, links to its source application/receipt, shows an evidence timeline, and states `This is not a credit score or funding guarantee.`
+- [x] **P8-02 MUST — Passport UI.** `/trust-passport` explains each metric, links to its source application/receipt, shows an evidence timeline, and states `This is not a credit score or funding guarantee.`
   - Accept: zero-history and populated states work; no opaque score/gauge or AI-generated rating.
-- [ ] **P8-03 MUST — Update proof.** Completing the seeded happy path visibly adds its evidence without manual database editing.
+- [x] **P8-03 MUST — Update proof.** Completing the seeded happy path visibly adds its evidence without manual database editing.
   - Accept: refresh/realtime result agrees with database query; another SME's event cannot affect it.
 
-**P8 gate:** passport is explainable, tenant-isolated, and derived exclusively from completed evidence.
+**P8 gate: PASS.** The Passport is source-linked, tenant-isolated, and derived only from completed buyer decisions and completed verification evidence; the seeded happy path appears automatically and incomplete/unverified value is excluded.
 
 ### P9 — Synthetic documents, resilience, and experience polish
 

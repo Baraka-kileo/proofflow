@@ -27,7 +27,7 @@ const navByRole: Record<Role, NavItem[]> = {
   sme: [
     { label: "Overview", href: "/dashboard", icon: Home },
     { label: "Applications", href: "/applications/new", icon: FileText },
-    { label: "Trust Passport", icon: Fingerprint },
+    { label: "Trust Passport", href: "/trust-passport", icon: Fingerprint },
     { label: "Help", icon: CircleHelp },
     { label: "Account", icon: UserRound },
   ],

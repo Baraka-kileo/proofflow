@@ -19,7 +19,7 @@ export function SmeDashboard({data}:{data:Extract<DashboardData,{role:"sme"}>}) 
         <Progress className="mt-7" label="Evidence journey" value={data.application.progress}/>
         <div className="mt-6 flex items-center justify-between gap-4"><p className="flex items-center gap-2 text-sm text-[var(--muted)]"><Clock3 className="size-4" />{data.application.next}</p><QueueButton label="View application" href={data.application.href}/></div>
       </>:<EmptyState title="No applications yet" description="Your first application will appear here after you start it." />}</CardContent></Card>
-      <Card className="bg-[var(--primary-pressed)] text-white"><CardContent className="pt-6"><FileText className="size-6 text-[#9fd4c5]"/><h2 className="mt-10 text-2xl font-semibold tracking-tight">Your proof is reusable.</h2><p className="mt-3 text-sm leading-6 text-[#c7d9d3]">Every buyer-confirmed application adds explainable evidence to your Trust Passport—not an opaque credit score.</p></CardContent></Card>
+      <Card className="bg-[var(--primary-pressed)] text-white"><CardContent className="pt-6"><FileText className="size-6 text-[#9fd4c5]"/><h2 className="mt-10 text-2xl font-semibold tracking-tight">Your proof is reusable.</h2><p className="mt-3 text-sm leading-6 text-[#c7d9d3]">Every buyer-confirmed application adds explainable evidence to your Trust Passport—not an opaque credit score.</p><Link href="/trust-passport" className="mt-6 inline-flex min-h-11 items-center rounded-xl bg-white px-4 text-sm font-bold text-[var(--primary-pressed)] hover:bg-[var(--soft)]">View Trust Passport</Link></CardContent></Card>
     </section>
   </div>;
 }
