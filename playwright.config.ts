@@ -18,6 +18,7 @@ export default defineConfig({
   ],
   webServer: {
     command: "npm run dev -- -p 3101",
+    env: { ...process.env, PROOFFLOW_EXTRACTION_MODE: "demo" },
     url: "http://localhost:3101",
     reuseExistingServer: !process.env.CI,
     timeout: 120_000,

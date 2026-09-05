@@ -30,7 +30,7 @@ const raw={schemaVersion:"extraction-v1",documentKind:"invoice",fields:{
   total:{value:"1150.00",confidenceBps:9700,sourceLabel:"Total"},
 }};
 const normalized=Object.fromEntries(Object.entries(raw.fields).map(([name,field])=>[name,field.value]));
-const rpcArgs={target_document_id:documentId,target_actor_profile_id:auth.user.id,raw_extraction:raw,normalized_fields:normalized,provider_model:"synthetic-gemini-test",provider_metadata:{responseId:"synthetic-response",totalTokenCount:123}};
+const rpcArgs={target_document_id:documentId,target_actor_profile_id:auth.user.id,raw_extraction:raw,normalized_fields:normalized,provider_name:"google-gemini",provider_model:"synthetic-gemini-test",provider_metadata:{responseId:"synthetic-response",totalTokenCount:123}};
 
 try{
   const {error:applicationError}=await admin.from("applications").insert({id:applicationId,owner_organization_id:organizationId,buyer_organization_id:buyerId,created_by:auth.user.id,title:"Synthetic extraction persistence test",purchase_order_reference:`PO-EXTRACT-${suffix}`,invoice_number:`INV-EXTRACT-${suffix}`,invoice_total_minor:115000,requested_amount_minor:90000,currency:"ZAR",invoice_due_on:"2026-10-31",ai_processing_consented_at:new Date().toISOString(),status:"documents_uploaded"});

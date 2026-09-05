@@ -240,7 +240,7 @@ Dependencies: P3.
   - Accept: schema fixtures cover complete, missing, malformed, and adversarial document text.
 - [x] **P4-02 MUST — Server Gemini adapter.** Upload/read the private document server-side, call the configured Gemini Flash model with structured output, use bounded timeout/retry, validate response, and save raw provider metadata plus normalized fields.
   - Accept: API key never reaches browser/log; invalid model output is rejected; retry does not create duplicate field sets.
-- [ ] **P4-03 MUST — Honest demo fallback.** Create deterministic extraction fixtures keyed only to bundled synthetic sample documents. Activate only through an explicit demo configuration and display `Demo extraction—not processed by live AI`.
+- [x] **P4-03 MUST — Honest demo fallback.** Create deterministic extraction fixtures keyed only to bundled synthetic sample documents. Activate only through an explicit demo configuration and display `Demo extraction—not processed by live AI`.
   - Accept: fallback cannot silently activate after a live failure; unknown documents do not receive invented fixture values.
 - [ ] **P4-04 MUST — Review UI.** Show signed document preview and editable extracted fields together. Mark low-confidence/missing fields `Please check`; show source category; preserve original and edited value.
   - Accept: every material v1 field can be reviewed; money/date normalization is visible; mobile can switch preview/fields without losing edits.

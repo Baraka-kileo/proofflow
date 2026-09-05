@@ -1,13 +1,15 @@
 import "server-only";
 
 import { extractDocumentWithGemini, ExtractionProviderError } from "@/lib/ai/gemini-extractor";
+import { DemoExtractionError, extractDemoDocument } from "@/lib/ai/demo-extraction";
 import { requireApplicationAccess, requireRole } from "@/lib/auth/dal";
+import { getExtractionModeEnvironment } from "@/lib/env/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { z } from "zod";
 
 const bucket = "application-documents";
-type Result = { ok: true } | { ok: false; code: string; message: string };
+type Result = { ok: true; mode: "live" | "demo"; disclosure?: string } | { ok: false; code: string; message: string };
 
 export async function extractPrivateDocument(documentId: unknown): Promise<Result> {
   const parsedId = z.uuid().safeParse(documentId);
@@ -15,7 +17,7 @@ export async function extractPrivateDocument(documentId: unknown): Promise<Resul
   const session = await requireRole("sme");
   const supabase = await createClient();
   const { data: document, error } = await supabase.from("documents")
-    .select("id,application_id,kind,mime_type,storage_path,upload_completed_at,extraction_status")
+    .select("id,application_id,kind,mime_type,storage_path,sha256,upload_completed_at,extraction_status")
     .eq("id", parsedId.data).maybeSingle();
   if (error || !document?.upload_completed_at) return { ok: false, code: "DOCUMENT_UNAVAILABLE", message: "The completed document is unavailable." };
   const { application } = await requireApplicationAccess(document.application_id);
@@ -34,8 +36,9 @@ export async function extractPrivateDocument(documentId: unknown): Promise<Resul
   if (downloadError || !blob) return { ok: false, code: "DOCUMENT_UNAVAILABLE", message: "The private document could not be read." };
 
   await admin.from("documents").update({ extraction_status: "processing", extraction_error_code: null }).eq("id", document.id);
+  const mode = getExtractionModeEnvironment().PROOFFLOW_EXTRACTION_MODE;
   try {
-    const extraction = await extractDocumentWithGemini({
+    const extraction = mode === "demo" ? extractDemoDocument({ mode, kind: document.kind, sha256: document.sha256 }) : await extractDocumentWithGemini({
       kind: document.kind,
       mimeType: document.mime_type as "application/pdf" | "image/jpeg" | "image/png",
       bytes: new Uint8Array(await blob.arrayBuffer()),
@@ -45,6 +48,7 @@ export async function extractPrivateDocument(documentId: unknown): Promise<Resul
       target_actor_profile_id: session.id,
       raw_extraction: extraction.extraction,
       normalized_fields: extraction.normalizedFields,
+      provider_name: extraction.provider,
       provider_model: extraction.model,
       provider_metadata: extraction.metadata,
     });
@@ -52,10 +56,11 @@ export async function extractPrivateDocument(documentId: unknown): Promise<Resul
       await admin.from("documents").update({ extraction_status: "failed", extraction_error_code: "SAVE_FAILED" }).eq("id", document.id);
       return { ok: false, code: "SAVE_FAILED", message: "The extracted fields could not be saved. Please retry." };
     }
-    return { ok: true };
+    return { ok: true, mode, disclosure: mode === "demo" ? "Demo extraction—not processed by live AI" : undefined };
   } catch (error) {
-    const code = error instanceof ExtractionProviderError ? error.code : "MODEL_UNAVAILABLE";
+    const code = error instanceof ExtractionProviderError || error instanceof DemoExtractionError ? error.code : "MODEL_UNAVAILABLE";
     await admin.from("documents").update({ extraction_status: "failed", extraction_error_code: code }).eq("id", document.id);
-    return { ok: false, code, message: code === "INVALID_MODEL_OUTPUT" ? "The AI response was not safe to use. Please retry." : "Live extraction is temporarily unavailable. Please retry." };
+    const message = code === "INVALID_MODEL_OUTPUT" ? "The AI response was not safe to use. Please retry." : code === "DEMO_DOCUMENT_UNKNOWN" ? "Demo extraction works only with the bundled synthetic sample for this document slot." : "Live extraction is temporarily unavailable. Please retry.";
+    return { ok: false, code, message };
   }
 }

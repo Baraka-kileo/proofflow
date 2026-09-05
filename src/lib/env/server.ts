@@ -14,6 +14,7 @@ const environmentSchema = z.object({
   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: optionalSecret,
   SUPABASE_SERVICE_ROLE_KEY: optionalSecret,
   GEMINI_API_KEY: optionalSecret,
+  PROOFFLOW_EXTRACTION_MODE: z.preprocess(blankToUndefined, z.enum(["live", "demo"]).default("live")),
   PROOFFLOW_ENABLE_DEMO_ACCESS: z.enum(["true", "false"]).default("false"),
   PROOFFLOW_DEMO_PASSWORD: optionalSecret,
 });
@@ -28,6 +29,7 @@ function readEnvironment(): Record<keyof ServerEnvironment, string | undefined> 
       process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
     SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
     GEMINI_API_KEY: process.env.GEMINI_API_KEY,
+    PROOFFLOW_EXTRACTION_MODE: process.env.PROOFFLOW_EXTRACTION_MODE,
     PROOFFLOW_ENABLE_DEMO_ACCESS: process.env.PROOFFLOW_ENABLE_DEMO_ACCESS,
     PROOFFLOW_DEMO_PASSWORD: process.env.PROOFFLOW_DEMO_PASSWORD,
   };
@@ -91,6 +93,11 @@ export function getGeminiEnvironment() {
   }
 
   return { GEMINI_API_KEY: environment.GEMINI_API_KEY };
+}
+
+export function getExtractionModeEnvironment() {
+  const environment = getServerEnvironment();
+  return { PROOFFLOW_EXTRACTION_MODE: environment.PROOFFLOW_EXTRACTION_MODE };
 }
 
 export function getDemoAuthEnvironment() {

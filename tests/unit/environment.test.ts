@@ -18,11 +18,13 @@ describe("server environment validation", () => {
     vi.stubEnv("NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY", "");
     vi.stubEnv("SUPABASE_SERVICE_ROLE_KEY", "");
     vi.stubEnv("GEMINI_API_KEY", "");
+    vi.stubEnv("PROOFFLOW_EXTRACTION_MODE", "");
 
     expect(getServerEnvironment()).toMatchObject({
       NEXT_PUBLIC_APP_URL: "http://localhost:3000",
       NEXT_PUBLIC_SUPABASE_URL: undefined,
       SUPABASE_SERVICE_ROLE_KEY: undefined,
+      PROOFFLOW_EXTRACTION_MODE: "live",
     });
   });
 

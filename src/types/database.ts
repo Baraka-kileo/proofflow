@@ -689,6 +689,7 @@ export type Database = {
           normalized_fields: Json
           provider_metadata: Json
           provider_model: string
+          provider_name: string
           raw_extraction: Json
           target_actor_profile_id: string
           target_document_id: string
