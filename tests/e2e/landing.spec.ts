@@ -152,15 +152,20 @@ test("SME creates a validated private application draft", async ({ page }) => {
   await expect(invoiceSlot.getByRole("alert")).toContainText("Choose a PDF, JPEG, or PNG file.");
   await invoiceSlot.getByLabel("Upload Invoice").setInputFiles({name:"too-large.pdf",mimeType:"application/pdf",buffer:Buffer.alloc(10*1024*1024+1)});
   await expect(invoiceSlot.getByRole("alert")).toContainText("larger than the 10 MB limit");
-  for(const item of [
-    {testId:"document-slot-purchase_order",label:"Upload Purchase order",name:"purchase-order-demo.pdf"},
-    {testId:"document-slot-delivery_evidence",label:"Upload Delivery evidence",name:"delivery-evidence-demo.pdf"},
-    {testId:"document-slot-invoice",label:"Upload Invoice",name:"invoice-demo.pdf"},
-  ]){const slot=page.getByTestId(item.testId);await slot.getByLabel(item.label).setInputFiles({name:item.name,mimeType:"application/pdf",buffer:await syntheticPdf(item.name)});await expect(slot).toContainText("1 page",{timeout:25_000});}
+  const purchaseOrderSlot=page.getByTestId("document-slot-purchase_order");
+  const deliverySlot=page.getByTestId("document-slot-delivery_evidence");
+  const purchaseBytes=await syntheticPdf("purchase-order-demo.pdf");
+  await purchaseOrderSlot.getByLabel("Upload Purchase order").setInputFiles({name:"purchase-order-demo.pdf",mimeType:"application/pdf",buffer:purchaseBytes});
+  await expect(purchaseOrderSlot).toContainText("1 page",{timeout:25_000});
+  await deliverySlot.getByLabel("Upload Delivery evidence").setInputFiles({name:"renamed-delivery-proof.pdf",mimeType:"application/pdf",buffer:purchaseBytes});
+  await expect(deliverySlot.getByRole("alert")).toContainText("V009 · Exact duplicate file",{timeout:25_000});
+  await deliverySlot.getByLabel("Upload Delivery evidence").setInputFiles({name:"delivery-evidence-demo.pdf",mimeType:"application/pdf",buffer:await syntheticPdf("delivery-evidence-demo.pdf")});
+  await expect(deliverySlot).toContainText("1 page",{timeout:25_000});
+  await invoiceSlot.getByLabel("Upload Invoice").setInputFiles({name:"invoice-demo.pdf",mimeType:"application/pdf",buffer:await syntheticPdf("invoice-demo.pdf")});
+  await expect(invoiceSlot).toContainText("1 page",{timeout:25_000});
   await expect(page.getByText("3 / 3 uploaded")).toBeVisible();
   await expect(page.getByRole("complementary",{name:"Application progress"}).getByText("Review",{exact:true})).toBeVisible();
   await expect(invoiceSlot.getByRole("button",{name:"Preview"})).toBeVisible();
-  const purchaseOrderSlot=page.getByTestId("document-slot-purchase_order");
   await purchaseOrderSlot.getByRole("button",{name:"Remove"}).click();
   await expect(purchaseOrderSlot.getByText("Browse files")).toBeVisible({timeout:15_000});
   await expect(page.getByText("2 / 3 uploaded")).toBeVisible();

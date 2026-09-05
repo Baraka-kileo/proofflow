@@ -685,6 +685,14 @@ export type Database = {
         }
         Returns: boolean
       }
+      record_exact_document_duplicate: {
+        Args: {
+          attempted_filename: string
+          content_sha256: string
+          target_application_id: string
+        }
+        Returns: string
+      }
     }
     Enums: {
       application_status:

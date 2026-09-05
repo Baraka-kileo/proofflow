@@ -225,7 +225,7 @@ Dependencies: P2.
   - Accept: refresh/back preserves progress; locked steps explain prerequisites.
 - [x] **P3-03 MUST — Three upload slots.** Each document type has one named slot with purpose/help, drag/drop and browse, PDF/JPEG/PNG allowlist, configured maximum size, filename sanitization, upload progress, cancel/retry/remove, and preview.
   - Accept: wrong type, too large, duplicate slot, interruption, removal, and successful upload are tested; no public object URL.
-- [ ] **P3-04 MUST — Hash and exact duplicate.** Calculate SHA-256 in a trusted server workflow, save it, and reject an existing exact hash before extraction.
+- [x] **P3-04 MUST — Hash and exact duplicate.** Calculate SHA-256 in a trusted server workflow, save it, and reject an existing exact hash before extraction.
   - Accept: re-uploading the same bytes under a different filename produces `V009 fail`; another tenant's hash does not leak its identity/details.
 - [ ] **P3-05 MUST — Draft recovery.** Reopening `/applications/[id]` returns the user to the first incomplete step with saved files and values.
   - Accept: reload and sign-out/sign-in recovery proven; deleted/failed uploads are not shown as complete.

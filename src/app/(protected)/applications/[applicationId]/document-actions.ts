@@ -42,7 +42,7 @@ export async function completeDocumentUpload(documentId:string):Promise<ActionRe
   const parsed=z.uuid().safeParse(documentId);if(!parsed.success)return{ok:false,message:"The uploaded document could not be identified."};
   await requireRole("sme");
   const supabase=await createClient();
-  const {data:document,error}=await supabase.from("documents").select("id,application_id,kind,storage_path,mime_type,byte_size").eq("id",parsed.data).maybeSingle();
+  const {data:document,error}=await supabase.from("documents").select("id,application_id,kind,original_filename,storage_path,mime_type,byte_size").eq("id",parsed.data).maybeSingle();
   if(error||!document)return{ok:false,message:"The uploaded document could not be found."};
   const access=await requireEditableApplication(document.application_id);if(!access)return{ok:false,message:"This application can no longer accept document changes."};
   const {data:blob,error:downloadError}=await supabase.storage.from(bucket).download(document.storage_path);
@@ -52,9 +52,12 @@ export async function completeDocumentUpload(documentId:string):Promise<ActionRe
   let pageCount=1;
   if(document.mime_type==="application/pdf"){try{pageCount=(await PDFDocument.load(bytes,{ignoreEncryption:true})).getPageCount();}catch{await supabase.storage.from(bucket).remove([document.storage_path]);await supabase.from("documents").delete().eq("id",document.id);return{ok:false,code:"INVALID_PDF",message:"This PDF could not be read. Export it again or choose an image."};}}
   const sha256=createHash("sha256").update(bytes).digest("hex");
+  const {data:duplicate,error:duplicateLookupError}=await supabase.from("documents").select("id").eq("owner_organization_id",access.session.organizationId).eq("sha256",sha256).not("upload_completed_at","is",null).neq("id",document.id).limit(1).maybeSingle();
+  if(duplicateLookupError)return{ok:false,message:"The file could not be checked for duplicates. Please retry."};
+  if(duplicate){const {error:recordError}=await supabase.rpc("record_exact_document_duplicate",{target_application_id:document.application_id,attempted_filename:document.original_filename,content_sha256:sha256});if(recordError)return{ok:false,message:"The duplicate check could not be recorded. Please retry."};await supabase.storage.from(bucket).remove([document.storage_path]);await supabase.from("documents").delete().eq("id",document.id);return{ok:false,code:"DUPLICATE_FILE",message:"V009 · Exact duplicate file. These same bytes are already stored in your SME workspace."};}
   const uploadCompletedAt=new Date().toISOString();
   const {error:updateError}=await supabase.from("documents").update({sha256,page_count:pageCount,upload_completed_at:uploadCompletedAt}).eq("id",document.id);
-  if(updateError){await supabase.storage.from(bucket).remove([document.storage_path]);await supabase.from("documents").delete().eq("id",document.id);if(updateError.code==="23505")return{ok:false,code:"DUPLICATE_FILE",message:"This exact file is already stored in your workspace."};return{ok:false,message:"The uploaded file could not be finalized. Please retry."};}
+  if(updateError){let duplicateRecorded=false;if(updateError.code==="23505"){const {error:recordError}=await supabase.rpc("record_exact_document_duplicate",{target_application_id:document.application_id,attempted_filename:document.original_filename,content_sha256:sha256});duplicateRecorded=!recordError;}await supabase.storage.from(bucket).remove([document.storage_path]);await supabase.from("documents").delete().eq("id",document.id);if(duplicateRecorded)return{ok:false,code:"DUPLICATE_FILE",message:"V009 · Exact duplicate file. These same bytes are already stored in your SME workspace."};return{ok:false,message:"The uploaded file could not be finalized. Please retry."};}
   const {count}=await supabase.from("documents").select("id",{count:"exact",head:true}).eq("application_id",document.application_id).not("upload_completed_at","is",null);
   if(count===3)await supabase.from("applications").update({status:"documents_uploaded"}).eq("id",document.application_id).eq("status","draft");
   revalidatePath(`/applications/${document.application_id}`);
