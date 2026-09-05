@@ -17,6 +17,8 @@ Use synthetic people, companies, documents, bank details, and amounts only. The 
 - Safe audit events: actor, action, resource, timestamp, and non-sensitive metadata
 - Generic authentication errors and rate limiting for sensitive endpoints
 - Clear consent before sending a document to an AI processor
+- Treat the handwritten acknowledgement as sensitive personal data: validate bounded stroke JSON, never accept executable markup, render it through a canvas/PDF drawing API, and expose it only through existing role/tenant authorization.
+- Derive buyer name, organization, verified corporate email, signature time, and approval ID on the server. Never trust hidden form values for identity or time.
 
 ## Threats considered
 
@@ -27,8 +29,9 @@ Use synthetic people, companies, documents, bank details, and amounts only. The 
 - **AI hallucination:** confidence indicators, source preview, mandatory human review, and deterministic checks.
 - **Duplicate/fabricated invoices:** file hash, normalized invoice reference, cross-document rules, and buyer attestation.
 - **Replay/double decision:** unique constraints and idempotent mutations.
+- **Signature/certificate substitution:** bind the signed declaration, six answers, transaction snapshot, actor, organization, and approval ID in one database transaction; certificate routes regenerate only from that immutable record.
 - **Sensitive leakage:** signed links, short expiry, log redaction, least privilege, and retention controls.
 
 ## Production gaps to disclose
 
-Independent penetration testing, malware scanning, POPIA legal assessment, retention/deletion automation, incident response, KYC/AML, regulated credit process, lender due diligence, bank/payment integration, and production monitoring are not represented as complete.
+Independent penetration testing, malware scanning, POPIA legal assessment, signature-enforceability review, qualified digital-signature trust services, retention/deletion automation, incident response, KYC/AML, regulated credit process, lender due diligence, bank/payment integration, and production monitoring are not represented as complete.

@@ -27,16 +27,15 @@ const statusOrder: Application["status"][] = ["draft", "documents_uploaded", "fi
 const reached = (status: Application["status"], milestone: Application["status"]) => statusOrder.indexOf(status) >= statusOrder.indexOf(milestone);
 
 export function deriveApplicationProgress(application: Application | null, documentKinds: DocumentKind[] = []) {
-  const detailsComplete = Boolean(
+  const detailsComplete = Boolean(application && (reached(application.status,"documents_uploaded") || (
     application?.buyer_organization_id &&
       application.purchase_order_reference &&
       application.invoice_number &&
       application.invoice_total_minor &&
       application.invoice_total_minor > 0 &&
       application.invoice_due_on &&
-      application.ai_processing_consented_at,
-  );
-  const documentsComplete = Boolean(application && requiredDocuments.every((kind) => documentKinds.includes(kind)));
+      application.ai_processing_consented_at)));
+  const documentsComplete = Boolean(application && (reached(application.status,"fields_extracted") || requiredDocuments.every((kind) => documentKinds.includes(kind))));
   const reviewComplete = Boolean(application && reached(application.status, "sme_reviewed"));
   const verificationComplete = Boolean(application && reached(application.status, "checks_complete"));
   const buyerComplete = Boolean(application && reached(application.status, "buyer_confirmed"));

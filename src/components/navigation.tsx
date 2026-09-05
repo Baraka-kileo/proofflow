@@ -13,7 +13,7 @@ const navByRole: Record<Role, NavItem[]> = {
     { label:"Overview", href:"/dashboard", icon:Home }, { label:"Applications", href:"/applications/new", icon:FileText }, { label:"Trust Passport", icon:Fingerprint }, { label:"Help", icon:CircleHelp }, { label:"Account", icon:UserRound },
   ],
   buyer: [
-    { label:"Overview", href:"/dashboard", icon:Home }, { label:"Confirmations", icon:FileCheck2 }, { label:"History", icon:History }, { label:"Help", icon:CircleHelp }, { label:"Account", icon:UserRound },
+    { label:"Overview", href:"/dashboard", icon:Home }, { label:"Confirmations", href:"/dashboard#confirmations", icon:FileCheck2 }, { label:"History", icon:History }, { label:"Help", icon:CircleHelp }, { label:"Account", icon:UserRound },
   ],
   funder: [
     { label:"Overview", href:"/dashboard", icon:Home }, { label:"Applications", icon:FileText }, { label:"Offers", icon:HandCoins }, { label:"Help", icon:CircleHelp }, { label:"Account", icon:UserRound },

@@ -1,0 +1,13 @@
+import { describe,expect,it } from "vitest";
+import { confirmationSubmissionSchema,confirmationKeys,declarationVersion } from "@/lib/confirmations/confirmation-v1";
+
+const yesAnswers=Object.fromEntries(confirmationKeys.map(key=>[key,true]));
+const signature=[[{x:.1,y:.6},{x:.3,y:.2},{x:.7,y:.7}]];
+
+describe("buyer confirmation v1",()=>{
+  it("accepts six Yes answers with declaration and bounded signature",()=>{expect(confirmationSubmissionSchema.safeParse({confirmationId:"00000000-0000-4000-8000-000000000001",answers:yesAnswers,explanations:{},jobTitle:"Accounts Payable Manager",declarationVersion,signatureStrokes:signature}).success).toBe(true);});
+  it("requires an explanation for every No",()=>{const answers={...yesAnswers,invoiceOutstanding:false};const result=confirmationSubmissionSchema.safeParse({confirmationId:"00000000-0000-4000-8000-000000000001",answers,explanations:{},jobTitle:null,declarationVersion:null,signatureStrokes:null});expect(result.success).toBe(false);expect(result.error?.issues.some(issue=>issue.path.join(".")==="explanations.invoiceOutstanding")).toBe(true);});
+  it("accepts a reasoned dispute without a signature",()=>{const answers={...yesAnswers,amountCorrect:false};expect(confirmationSubmissionSchema.safeParse({confirmationId:"00000000-0000-4000-8000-000000000001",answers,explanations:{amountCorrect:"Our ledger records a different total."},jobTitle:null,declarationVersion:null,signatureStrokes:null}).success).toBe(true);});
+  it("rejects missing, excessive, or out-of-bounds signature data",()=>{const base={confirmationId:"00000000-0000-4000-8000-000000000001",answers:yesAnswers,explanations:{},jobTitle:"Director",declarationVersion};expect(confirmationSubmissionSchema.safeParse({...base,signatureStrokes:null}).success).toBe(false);expect(confirmationSubmissionSchema.safeParse({...base,signatureStrokes:[[{x:-1,y:0},{x:1,y:1}]]}).success).toBe(false);expect(confirmationSubmissionSchema.safeParse({...base,signatureStrokes:Array.from({length:25},()=>signature[0])}).success).toBe(false);});
+  it("rejects extra or missing answer keys",()=>{const {poIssued,...missing}=yesAnswers;expect(poIssued).toBe(true);expect(confirmationSubmissionSchema.safeParse({confirmationId:"00000000-0000-4000-8000-000000000001",answers:missing,explanations:{},jobTitle:"Director",declarationVersion,signatureStrokes:signature}).success).toBe(false);expect(confirmationSubmissionSchema.safeParse({confirmationId:"00000000-0000-4000-8000-000000000001",answers:{...yesAnswers,approve:true},explanations:{},jobTitle:"Director",declarationVersion,signatureStrokes:signature}).success).toBe(false);});
+});

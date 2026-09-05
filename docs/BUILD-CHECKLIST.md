@@ -94,7 +94,8 @@ The agent must not:
 | `/dashboard` | All | Server-selected dashboard for current role |
 | `/applications/new` | SME | Create draft, upload, review, verify, send |
 | `/applications/[id]` | SME/Funder | Authorized evidence package and timeline |
-| `/confirmations/[id]` | Buyer | Confirm or dispute once |
+| `/confirmations/[id]` | Buyer | Answer six questions, review, sign, or dispute once |
+| `/confirmations/[id]/certificate` | Buyer, SME, funder | View/download the immutable confirmation certificate |
 | `/offers/[id]` | SME/Funder | Create or respond to simulated terms |
 | `/trust-passport` | SME | Evidence-based history; not a credit score |
 | `/account` | All | Identity, organization, role, sign-out |
@@ -272,18 +273,22 @@ Dependencies: P4.
 
 Dependencies: P5.
 
-- [ ] **P6-01 MUST — Buyer queue.** Buyer dashboard loads only `buyer_pending` requests for its organization, ordered oldest first, with supplier, invoice reference, amount, submitted time, and warning count.
+- [x] **P6-01 MUST — Buyer queue.** Buyer dashboard loads only `buyer_pending` requests for its organization, ordered oldest first, with supplier, invoice reference, amount, submitted time, and warning count.
   - Accept: empty/loading/error states and pluralization work; second buyer organization cannot see the queue.
-- [ ] **P6-02 MUST — Confirmation detail.** `/confirmations/[id]` shows supplier, PO/invoice/total/due date, delivery preview, verification warnings, and three attestations: order recognized, delivery received, amount/reference recognized.
-  - Accept: preview signed URL is authorized/expiring; buyer cannot edit SME fields; mobile and keyboard flow pass.
-- [ ] **P6-03 MUST — Confirm.** Server requires buyer ownership, all attestations, pending status, and one-decision uniqueness; writes confirmation, `buyer_confirmed`, V012 rerun/update, and audit event transactionally.
-  - Accept: double-click/replay produces one decision; SME sees status after refresh and via Realtime if configured.
-- [ ] **P6-04 MUST — Dispute.** Dialog requires a meaningful reason, confirms destructive intent, and writes immutable `buyer_disputed` plus audit event.
-  - Accept: blank/short reason rejected; SME sees reason safely; funder cannot offer on disputed package.
-- [ ] **P6-05 MUST — Receipt/history.** Completed action is read-only with actor organization, decision, timestamp, attestations/reason, and request/application references.
-  - Accept: no edit/re-submit controls remain; browser back/refresh does not reopen action.
+- [x] **P6-02 MUST — Six-question confirmation detail.** `/confirmations/[id]` shows supplier, PO/invoice/amount/outstanding/due date, delivery preview, and verification warnings beside six explicit Yes/No questions covering PO issue, delivery acceptance, invoice recognition, amount, outstanding status, and payment date.
+  - Accept: every question shows its relevant transaction fact; every `No` requires a short explanation; preview URL is authorized/expiring; buyer cannot edit SME facts; mobile and keyboard flow pass.
+- [x] **P6-03 MUST — Summary and decision split.** All-Yes answers produce the exact confirmation summary with `Confirm & Continue` and `Go Back & Correct`; any No produces a dispute summary and cannot proceed to signature.
+  - Accept: back/edit preserves answers; summary values come from the frozen transaction snapshot; confirmation wording never appears for disputed facts.
+- [x] **P6-04 MUST — Declaration and drawn signature.** Confirmation captures only job title plus bounded mouse/touch/pen signature strokes; name, company, verified corporate email, timestamp, and approval ID are server-derived.
+  - Accept: signature works responsively and can be cleared/redrawn; unsigned, unverified-email, malformed, oversized, or substituted identity submissions fail closed.
+- [x] **P6-05 MUST — Atomic confirm/dispute.** Server requires buyer ownership, pending status, exact six-answer schema, explanations for each No, declaration/signature for all-Yes, and one-decision uniqueness; it writes the immutable decision, application status, V012 rerun, and audit event transactionally.
+  - Accept: double-click/exact replay returns one decision; changed replay is rejected; partial failure writes nothing; SME sees the resulting status after refresh.
+- [x] **P6-06 MUST — Confirmation certificate.** A confirmed decision generates an authorized one-page ProofFlow Buyer Confirmation Certificate containing the frozen transaction, six confirmations, representative identity, rendered signature, timestamp, approval ID, internal verification reference, and non-guarantee disclaimer.
+  - Accept: buyer, owning SME, and eligible funder can view/download the same record; unrelated tenants and disputed/pending requests fail closed; PDF text/layout and actual captured strokes are verified.
+- [x] **P6-07 MUST — Receipt and cross-role visibility.** Completed decisions are read-only; buyer sees a receipt/history, SME sees completion, and the funder dashboard shows `Buyer Confirmed` plus a working `View Confirmation Certificate` action.
+  - Accept: receipt shows every answer/explanation, actor organization, identity, timestamp, approval ID, and application references; ordinary clients cannot rewrite any completed decision.
 
-**P6 gate:** two-browser SME→buyer handoff succeeds, dispute alternative is proven, repeat/wrong-tenant actions fail, and receipts are immutable.
+**P6 gate: PASS.** Independent authenticated SME/buyer sessions complete the handoff; all-Yes signature and certificate, reasoned dispute, repeat/wrong-role/tamper rejection, rendered PDF layout, and immutable buyer/SME/funder receipts are proven.
 
 ### P7 — Funder review and simulated offer
 

@@ -185,47 +185,80 @@ export type Database = {
       confirmations: {
         Row: {
           amount_recognized: boolean | null
+          answer_explanations: Json | null
+          answers: Json | null
           application_id: string
+          approval_id: string | null
           buyer_organization_id: string
           created_at: string
           decided_at: string | null
           decided_by: string | null
+          decision_payload_hash: string | null
+          declaration_version: string | null
           delivery_received: boolean | null
           id: string
           order_recognized: boolean | null
           reason: string | null
+          representative_company: string | null
+          representative_email: string | null
+          representative_job_title: string | null
+          representative_name: string | null
           requested_at: string
+          signature_strokes: Json | null
           status: Database["public"]["Enums"]["confirmation_status"]
+          transaction_snapshot: Json | null
           updated_at: string
         }
         Insert: {
           amount_recognized?: boolean | null
+          answer_explanations?: Json | null
+          answers?: Json | null
           application_id: string
+          approval_id?: string | null
           buyer_organization_id: string
           created_at?: string
           decided_at?: string | null
           decided_by?: string | null
+          decision_payload_hash?: string | null
+          declaration_version?: string | null
           delivery_received?: boolean | null
           id?: string
           order_recognized?: boolean | null
           reason?: string | null
+          representative_company?: string | null
+          representative_email?: string | null
+          representative_job_title?: string | null
+          representative_name?: string | null
           requested_at?: string
+          signature_strokes?: Json | null
           status?: Database["public"]["Enums"]["confirmation_status"]
+          transaction_snapshot?: Json | null
           updated_at?: string
         }
         Update: {
           amount_recognized?: boolean | null
+          answer_explanations?: Json | null
+          answers?: Json | null
           application_id?: string
+          approval_id?: string | null
           buyer_organization_id?: string
           created_at?: string
           decided_at?: string | null
           decided_by?: string | null
+          decision_payload_hash?: string | null
+          declaration_version?: string | null
           delivery_received?: boolean | null
           id?: string
           order_recognized?: boolean | null
           reason?: string | null
+          representative_company?: string | null
+          representative_email?: string | null
+          representative_job_title?: string | null
+          representative_name?: string | null
           requested_at?: string
+          signature_strokes?: Json | null
           status?: Database["public"]["Enums"]["confirmation_status"]
+          transaction_snapshot?: Json | null
           updated_at?: string
         }
         Relationships: [
@@ -758,6 +791,17 @@ export type Database = {
       }
       submit_application_field_review_once: {
         Args: { reviewed_fields: Json; target_application_id: string }
+        Returns: Json
+      }
+      submit_buyer_confirmation_v1: {
+        Args: {
+          submitted_answers: Json
+          submitted_declaration_version?: string
+          submitted_explanations: Json
+          submitted_job_title?: string
+          submitted_signature_strokes?: Json
+          target_confirmation_id: string
+        }
         Returns: Json
       }
     }

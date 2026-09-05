@@ -20,7 +20,7 @@ The greeting is secondary; the next task is dominant.
 
 - SME: hero status card with `Continue application`/`Start application`, three small metrics, recent applications, and Trust Passport progress.
 - Buyer: urgent pending-confirmation queue, SLA age, supplier/amount summary, then history.
-- Funder: buyer-confirmed review queue, total requested, risk/check summary, then recent offers.
+- Funder: buyer-confirmed review queue, total requested, risk/check summary, `Buyer Confirmed` state, and a working `View Confirmation Certificate` action before recent offers.
 
 Cards enter with a short stagger. Skeletons reproduce their final geometry to prevent layout shift.
 
@@ -40,7 +40,17 @@ Desktop uses document preview left and editable normalized fields right. Mobile 
 
 ## `/confirmations/[id]`
 
-Buyer sees a clean attestation page: SME identity, PO/invoice reference, total/due date, delivery evidence preview, and any warnings. Three explicit checkboxes precede `Confirm delivery`. `Dispute` opens a dialog requiring a reason. A completed action becomes a read-only receipt with actor and timestamp.
+Buyer sees a focused three-stage confirmation rather than an approval button. Stage 1 presents six numbered `Yes`/`No` questions with the relevant supplier, PO, invoice, amount, outstanding amount, due date, or delivery evidence immediately beside the question. Selecting `No` reveals a persistent explanation field beside that answer. Progress survives moving forward/back within the page.
+
+Stage 2 presents `You are confirming that` with a generated plain-language summary and the actions `Confirm & Continue` and `Go Back & Correct`. Any `No` instead presents the disputed facts and a single `Submit dispute` action; it never displays confirmation language.
+
+Stage 3 presents the versioned Buyer Declaration. Full name, company, and verified corporate email are read-only server-derived values; the buyer enters only job title and draws in a labelled signature canvas usable by mouse, pen, touch, keyboard clear, and mobile orientation changes. Date/time and approval ID are server-generated. The only primary action is `Sign & Submit Confirmation`.
+
+A completed confirmation becomes a read-only receipt and certificate view. It shows every answer, actor identity, rendered signature, timestamp, approval ID, internal verification reference, download action, and the disclaimer that confirmation is not a guarantee of payment. A completed dispute shows every negative answer and explanation without signature/certificate controls.
+
+## `/confirmations/[id]/certificate`
+
+Authorized buyer, owning SME, and eligible funder receive the same immutable one-page PDF certificate generated from stored confirmation facts. It uses a clear ProofFlow heading, transaction table, six confirmation marks, authorized representative block with the captured signature, verification reference, and payment-guarantee disclaimer. Loading, denied, and unavailable-certificate states fail closed.
 
 ## `/offers/[id]`
 
