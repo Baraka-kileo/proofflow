@@ -6,7 +6,7 @@ ProofFlow is one role-aware application for SMEs, large customers, and funding p
 
 ## Public pages
 
-The landing page explains the working-capital problem, ProofFlow's evidence workflow, the boundary between evidence verification and a funder's independent decision, and the Core, Connect, and Funding Partner commercial offers. Calls to action lead to account access or an appropriate product path. The security page explains private storage, tenant isolation, manual evidence handling, auditability, external compliance, and independent funding.
+The landing page explains the working-capital problem, ProofFlow's evidence workflow, the boundary between evidence verification and a funder's independent decision, and the launch model: SMEs and large customers participate free while a funder pays 5% of its collected financing fee after successful funding, capped at R1,000 per funded invoice. Calls to action lead to account access or an appropriate product path. The security page explains private storage, tenant isolation, manual evidence handling, auditability, external compliance, and independent funding.
 
 ## Login
 

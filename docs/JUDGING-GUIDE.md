@@ -10,7 +10,7 @@ This page maps the published judging criteria directly to evidence in the workin
 | Technical Implementation | 20 | One role-based Next.js application; server authorisation; RLS; private storage; atomic evidence persistence; automated gates |
 | Best Use of Tools | 15 | Tools selected for traceability and privacy; no AI processing of sensitive documents; fail-closed adapters |
 | Security and Data Privacy | 15 | Threat model, tenant isolation, signed document access, validation, audit trail and explicit production gaps |
-| Business Model | 15 | Free core trust workflow; paid enterprise automation; funding-partner platform economics; phased pilot assumptions |
+| Business Model | 15 | Free participation for SMEs and customers; success-based funding-partner fee; phased pilot assumptions |
 | Scalability and Interoperability | 15 | Tenant-aware data model, role workspaces, versioned rules, provider-neutral status model and authorised adapter boundary |
 
 ## 1. Innovation and Creativity — 20 points
@@ -58,11 +58,11 @@ The public security page explains these boundaries in plain language. [SECURITY.
 
 ## 5. Business Model — 15 points
 
-- **Core — Free:** the crucial evidence workflow stays accessible to SMEs.
-- **Connect — Contract:** enterprises pay for authorised ERP connectivity, automation, bulk workflows, APIs, reporting and multi-entity controls.
-- **Funding Partner — Partner model:** funders pay for portfolio workflow and integrations; an agreement may include a share of the funder's collected financing fee after successful funding.
+- **SMEs — Free:** the complete evidence and funding-application workflow remains accessible.
+- **Large customers — Free:** confirmation creates trust without imposing a supplier-network subscription.
+- **Funding partners — Success based:** ProofFlow receives 5% of the financing fee the funder actually collects, capped at R1,000 per funded invoice. No completed funding means no fee.
 
-ProofFlow does not take a cut of invoice principal or the SME advance. Pricing, fee sharing and regulated responsibilities require contracting and legal review.
+For example, if a funder collects a R3,000 financing fee, ProofFlow receives R150. ProofFlow does not take a cut of invoice principal, funding capital or the SME advance. Commercial terms and regulated responsibilities require partner, legal, tax and regulatory review.
 
 A six-month partner pilot is budgeted as an internal planning range of **R750,000–R1,250,000**, covering engineering/product delivery, independent security and privacy work, integration delivery, cloud/monitoring/support and contingency. This is not a supplier quotation and excludes funder capital and unknown enterprise licence fees.
 

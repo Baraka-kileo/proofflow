@@ -35,15 +35,15 @@ ProofFlow verifies transaction evidence. It does not automatically approve fundi
 
 ## Business model
 
-The monetisation principle is to keep the crucial trust workflow accessible and charge for operational automation, integration and portfolio value.
+The launch model has no subscription. SMEs and large customers participate for free. ProofFlow earns a success fee only when a funding partner successfully funds an opportunity introduced through the platform.
 
-| Offer | Buyer | Value | Revenue mechanism |
-|---|---|---|---|
-| Core | SME | Submission, manual evidence entry, 12 transparent checks, customer confirmation, funding application and Trust Passport | Free |
-| Connect | Large customer / enterprise | Authorised ERP lookup, bulk suppliers, exceptions, API/webhooks, reporting, multi-entity controls and support | Contract subscription plus scoped integration/onboarding fee |
-| Funding Partner | Bank / alternative funder | Evidence workspaces, compliance-status integration, portfolio workflow, API/webhooks and reporting | Platform fee and/or contracted share of collected financing fees after successful funding |
+| Participant | Value | Launch price |
+|---|---|---:|
+| SME | Submission, manual evidence entry, 12 transparent checks, customer confirmation, funding application and Trust Passport | Free |
+| Large customer | Controlled confirmation or dispute, immutable receipt and certificate | Free |
+| Bank / alternative funder | Evidence-ready opportunities, customer confirmation, compliance-status coordination and independent proposal workflow | 5% of the financing fee collected, capped at R1,000 per funded invoice |
 
-ProofFlow does not take a percentage of invoice principal or the SME advance. A fee share is only on the funder's collected financing revenue and remains subject to commercial, legal, tax and regulatory review.
+If funding does not complete, no success fee is due. For example, if a funder collects R3,000 on a successfully funded R100,000 invoice, ProofFlow receives R150. ProofFlow does not take a percentage of invoice principal, funding capital or the SME advance. The model remains subject to commercial, legal, tax and regulatory review.
 
 ### Economics to validate in a pilot
 
@@ -53,7 +53,7 @@ ProofFlow does not take a percentage of invoice principal or the SME advance. A 
 - customer-confirmation completion time;
 - conversion from verified package to funder decision;
 - active SME retention and repeat use;
-- enterprise integration/onboarding cost and support load;
+- partner onboarding and support load;
 - net platform revenue after cloud, support and partner costs.
 
 No unvalidated market-size or savings claim is presented as fact.

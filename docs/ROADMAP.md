@@ -9,7 +9,7 @@
 - funding-ready package and Trust Passport;
 - external compliance progress boundary;
 - independent funding proposal workflow;
-- free Core, enterprise Connect and Funding Partner positioning.
+- free SME and customer participation with a funding-partner success fee.
 
 ## Partner pilot
 
@@ -26,6 +26,6 @@
 - portfolio reporting, multi-entity administration, APIs and webhooks;
 - configurable rule versions with preserved historical results;
 - localization of language, display formats and country-specific compliance workflows;
-- commercial validation of subscriptions, integration fees and any approved financing-fee share.
+- commercial validation of the approved funding-partner success fee before considering any additional revenue model.
 
 No roadmap integration may fabricate a response when credentials, authorization or a partner contract is unavailable.

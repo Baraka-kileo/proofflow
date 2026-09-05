@@ -110,15 +110,17 @@ This is a hackathon MVP, not a claim of regulatory certification. Independent pe
 
 ## Business model
 
-ProofFlow keeps the essential trust workflow accessible and charges where automation creates operational value.
+ProofFlow starts with one simple performance-based fee. SMEs and large customers use the evidence and confirmation journey for free. A funding partner pays only when an opportunity introduced through ProofFlow is successfully funded.
 
-| Offer | Customer | Included | Revenue |
-|---|---|---|---|
-| **Core** | SME | Evidence upload, manual entry, 12 transparent checks, customer confirmation, funding application and Trust Passport | Free |
-| **Connect** | Large customer / enterprise | Authorised ERP integration, automatic lookup, bulk suppliers, exception handling, API/webhooks, reporting and multi-entity controls | Contract subscription and integration fee |
-| **Funding Partner** | Bank or alternative funder | Review workspace, external-compliance status, portfolio tools, API/webhooks and reporting | Platform fee and/or agreed share of the funder's collected financing fee after successful funding |
+| Participant | Price | Value |
+|---|---:|---|
+| **SME** | Free | Evidence submission, 12 transparent checks, customer confirmation, funding application and Trust Passport |
+| **Large customer** | Free | Controlled confirmation or dispute, immutable receipt and certificate |
+| **Funding partner** | **5% of the financing fee it collects**, capped at **R1,000 per funded invoice** | Customer-confirmed, evidence-ready opportunities and a traceable review workspace |
 
-ProofFlow does **not** take a percentage of the invoice principal or the SME advance. Any fee-sharing arrangement requires partner, legal and regulatory approval. The [product plan](docs/PRODUCT-PLAN.md) records the pilot budget assumptions, unit economics to validate and scale strategy.
+Example: for a R100,000 invoice where the funder collects a R3,000 financing fee, ProofFlow receives R150. If funding does not complete, ProofFlow receives R0. The percentage never applies to the invoice principal, funding capital or the SME's advance.
+
+This aligns ProofFlow with successful funding while leaving KYC/KYB, credit risk, pricing, underwriting, contracting, collections and disbursement with the funding partner. The commercial agreement requires partner, legal, tax and regulatory review. The [product plan](docs/PRODUCT-PLAN.md) records the pilot economics to validate.
 
 ## Repository map
 

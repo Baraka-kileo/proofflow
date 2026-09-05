@@ -21,29 +21,29 @@ const steps = [
 
 const plans = [
   {
-    name: "Core",
+    name: "SME access",
     price: "Free",
     audience: "For SMEs",
-    copy: "The complete evidence journey without a platform subscription.",
+    copy: "Build and submit trustworthy evidence without an upfront platform charge.",
     features: ["Document submission", "Manual evidence entry", "Deterministic verification", "Customer confirmation", "Funding application", "Basic Trust Passport"],
     cta: "Get started as an SME",
     href: "/login",
   },
   {
-    name: "Connect",
-    price: "Enterprise",
+    name: "Customer confirmation",
+    price: "Free",
     audience: "For large customers",
-    copy: "Automation for supplier networks and finance teams.",
-    features: ["SAP, Coupa and ERP integrations", "Automatic transaction lookup", "Bulk supplier workflows", "Exception management", "API and webhooks", "Reporting and multi-entity support"],
-    cta: "Connect your supplier network",
-    href: "/contact?for=connect",
+    copy: "Confirm or dispute supplier transactions through a controlled, traceable process.",
+    features: ["Assigned confirmation requests", "Six transaction questions", "Dispute explanations", "Representative declaration", "Captured signature", "Confirmation certificate"],
+    cta: "Open customer workspace",
+    href: "/login",
   },
   {
     name: "Funding Partner",
-    price: "Partner model",
+    price: "5% success fee",
     audience: "For funders",
-    copy: "A structured evidence workspace for faster independent decisions.",
-    features: ["Funding-ready evidence packages", "External compliance status", "Portfolio tools", "APIs and reporting", "Contractual fee-share option", "Enterprise support"],
+    copy: "Pay only when an opportunity introduced through ProofFlow is successfully funded.",
+    features: ["Evidence-ready opportunities", "Customer-confirmed invoices", "External compliance status", "Independent proposal workflow", "No successful funding, no fee", "Maximum R1,000 per funded invoice"],
     cta: "Become a funding partner",
     href: "/contact?for=funder",
   },
@@ -141,8 +141,8 @@ export default function Home() {
       <section className="workflow" id="pricing" aria-labelledby="pricing-title">
         <div className="section-heading">
           <span className="overline">Business model</span>
-          <h2 id="pricing-title">Free where access matters. Paid where automation creates value.</h2>
-          <p>SMEs can build a funding-ready package without a subscription. Revenue comes from enterprise automation and funding-partner services.</p>
+          <h2 id="pricing-title">Free to participate. We earn only when funding succeeds.</h2>
+          <p>SMEs and large customers use the evidence journey without a platform charge. The funding partner pays ProofFlow 5% of the financing fee it actually collects on a successfully funded opportunity.</p>
         </div>
         <div className="grid gap-5 lg:grid-cols-3">
           {plans.map((plan) => (
@@ -156,8 +156,12 @@ export default function Home() {
             </article>
           ))}
         </div>
-        <p className="mt-5 text-sm leading-6 text-[var(--muted)]">
-          A Funding Partner agreement may include a contractual share of the funder&apos;s collected financing fee after successful funding, subject to legal and regulatory review. ProofFlow does not take a percentage of the invoice principal or SME advance.
+        <div className="mt-5 rounded-2xl border border-[var(--border)] bg-[var(--soft)] p-5 text-sm leading-6">
+          <p className="font-bold text-[var(--ink)]">Example: a R100,000 invoice</p>
+          <p className="mt-1 text-[var(--muted)]">If the funder collects a R3,000 financing fee, ProofFlow receives R150. If funding does not complete, ProofFlow receives R0. The success fee is capped at R1,000 per funded invoice.</p>
+        </div>
+        <p className="mt-4 text-sm leading-6 text-[var(--muted)]">
+          The 5% applies only to the funder&apos;s collected financing fee—not the invoice value, the funding capital or the SME&apos;s advance. The funding partner retains responsibility for risk, compliance, underwriting, contracting, collections and disbursement. Commercial terms remain subject to partner, legal, tax and regulatory review.
         </p>
       </section>
 

@@ -439,3 +439,11 @@ Commit/CI link:
 - **Visual evidence:** Captured fresh hosted screenshots for the SME portal, customer portal, funder portal, all twelve document checks, signed customer confirmation/certificate controls and funder review. Browser inspection confirmed no legacy check labels, technical audit wording or `0 / 3 uploaded` contradiction on the completed example.
 - **Release gates:** ESLint passed. TypeScript strict checking passed. Vitest passed 25 files and 124 assertions. The Next.js production build passed with 16 routes. The first six-test Chromium run had one sample-credential click timing failure; the isolated retry passed and a complete rerun then passed all 6 tests. The production dependency audit reported zero vulnerabilities, `git diff --check` passed and all local Markdown links resolved.
 - **Deployment:** Vercel deployments `dpl_2nn65g9n29nz2iuGhGr6vEu7epcL` and `dpl_22AiLRhBetSA8jQQinUVoperPmZf` reached `READY`; the latter contains the final judge-facing wording and is aliased to `https://proofflow-sepia.vercel.app`.
+
+## 2026-09-05 — Success-fee-only launch model
+
+- **Commercial decision:** Simplified the launch model to one performance-based revenue source. SMEs and large customers participate free; a funding partner pays ProofFlow 5% of the financing fee it actually collects after successful funding, capped at R1,000 per funded invoice. No completed funding means no fee.
+- **Clear calculation:** The landing page and repository use the same example: on a R100,000 invoice with a R3,000 collected financing fee, ProofFlow earns R150. The percentage never applies to invoice principal, funding capital or the SME advance.
+- **Responsibility boundary:** The funder continues to own KYC/KYB, credit risk, pricing, underwriting, contracting, collections and disbursement. Commercial terms remain subject to partner, legal, tax and regulatory review.
+- **Changed evidence:** Updated the public pricing section, README, product plan, judging guide, roadmap and UX specification. Subscriptions and paid customer integrations are no longer presented as launch revenue.
+- **Verification scope:** Per the product-owner request, the automated suite was not rerun for this copy-only commercial-model change. `git diff --check` passed before delivery; Vercel's production build remains the deployment gate.
