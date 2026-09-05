@@ -36,6 +36,9 @@ yarn-error.log*
 .env*
 !.env.example
 
+# Supabase CLI link/cache state (hosted project metadata stays local)
+/supabase/.temp/
+
 # vercel
 .vercel
 

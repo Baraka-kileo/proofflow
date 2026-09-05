@@ -197,12 +197,12 @@ Dependencies: P0.
 
 Dependencies: P1-01, P1-02, P1-04, P1-06.
 
-- [ ] **P2-01 MUST — Environment validation.** Create a server-only environment schema for the four public/server variables in `.env.example`; application fails with a helpful server message when required live-mode values are missing.
+- [x] **P2-01 MUST — Environment validation.** Create a server-only environment schema for the four public/server variables in `.env.example`; application fails with a helpful server message when required live-mode values are missing.
   - Accept: secrets are never prefixed `NEXT_PUBLIC_`; `.env.local` is ignored; client bundle inspection finds no server keys.
-- [ ] **P2-02 MUST — Initial schema.** Migration creates enums/tables for profiles, organizations, memberships, applications, documents, document_fields, verification_runs, verification_checks, confirmations, offers, and audit_events.
+- [x] **P2-02 MUST — Initial schema.** Migration creates enums/tables for profiles, organizations, memberships, applications, documents, document_fields, verification_runs, verification_checks, confirmations, offers, and audit_events.
   - Required columns: UUID primary keys, ownership foreign keys, status/type enums, created/updated timestamps; money as bigint minor units; percentages as bounded integer basis points; unique constraints for membership, document slot, decision, offer response, and invoice identity.
   - Accept: clean local/remote migration applies twice safely through reset/recreate workflow; generated TypeScript database types are saved.
-- [ ] **P2-03 MUST — Private storage.** Create private `application-documents` bucket and path convention `{organizationId}/{applicationId}/{documentId}/{safeFilename}`.
+- [x] **P2-03 MUST — Private storage.** Create private `application-documents` bucket and path convention `{organizationId}/{applicationId}/{documentId}/{safeFilename}`.
   - Accept: anonymous/public URL fails; authorized signed preview expires; type/size/path constraints are enforced.
 - [ ] **P2-04 MUST — RLS policies.** Enable RLS on every business table. SME sees/changes its organization's allowed drafts; buyer sees only confirmation requests addressed to its organization; funder sees only buyer-confirmed/review records allowed to funder; audit/check facts cannot be rewritten by ordinary clients.
   - Accept: automated two-tenant tests prove allowed access succeeds and ID substitution fails for select/insert/update/delete.

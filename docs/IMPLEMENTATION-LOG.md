@@ -92,3 +92,36 @@ Commit/CI link:
 - **Interaction boundary:** Workflow actions whose routes are scheduled for P3/P6/P7 are real disabled buttons with explanations, not dead links. Nav destinations remain disabled until implemented.
 - **Security/demo boundary:** Dashboard data comes from a named server-only demo adapter. No claim of live Supabase isolation is made.
 - **Remaining:** P2 requires credentials for live Supabase proof. No P2 unit is checked.
+
+## 2026-09-05 — P2-01 hosted environment boundary
+
+- **Work unit IDs:** P2-01
+- **Outcome:** Linked the repository to the healthy hosted ProofFlow Supabase project and added a server-only Zod environment boundary with separate fail-fast checks for live Supabase, privileged Supabase admin, and Gemini extraction workflows. `.env.local` and Supabase CLI link/cache state remain ignored.
+- **Changed areas:** `.env.example`, `.gitignore`, `src/lib/env/server.ts`, environment tests, test-only server boundary alias, Supabase CLI project configuration.
+- **Failed check retained:** The first unit-test run could not resolve `server-only`. After installing the official boundary package, the second run correctly threw its browser-side guard under jsdom. Vitest now substitutes an explicit no-op only inside tests while production builds retain the real Next.js boundary.
+- **Automated evidence:** Final lint and typecheck passed. Six Vitest files with 16 assertions passed, including missing-live-value errors and server-secret guards. The Next.js production build passed. A recursive scan of `.next/static` found neither `SUPABASE_SERVICE_ROLE_KEY` nor `GEMINI_API_KEY` variable names.
+- **Security boundary:** No API key, access token, database password, or service-role value was printed, committed, or placed in a public variable. The public Supabase URL/publishable key will be configured separately from server-only secrets.
+- **Assumptions:** The current UI may remain in its explicitly labelled demo adapter until P2-07. Live-only helpers fail with actionable configuration errors when invoked without their values.
+- **Remaining:** Database schema, storage, RLS, auth helpers, safe seed users, and live dashboard repository remain P2 work.
+
+## 2026-09-05 — P2-02 hosted initial schema
+
+- **Work unit IDs:** P2-02
+- **Outcome:** Applied the initial ProofFlow schema to the linked hosted project. It includes every required table and domain enum, UUID ownership chains, timestamps, integer minor-unit money, bounded basis points, and uniqueness for membership, evidence slots, confirmation decisions, funder offers/responses, invoice identity, and document hashes.
+- **Changed areas:** `supabase/migrations/20260905020000_initial_schema.sql`, `src/types/database.ts`.
+- **Hosted migration evidence:** A dry run listed exactly one pending migration and linked database lint returned no errors. The first hosted push applied migration `20260905020000`; an immediate second push returned `upToDate: true` with zero migrations. Local and remote migration histories match.
+- **Type evidence:** Supabase-generated TypeScript database types were saved and compared byte-normalized with a fresh hosted generation; they match exactly. Application lint and typecheck pass, and a final hosted database lint reports no schema errors.
+- **Security boundary:** Every new business table had RLS enabled in the initial migration before client access. With no policies yet, browser clients are denied by default. No local Supabase service was started.
+- **User-directed deviation:** The checklist's local reset wording was replaced by hosted dry-run, apply, immediate no-op reapply, linked history comparison, and hosted lint because the user explicitly requested online Supabase only. No hosted database reset was performed.
+- **Remaining:** P2-03 private storage and signed-preview controls are next; role policies and two-tenant proof follow in P2-04.
+
+## 2026-09-05 — P2-03 hosted private document vault
+
+- **Work unit IDs:** P2-03
+- **Outcome:** Created the private `application-documents` hosted bucket with a 10 MiB ceiling, PDF/JPEG/PNG allowlist, safe-filename rule, exact organization/application/document/filename path ownership, and role-aware read/write policies. SMEs can change evidence only before review advances; buyers and funders gain read-only evidence access only at eligible workflow states.
+- **Changed areas:** `supabase/migrations/20260905023000_private_document_storage.sql`, `tests/integration/storage-security.mjs`.
+- **Failed check retained:** The first hosted test attempted Supabase's newer secret-key format, which the installed Auth admin client rejected as an invalid API key. The runner was switched to the project's legacy service-role key without displaying or persisting either credential.
+- **Hosted evidence:** Migration dry-run and apply passed; linked database lint reports zero errors. The experimental CLI storage listing returned `application-documents/`. A synthetic authenticated SME uploaded a valid PDF, while a public URL failed. A one-second signed preview loaded while valid and failed after expiry. Malformed paths, `text/plain`, and a 10 MiB + 1 byte upload were each rejected.
+- **Cleanup evidence:** The integration probe removes its object, application, organization, profile/auth user and also removes exact-name stale probe records from interrupted prior runs. A second complete run passed with cleanup in place.
+- **Security boundary:** Credentials are obtained transiently from the authenticated CLI, injected only into the test process, and never displayed, written to a file, or committed. All test identities use randomized `example.invalid` addresses and Demo-labelled data.
+- **Remaining:** P2-04 must define and prove table-level role/tenant policies across select, insert, update, and delete.
