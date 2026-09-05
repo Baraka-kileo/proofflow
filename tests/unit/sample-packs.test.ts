@@ -8,7 +8,7 @@ const root = path.resolve("samples/evidence-packs");
 const names = ["purchase-order.pdf", "delivery-evidence.pdf", "invoice.pdf"];
 const hash = (value: Buffer) => createHash("sha256").update(value).digest("hex");
 
-describe("synthetic evidence packs", () => {
+describe("fictional evidence packs", () => {
   it.each(["valid", "mismatch", "duplicate"])("contains a complete %s PDF set", async (pack) => {
     for (const name of names) {
       const value = await readFile(path.join(root, pack, name));
@@ -29,7 +29,7 @@ describe("synthetic evidence packs", () => {
 
   it("documents the deliberately contradictory rule outcomes", async () => {
     const expected = JSON.parse(await readFile(path.join(root, "mismatch", "expected.json"), "utf8"));
-    expect(expected.synthetic).toBe(true);
+    expect(expected.fictionalFixture).toBe(true);
     expect(expected.expectedRulesBeforeBuyer).toMatchObject({
       V001: "fail",
       V003: "fail",

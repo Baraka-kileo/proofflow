@@ -1,12 +1,11 @@
 "use client";
 
 import { useActionState } from "react";
-import { ArrowRight, LockKeyhole, Sparkles } from "lucide-react";
+import { ArrowRight, LockKeyhole } from "lucide-react";
 import { createApplicationDraft } from "@/app/(protected)/applications/new/actions";
 import { ErrorSummary } from "@/components/error-summary";
 import { Alert } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { FormField } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
@@ -76,7 +75,7 @@ export function ApplicationDraftForm({
           <Input
             id="purchaseOrderReference"
             name="purchaseOrderReference"
-            placeholder="e.g. PO-DEMO-1042"
+            placeholder="e.g. PO-1042"
             maxLength={80}
             aria-describedby={
               error("purchaseOrderReference")
@@ -96,7 +95,7 @@ export function ApplicationDraftForm({
           <Input
             id="invoiceNumber"
             name="invoiceNumber"
-            placeholder="e.g. INV-DEMO-2041"
+            placeholder="e.g. INV-2041"
             maxLength={80}
             aria-describedby={
               error("invoiceNumber")
@@ -160,38 +159,17 @@ export function ApplicationDraftForm({
       <div className="rounded-2xl border border-[var(--border)] bg-[var(--soft)] p-5">
         <div className="flex gap-3">
           <span className="grid size-10 shrink-0 place-items-center rounded-xl bg-[var(--surface)] text-[var(--primary)]">
-            <Sparkles className="size-5" aria-hidden="true" />
+            <LockKeyhole className="size-5" aria-hidden="true" />
           </span>
           <div>
-            <h2 className="text-sm font-bold">
-              Permission to process Demo documents
-            </h2>
+            <h2 className="text-sm font-bold">Private evidence workflow</h2>
             <p className="mt-1 text-xs leading-5 text-[var(--muted)]">
-              ProofFlow will send the three synthetic documents you upload to an
-              AI service only to suggest fields. You review every value, and
-              deterministic rules—not AI—produce the checks.
+              Your documents stay in private storage. You will enter the required
+              evidence values yourself before ProofFlow runs fixed, explainable checks.
             </p>
           </div>
         </div>
-        <label
-          htmlFor="aiConsent"
-          className="mt-4 flex cursor-pointer items-start gap-3 rounded-xl bg-[var(--surface)] p-4 text-sm font-semibold"
-        >
-          <Checkbox id="aiConsent" name="aiConsent" value="on" />
-          <span>
-            I understand and consent to AI processing for this hackathon Demo.
-          </span>
-        </label>
-        {error("aiConsent") && (
-          <p
-            id="aiConsent-error"
-            className="mt-2 text-xs font-semibold text-[var(--error)]"
-          >
-            {error("aiConsent")}
-          </p>
-        )}
-      </div>
-      <div className="flex flex-col-reverse gap-3 border-t border-[var(--border)] pt-6 sm:flex-row sm:items-center sm:justify-between">
+      </div>      <div className="flex flex-col-reverse gap-3 border-t border-[var(--border)] pt-6 sm:flex-row sm:items-center sm:justify-between">
         <p className="flex items-center gap-2 text-xs text-[var(--muted)]">
           <LockKeyhole className="size-4" aria-hidden="true" />
           Saved as a private draft visible only to your SME.

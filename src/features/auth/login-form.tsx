@@ -13,7 +13,7 @@ type LoginAction = (
   state: LoginState,
   formData: FormData,
 ) => Promise<LoginState>;
-export type DemoCredential = {
+export type TestCredential = {
   role: string;
   label: string;
   detail: string;
@@ -22,7 +22,7 @@ export type DemoCredential = {
   tone: "sme" | "customer" | "funder";
 };
 const initialLoginState: LoginState = { errors: [] };
-const demoTone = {
+const testTone = {
   sme: "border-[#9bc8b8] bg-[var(--success-soft)] text-[var(--success)]",
   customer: "border-[#e8c98f] bg-[var(--review-soft)] text-[var(--review)]",
   funder: "border-[#b8c5ef] bg-[#edf1ff] text-[#2949a8]",
@@ -30,10 +30,10 @@ const demoTone = {
 
 export function LoginForm({
   action = signIn,
-  demoCredentials = [],
+  testCredentials = [],
 }: {
   action?: LoginAction;
-  demoCredentials?: DemoCredential[];
+  testCredentials?: TestCredential[];
 }) {
   const [show, setShow] = useState(false);
   const [email, setEmail] = useState("");
@@ -45,7 +45,7 @@ export function LoginForm({
   );
   const errors = state.errors;
 
-  function fillDemoAccount(credential: DemoCredential) {
+  function fillTestAccount(credential: TestCredential) {
     setEmail(credential.email);
     setPassword(credential.password);
     setSelectedRole(credential.role);
@@ -65,7 +65,7 @@ export function LoginForm({
             className="rounded-xl bg-[var(--success-soft)] px-3 py-2 text-sm font-semibold text-[var(--primary)]"
           >
             {
-              demoCredentials.find(
+              testCredentials.find(
                 (credential) => credential.role === selectedRole,
               )?.label
             }{" "}
@@ -130,32 +130,32 @@ export function LoginForm({
         </Button>
       </form>
 
-      {demoCredentials.length > 0 && (
+      {testCredentials.length > 0 && (
         <section
-          aria-labelledby="demo-account-heading"
+          aria-labelledby="test-account-heading"
           className="mt-8 border-t border-[var(--border)] pt-6"
         >
           <div className="flex items-end justify-between gap-3">
             <div>
-              <h3 id="demo-account-heading" className="font-bold">
-                Demo accounts
+              <h3 id="test-account-heading" className="font-bold">
+                Sample credentials for testing
               </h3>
               <p className="mt-1 text-sm text-[var(--muted)]">
                 Choose a role to fill the fields above. Then press Sign in.
               </p>
             </div>
             <span className="shrink-0 rounded-full bg-[var(--review-soft)] px-2.5 py-1 text-xs font-bold text-[var(--review)]">
-              Demo only
+              Sign-in page only
             </span>
           </div>
           <div className="mt-3 grid gap-2 sm:grid-cols-3">
-            {demoCredentials.map((credential) => (
+            {testCredentials.map((credential) => (
               <button
                 key={credential.role}
                 type="button"
                 aria-pressed={selectedRole === credential.role}
-                onClick={() => fillDemoAccount(credential)}
-                className={`min-h-20 rounded-xl border p-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-[var(--focus)] ${demoTone[credential.tone]} ${selectedRole === credential.role ? "ring-2 ring-current" : "opacity-85 hover:opacity-100"}`}
+                onClick={() => fillTestAccount(credential)}
+                className={`min-h-20 rounded-xl border p-3 text-left transition-colors focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-[var(--focus)] ${testTone[credential.tone]} ${selectedRole === credential.role ? "ring-2 ring-current" : "opacity-85 hover:opacity-100"}`}
               >
                 <span className="flex items-center justify-between gap-2 text-sm font-bold">
                   {credential.label}

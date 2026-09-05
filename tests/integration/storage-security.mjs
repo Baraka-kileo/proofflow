@@ -27,7 +27,7 @@ async function removeStaleStorageProbes() {
   const { data: organizations } = await admin
     .from("organizations")
     .select("id")
-    .eq("name", "Storage Security Demo SME");
+    .eq("name", "Storage Security Fixture SME");
 
   for (const organization of organizations ?? []) {
     const { data: memberships } = await admin
@@ -54,7 +54,7 @@ try {
 
   const { data: organization, error: organizationError } = await admin
     .from("organizations")
-    .insert({ name: "Storage Security Demo SME", slug: `storage-${run}`, kind: "sme", is_demo: true })
+    .insert({ name: "Storage Security Fixture SME", slug: `storage-${run}`, kind: "sme", is_demo: false })
     .select("id")
     .single();
   if (organizationError) throw organizationError;
@@ -62,7 +62,7 @@ try {
 
   const { error: profileError } = await admin.from("profiles").insert({
     id: userId,
-    display_name: "Storage Security Demo User",
+    display_name: "Storage Security Fixture User",
   });
   if (profileError) throw profileError;
 
@@ -79,7 +79,7 @@ try {
       owner_organization_id: organizationId,
       buyer_organization_id: organizationId,
       created_by: userId,
-      title: "Storage Security Demo Application",
+      title: "Storage Security Fixture Application",
     })
     .select("id")
     .single();
@@ -87,14 +87,14 @@ try {
   applicationId = application.id;
 
   const documentId = crypto.randomUUID();
-  path = `${organizationId}/${application.id}/${documentId}/demo-proof.pdf`;
+  path = `${organizationId}/${application.id}/${documentId}/fixture-proof.pdf`;
   const { error: documentError } = await admin.from("documents").insert({
     id: documentId,
     application_id: application.id,
     owner_organization_id: organizationId,
     uploaded_by: userId,
     kind: "invoice",
-    original_filename: "demo-proof.pdf",
+    original_filename: "fixture-proof.pdf",
     storage_path: path,
     mime_type: "application/pdf",
     byte_size: 20,
@@ -123,7 +123,7 @@ try {
   });
   assert(duplicateSlotError?.code === "23505", "An authenticated SME placed a second file in the same document slot.");
 
-  const pdf = new TextEncoder().encode("%PDF-1.4\n% Demo only\n");
+  const pdf = new TextEncoder().encode("%PDF-1.4\n% Fictional test fixture\n");
   const { error: uploadError } = await member.storage
     .from("application-documents")
     .upload(path, pdf, { contentType: "application/pdf" });

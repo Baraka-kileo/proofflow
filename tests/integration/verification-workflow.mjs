@@ -4,7 +4,7 @@ import { createClient } from "@supabase/supabase-js";
 const url=process.env.PROOFFLOW_TEST_SUPABASE_URL;
 const anonKey=process.env.PROOFFLOW_TEST_PUBLISHABLE_KEY;
 const serviceKey=process.env.PROOFFLOW_TEST_SERVICE_ROLE_KEY;
-const password=process.env.PROOFFLOW_DEMO_PASSWORD;
+const password=process.env.PROOFFLOW_TEST_PASSWORD;
 if(!url||!anonKey||!serviceKey||!password)throw new Error("Hosted verification-test configuration is missing.");
 
 const admin=createClient(url,serviceKey,{auth:{persistSession:false,autoRefreshToken:false}});
@@ -20,14 +20,14 @@ const requireNoError=(error,label)=>{if(error)throw new Error(`${label}: ${error
 
 async function createReviewedFixture(actorId,invoiceNumber){
   const appId=randomUUID();appIds.push(appId);
-  const {error:appError}=await admin.from("applications").insert({id:appId,owner_organization_id:ownerOrganizationId,buyer_organization_id:buyerOrganizationId,created_by:actorId,title:"Verification integration Demo",status:"sme_reviewed",currency:"ZAR",invoice_number:invoiceNumber,invoice_total_minor:4875025,purchase_order_reference:`PO-VERIFY-${unique}`,invoice_issued_on:"2026-08-22",invoice_due_on:"2026-10-21",ai_processing_consented_at:new Date().toISOString()});
+  const {error:appError}=await admin.from("applications").insert({id:appId,owner_organization_id:ownerOrganizationId,buyer_organization_id:buyerOrganizationId,created_by:actorId,title:"Verification integration fixture",status:"sme_reviewed",currency:"ZAR",invoice_number:invoiceNumber,invoice_total_minor:4875025,purchase_order_reference:`PO-VERIFY-${unique}`,invoice_issued_on:"2026-08-22",invoice_due_on:"2026-10-21"});
   requireNoError(appError,"application fixture");
   const templates={
-    purchase_order:{buyer_legal_name:"Ubuntu Retail Group Demo",supplier_legal_name:"Ndlovu Office Supply Demo",purchase_order_reference:`PO-VERIFY-${unique}`,issue_date:"2026-08-20",currency:"ZAR",order_total:"48750.25"},
-    delivery_evidence:{buyer_legal_name:"Ubuntu Retail Group Demo",supplier_legal_name:"Ndlovu Office Supply Demo",purchase_order_reference:`PO-VERIFY-${unique}`,delivery_or_completion_date:"2026-08-21",receiver_or_signature_present:true},
-    invoice:{buyer_legal_name:"Ubuntu Retail Group Demo",supplier_legal_name:"Ndlovu Office Supply Demo",invoice_number:invoiceNumber,purchase_order_reference:`PO-VERIFY-${unique}`,issue_date:"2026-08-22",due_date:"2026-10-21",currency:"ZAR",subtotal:"42391.52",tax:"6358.73",total:"48750.25"},
+    purchase_order:{buyer_legal_name:"Ubuntu Retail Group",supplier_legal_name:"Ndlovu Office Supplies",purchase_order_reference:`PO-VERIFY-${unique}`,issue_date:"2026-08-20",currency:"ZAR",order_total:"48750.25"},
+    delivery_evidence:{buyer_legal_name:"Ubuntu Retail Group",supplier_legal_name:"Ndlovu Office Supplies",purchase_order_reference:`PO-VERIFY-${unique}`,delivery_or_completion_date:"2026-08-21",receiver_or_signature_present:true},
+    invoice:{buyer_legal_name:"Ubuntu Retail Group",supplier_legal_name:"Ndlovu Office Supplies",invoice_number:invoiceNumber,purchase_order_reference:`PO-VERIFY-${unique}`,issue_date:"2026-08-22",due_date:"2026-10-21",currency:"ZAR",subtotal:"42391.52",tax:"6358.73",total:"48750.25"},
   };
-  const documents=Object.keys(templates).map(kind=>({id:randomUUID(),application_id:appId,owner_organization_id:ownerOrganizationId,uploaded_by:actorId,kind,original_filename:`${kind}.pdf`,storage_path:`verification-integration/${appId}/${kind}.pdf`,mime_type:"application/pdf",byte_size:1024,sha256:createHash("sha256").update(`${appId}:${kind}`).digest("hex"),page_count:1,upload_completed_at:new Date().toISOString(),extraction_status:"reviewed",extraction_schema_version:"extraction-v1",extraction_provider:"proofflow-demo-fixture",extraction_model:"deterministic-fixture-v1",extraction_completed_at:new Date().toISOString()}));
+  const documents=Object.keys(templates).map(kind=>({id:randomUUID(),application_id:appId,owner_organization_id:ownerOrganizationId,uploaded_by:actorId,kind,original_filename:`${kind}.pdf`,storage_path:`verification-integration/${appId}/${kind}.pdf`,mime_type:"application/pdf",byte_size:1024,sha256:createHash("sha256").update(`${appId}:${kind}`).digest("hex"),page_count:1,upload_completed_at:new Date().toISOString(),extraction_status:"reviewed",extraction_schema_version:"evidence-entry-v1",extraction_provider:"manual-entry",extraction_model:null,extraction_completed_at:null,entry_method:"manual"}));
   const {error:documentError}=await admin.from("documents").insert(documents);requireNoError(documentError,"document fixtures");
   const fields=documents.flatMap(document=>Object.entries(templates[document.kind]).map(([field_name,value])=>({id:randomUUID(),document_id:document.id,field_name,source_value:value,normalized_value:value,confidence_bps:9500,source_label:field_name,review_status:"accepted",reviewed_by:actorId,reviewed_at:new Date().toISOString()})));
   const {error:fieldError}=await admin.from("document_fields").insert(fields);requireNoError(fieldError,"field fixtures");

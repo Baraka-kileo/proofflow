@@ -33,7 +33,7 @@ describe("login form", () => {
       "Enter a valid email address",
     );
     const password = screen.getByLabelText(/^Password/);
-    await user.type(password, "safe-demo-password");
+    await user.type(password, "safe-sample-password");
     await user.click(screen.getByRole("button", { name: "Show password" }));
     expect(password).toHaveAttribute("type", "text");
   });
@@ -46,28 +46,28 @@ describe("login form", () => {
     render(<LoginForm action={action} />);
     await user.type(
       screen.getByLabelText(/^Email address/),
-      "demo@example.test",
+      "sme.demo@proofflow.example",
     );
-    await user.type(screen.getByLabelText(/^Password/), "safe-demo-password");
+    await user.type(screen.getByLabelText(/^Password/), "safe-sample-password");
     await user.click(screen.getByRole("button", { name: "Sign in" }));
     expect(await screen.findByRole("status")).toHaveTextContent(
       "Email or password is incorrect",
     );
   });
-  it("fills demo credentials but waits for the user to submit", async () => {
+  it("fills sample credentials but waits for the user to submit", async () => {
     const action = vi.fn(async () => ({ errors: [] }));
     const user = userEvent.setup();
     render(
       <LoginForm
         action={action}
-        demoCredentials={[
+        testCredentials={[
           {
             role: "buyer",
             label: "Large customer",
             detail: "Confirm invoices",
             tone: "customer",
             email: "buyer.demo@proofflow.example",
-            password: "safe-demo-password",
+            password: "safe-sample-password",
           },
         ]}
       />,
@@ -79,7 +79,7 @@ describe("login form", () => {
       "buyer.demo@proofflow.example",
     );
     expect(screen.getByLabelText(/^Password/)).toHaveValue(
-      "safe-demo-password",
+      "safe-sample-password",
     );
     expect(screen.getByRole("status")).toHaveTextContent(
       "credentials filled in",

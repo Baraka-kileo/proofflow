@@ -1,86 +1,59 @@
-# Page-by-page UX specification
+# ProofFlow UX specification
 
-## Shared app shell
+## Shared application shell
 
-Desktop uses a quiet cream canvas, persistent role-aware rail, compact organization switcher, and top bar with page context and profile. Mobile uses a sticky title bar and bottom navigation. Each screen has one primary action. Global feedback uses a toast for background completion and an inline alert for errors requiring action.
+ProofFlow is one role-aware application for SMEs, large customers, and funding partners. Desktop uses a persistent navigation rail and mobile uses a compact top bar with bottom navigation. The signed-in organization and role are always visible. Each page has one clear primary action and provides appropriate loading, empty, error, success, and disabled states.
 
-### Role navigation
+## Public pages
 
-- SME: Overview, Applications, Trust Passport, Help, Account. Applications opens `/applications`; creation is a separate action.
-- Large customer: Overview, Confirmations, History, Help, Account. Confirmations and History open separate pages.
-- Funder / Bank: Overview, Applications, Offers, Help, Account. Applications and Offers open separate pages.
+The landing page explains the working-capital problem, ProofFlow's evidence workflow, the boundary between evidence verification and a funder's independent decision, and the Core, Connect, and Funding Partner commercial offers. Calls to action lead to account access or an appropriate product path. The security page explains private storage, tenant isolation, manual evidence handling, auditability, external compliance, and independent funding.
 
-`Large customer` is the user-facing name for the existing internal `buyer` role. Internal role keys, database columns, policies, and audit event names stay unchanged. The signed-in organization and role appear together in the account header and in one compact Demo workspace card at the bottom of the desktop rail.
+## Login
 
-## `/login`
+Email and password are the primary controls. When explicitly enabled by server configuration, a secondary `Credentials for testing` panel can fill fictional SME, large-customer, or funder credentials. It never signs in automatically and does not change product behaviour.
 
-Split desktop composition: concise ProofFlow value statement/evidence motif on the left and a focused sign-in card on the right. Mobile shows the card first. The ordinary email, password, and Sign in controls appear before the clearly labelled demo-account quick-fill buttons. Demo choices use distinct SME, Large customer, and Funder / Bank colors, fill the fields above, and never submit automatically. Do not allow public large-customer/funder role creation.
+## Role dashboards
 
-## `/dashboard`
+- SME: next application task, application history, funding proposals, and Trust Passport progress.
+- Large customer: confirmation queue, exceptions, completed decisions, and supplier history.
+- Funder / Bank: funding-ready applications, external compliance progress, proposals, and portfolio history.
 
-The greeting is secondary; the next task is dominant.
+Dashboard data comes from the authenticated tenant. Fictional seed records populate the same schema and workflows used by ordinary records.
 
-- SME: hero status card with `Continue application`/`Start application`, three small metrics, recent applications, and Trust Passport progress.
-- Large customer: short status and metrics, then clear links to the separate confirmation queue and decision history.
-- Funder / Bank: short status and metrics, then clear links to the separate application queue and offer history.
+## Application creation and evidence entry
 
-Cards enter with a short stagger. Skeletons reproduce their final geometry to prevent layout shift.
+The SME creates an application, uploads one purchase order, one delivery record, and one invoice, then enters the required transaction values in a document-by-document workspace. Desktop places the source document beside the fields; mobile switches between source and fields without losing progress.
 
-## `/applications`, `/confirmations`, `/confirmations/history`, and `/offers`
+Every field has a persistent label and supporting-document association. ProofFlow records the entering user and timestamp. The SME reviews all fields and accepts a final declaration before submission. The server validates the complete 21-field payload and saves it atomically; partial submissions never advance the application.
 
-List work is separated from Overview. SME and funder Applications show only their relevant rows. Buyer Confirmations shows only pending requests, while History contains read-only completed decisions. Funder Offers contains only recorded simulated decisions. Each page has one clear heading, a count, a concise empty state, and direct record actions; sidebar navigation never uses an in-page hash as a substitute for a page.
+## Deterministic verification
 
-## `/applications/new`
+The application page presents V001-V012 checks with pass, review, or fail outcomes, the values compared, and plain explanations. Verification is distinct from funding approval. Corrections return the SME to evidence entry, while a valid package can proceed to large-customer verification.
 
-A five-step task list: Business details → Documents → Review extracted fields → Verification → Send to buyer. Desktop keeps the task list in a sticky left column and the active form in a 720px panel. Mobile uses a compact `Step 2 of 5` header and progress bar.
+## Large-customer verification
 
-Document upload has three named slots, not a generic drop zone. Each slot explains acceptable evidence, supports drag/drop and browse, shows filename/size/page count, numeric upload progress, extraction progress, preview/remove/retry, and a completed check animation. Continue is disabled with a plain explanation until requirements are met.
+ProofFlow uses the following hierarchy:
 
-## `/applications/[id]`
+1. An authorized ERP/API connection, when one actually exists.
+2. Supported structured customer records.
+3. Authenticated manual customer confirmation.
 
-Header: application ID, buyer, amount, status chip, and the single next action. Body uses an evidence timeline followed by a verification report. Each check shows name, pass/review/fail, the compared values, and a plain explanation. Source document previews open in a side sheet. Activity appears after evidence—not as the main content.
+An unavailable integration never produces a fabricated response. Manual confirmation presents six numbered questions, a review summary, and a versioned declaration. A `No` answer requires an explanation and creates a dispute. Completed decisions become immutable receipts; eligible users can download the corresponding certificate.
 
-## Extraction review
+## Funder review and external compliance
 
-Desktop uses document preview left and editable normalized fields right. Mobile switches between `Document` and `Fields` while preserving progress. Low-confidence fields receive a `Please check` badge, never an unexplained percentage. Changed values are marked `Edited by you`; Save & continue remains sticky on mobile.
+The funder sees a read-only funding-ready evidence package, source documents, verification results, the customer decision, and audit history. A dedicated compliance panel records only the external status, funding partner, provider/reference, completion or expiry dates, and actor/timestamp.
 
-## `/confirmations/[id]`
+The interface states that the selected funding partner or its approved provider performs KYC/KYB. ProofFlow displays progress and does not make or store the underlying compliance decision, biometrics, identity selfies, sanctions reports, or confidential reasoning.
 
-Buyer sees a focused three-stage confirmation rather than an approval button. Stage 1 presents one of six numbered `Yes`/`No` questions at a time with `Question n of 6`, a progress bar, Back/Next controls, and the relevant supplier, PO, invoice, amount, outstanding amount, due date, or delivery evidence beside it. Selecting `No` reveals a persistent explanation field. Progress and answers survive moving forward/back.
+## Funding proposals
 
-Stage 2 presents `You are confirming that` with a generated plain-language summary and the actions `Confirm & Continue` and `Go Back & Correct`. Any `No` instead presents the disputed facts and a single `Submit dispute` action; it never displays confirmation language.
+The funder independently records a proposal or decline. Proposal terms identify the funder's advance, financing fee, net amount, and expiry. The SME may accept or decline once. Acceptance means the proposal is awaiting the funding partner's external completion process; it does not claim that money moved. A future authorized partner callback may record a real disbursement confirmation.
 
-Stage 3 presents the versioned Buyer Declaration. Full name, company, and verified corporate email are read-only server-derived values; the buyer enters only job title and draws in a labelled signature canvas usable by mouse, pen, touch, keyboard clear, and mobile orientation changes. Date/time and approval ID are server-generated. The only primary action is `Sign & Submit Confirmation`.
+## Trust Passport
 
-A completed confirmation becomes a read-only receipt and certificate view. It shows every answer, actor identity, rendered signature, timestamp, approval ID, internal verification reference, download action, and the disclaimer that confirmation is not a guarantee of payment. A completed dispute shows every negative answer and explanation without signature/certificate controls.
+The Trust Passport is an evidence-based history, not a credit score. It shows customer-confirmed applications, disputes, verified value, confirming organizations, and dated links to source records. It never guarantees funding or repayment.
 
-## `/confirmations/[id]/certificate`
+## Accessibility and responsive behaviour
 
-Authorized buyer, owning SME, and eligible funder receive the same immutable one-page PDF certificate generated from stored confirmation facts. It uses a clear ProofFlow heading, transaction table, six confirmation marks, authorized representative block with the captured signature, verification reference, and payment-guarantee disclaimer. Loading, denied, and unavailable-certificate states fail closed.
-
-## `/offers/[id]`
-
-Funder view shows evidence on the left and a sticky offer form on desktop. SME view becomes a comparison card showing invoice value, advance, fee, net amount, due date, and simulated repayment flow. Accept and decline are visually distinct; acceptance requires a confirmation dialog reiterating that this is a hackathon simulation.
-
-## `/trust-passport`
-
-An evidence-based profile—not a mysterious score. Show verified buyer confirmations, completed applications, dispute count, total verified value, and a dated evidence timeline. Explain exactly what improves the profile and state that it is not a credit score.
-
-## `/account`, Help, and system pages
-
-Account shows identity, organization, role, and sign-out. Help contains a short three-role explainer and privacy boundary. `loading.tsx`, `error.tsx`, `not-found.tsx`, empty states, and offline/retry messaging use the same visual language and always provide a recovery action.
-
-## Accessibility acceptance
-
-Keyboard order follows the visual flow; focus is always visible; dialogs trap and restore focus; headings are hierarchical; form inputs have persistent labels; progress and status changes announce through `aria-live`; text contrast meets WCAG 2.2 AA; touch targets are at least 44px; all meaningful icons have accessible names or adjacent text.
-
-## Demo Coupa states
-
-- SME: `Automated verification` explains that reviewed invoice fields are being compared with synthetic Demo Coupa data. Success says `Automated verification complete`; a difference says `Buyer review needed`; paid says `Application cannot proceed`; unavailable says the signed confirmation fallback was requested.
-- Buyer Account: **Business connections** shows Coupa, `Demo connection active`, and that live Coupa is unavailable without an authorized sandbox.
-- Buyer Confirmations: system differences and signed confirmations share one short task queue but are clearly labelled. The exception detail reveals only differing fields and uses three direct actions.
-- Funder: eligible packages say either `Buyer Confirmed` or `Automated verification complete`, show source/time/checks/reference, and link to the correct certificate.
-- Application detail uses progressive disclosure: the result, action, source, time, and exceptions appear first; successful V001-V012 and C001-C010 details stay available inside keyboard-accessible native disclosure controls.
-- Demo sign-in role buttons only fill the visible email and password fields. They never authenticate immediately; the user reviews the selected credentials and presses **Sign in**.
-- System certificates never show a human representative or signature. Both certificate types carry a verification reference and the payment/funding non-guarantee.
-- All new routes require loading, empty/not-found/error, keyboard focus, 44px controls, responsive layouts, and concise copy.
+Keyboard order follows the visual flow, focus is visible, dialogs trap and restore focus, headings are hierarchical, inputs retain labels, and dynamic status changes use live regions. Text contrast targets WCAG 2.2 AA, meaningful controls are at least 44px, layouts reflow at 200% zoom, motion lasts 150-250ms, and reduced-motion preferences are respected.

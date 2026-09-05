@@ -7,7 +7,7 @@ const base: PassportEvidenceInput = {
   confirmationStatus: "confirmed",
   decidedAt: "2026-09-05T10:00:00.000Z",
   buyerOrganizationId: "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
-  buyerName: "Ubuntu Retail Group Demo",
+  buyerName: "Ubuntu Retail Group",
   invoiceNumber: "INV-001-DEMO",
   invoiceTotalMinor: 4_875_000,
   currency: "ZAR",

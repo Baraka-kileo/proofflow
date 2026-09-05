@@ -13,21 +13,21 @@ const organizationIds=[];
 
 function assert(condition,message){if(!condition)throw new Error(message);}
 async function cleanupStale(){
-  const {data:organizations}=await admin.from("organizations").select("id").like("name","Exact Duplicate Demo%");
+  const {data:organizations}=await admin.from("organizations").select("id").like("name","Exact Duplicate Fixture%");
   for(const organization of organizations??[]){const {data:memberships}=await admin.from("memberships").select("profile_id").eq("organization_id",organization.id);await admin.from("applications").delete().eq("owner_organization_id",organization.id);await admin.from("organizations").delete().eq("id",organization.id);for(const membership of memberships??[])await admin.auth.admin.deleteUser(membership.profile_id);}
 }
 
 try{
   await cleanupStale();
   const identities=[
-    {email:`duplicate-a-${run}@example.invalid`,name:"Exact Duplicate Demo User A"},
-    {email:`duplicate-b-${run}@example.invalid`,name:"Exact Duplicate Demo User B"},
+    {email:`duplicate-a-${run}@example.invalid`,name:"Exact Duplicate Fixture User A"},
+    {email:`duplicate-b-${run}@example.invalid`,name:"Exact Duplicate Fixture User B"},
   ];
   for(const identity of identities){const {data,error}=await admin.auth.admin.createUser({email:identity.email,password,email_confirm:true});if(error)throw error;userIds.push(data.user.id);const {error:profileError}=await admin.from("profiles").insert({id:data.user.id,display_name:identity.name});if(profileError)throw profileError;}
   const {data:organizations,error:organizationsError}=await admin.from("organizations").insert([
-    {name:"Exact Duplicate Demo Tenant A",slug:`duplicate-a-${run}`,kind:"sme",is_demo:true},
-    {name:"Exact Duplicate Demo Tenant B",slug:`duplicate-b-${run}`,kind:"sme",is_demo:true},
-    {name:"Exact Duplicate Demo Buyer",slug:`duplicate-buyer-${run}`,kind:"buyer",is_demo:true},
+    {name:"Exact Duplicate Fixture Tenant A",slug:`duplicate-a-${run}`,kind:"sme",is_demo:false},
+    {name:"Exact Duplicate Fixture Tenant B",slug:`duplicate-b-${run}`,kind:"sme",is_demo:false},
+    {name:"Exact Duplicate Fixture Buyer",slug:`duplicate-buyer-${run}`,kind:"buyer",is_demo:false},
   ]).select("id,kind");
   if(organizationsError)throw organizationsError;
   const smeOrganizations=organizations.filter(item=>item.kind==="sme");
@@ -35,9 +35,9 @@ try{
   organizationIds.push(...organizations.map(item=>item.id));
   for(let index=0;index<2;index++){const {error}=await admin.from("memberships").insert({organization_id:smeOrganizations[index].id,profile_id:userIds[index],role:"sme"});if(error)throw error;}
   const applications=[
-    {owner_organization_id:smeOrganizations[0].id,buyer_organization_id:buyerOrganization.id,created_by:userIds[0],title:"Exact Duplicate Demo Original",invoice_number:`DUP-A1-${run}`,purchase_order_reference:"PO-DUP-A1",invoice_total_minor:10000,invoice_due_on:"2099-01-01",ai_processing_consented_at:new Date().toISOString()},
-    {owner_organization_id:smeOrganizations[0].id,buyer_organization_id:buyerOrganization.id,created_by:userIds[0],title:"Exact Duplicate Demo Attempt",invoice_number:`DUP-A2-${run}`,purchase_order_reference:"PO-DUP-A2",invoice_total_minor:10000,invoice_due_on:"2099-01-01",ai_processing_consented_at:new Date().toISOString()},
-    {owner_organization_id:smeOrganizations[1].id,buyer_organization_id:buyerOrganization.id,created_by:userIds[1],title:"Exact Duplicate Demo Other Tenant",invoice_number:`DUP-B1-${run}`,purchase_order_reference:"PO-DUP-B1",invoice_total_minor:10000,invoice_due_on:"2099-01-01",ai_processing_consented_at:new Date().toISOString()},
+    {owner_organization_id:smeOrganizations[0].id,buyer_organization_id:buyerOrganization.id,created_by:userIds[0],title:"Exact Duplicate Fixture Original",invoice_number:`DUP-A1-${run}`,purchase_order_reference:"PO-DUP-A1",invoice_total_minor:10000,invoice_due_on:"2099-01-01"},
+    {owner_organization_id:smeOrganizations[0].id,buyer_organization_id:buyerOrganization.id,created_by:userIds[0],title:"Exact Duplicate Fixture Attempt",invoice_number:`DUP-A2-${run}`,purchase_order_reference:"PO-DUP-A2",invoice_total_minor:10000,invoice_due_on:"2099-01-01"},
+    {owner_organization_id:smeOrganizations[1].id,buyer_organization_id:buyerOrganization.id,created_by:userIds[1],title:"Exact Duplicate Fixture Other Tenant",invoice_number:`DUP-B1-${run}`,purchase_order_reference:"PO-DUP-B1",invoice_total_minor:10000,invoice_due_on:"2099-01-01"},
   ];
   const {data:createdApplications,error:applicationsError}=await admin.from("applications").insert(applications).select("id,owner_organization_id");if(applicationsError)throw applicationsError;
   const memberA=createClient(url,publishableKey,{auth:{persistSession:false,autoRefreshToken:false}});const memberB=createClient(url,publishableKey,{auth:{persistSession:false,autoRefreshToken:false}});
@@ -56,7 +56,7 @@ try{
   for(const [kind,hash,label] of [["purchase_order",sameHash,"same-hash-other-tenant.pdf"],["delivery_evidence",foreignHash,"foreign-only.pdf"]]){const id=crypto.randomUUID();const {error}=await memberB.from("documents").insert({id,application_id:appB.id,owner_organization_id:smeOrganizations[1].id,uploaded_by:userIds[1],kind,original_filename:label,storage_path:`${smeOrganizations[1].id}/${appB.id}/${id}/${label}`,mime_type:"application/pdf",byte_size:32,sha256:hash,page_count:1,upload_completed_at:new Date().toISOString()});if(error)throw error;}
   const {count:foreignVisibility}=await memberA.from("documents").select("id",{count:"exact",head:true}).eq("sha256",foreignHash);assert(foreignVisibility===0,"Tenant A could see Tenant B's matching hash row.");
   const {error:foreignProbeError}=await memberA.rpc("record_exact_document_duplicate",{target_application_id:appAAttempt.id,attempted_filename:"probe.pdf",content_sha256:foreignHash});assert(foreignProbeError?.code==="23514","A cross-tenant hash probe disclosed or recorded another tenant's document.");
-  console.log("PASS: trusted-hash V009 is persisted before extraction and cross-tenant hashes remain undisclosed.");
+  console.log("PASS: trusted-hash V009 is persisted before evidence entry and cross-tenant hashes remain undisclosed.");
 }finally{
   for(const organizationId of organizationIds.filter((_,index)=>index<2))await admin.from("applications").delete().eq("owner_organization_id",organizationId);
   for(const organizationId of organizationIds)await admin.from("organizations").delete().eq("id",organizationId);

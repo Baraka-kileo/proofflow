@@ -44,7 +44,7 @@ export function ExceptionReviewForm({
         <form action={externalAction}>
           <input type="hidden" name="checkId" value={checkId} />
           <Button type="submit" variant="secondary" loading={externalPending}>
-            Confirm Coupa value
+            Confirm customer-system value
           </Button>
         </form>
         <form action={supplierAction}>

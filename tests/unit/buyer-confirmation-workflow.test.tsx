@@ -10,8 +10,8 @@ vi.mock("@/app/(protected)/confirmations/[confirmationId]/actions", () => ({
 const props = {
   confirmationId: "00000000-0000-4000-8000-000000000001",
   facts: {
-    buyer: "Ubuntu Retail Group Demo",
-    supplier: "Ndlovu Office Supply Demo",
+    buyer: "Ubuntu Retail Group",
+    supplier: "Ndlovu Office Supplies",
     purchaseOrder: "PO-1042",
     invoice: "INV-1042",
     amount: "R 48,750",
@@ -19,9 +19,9 @@ const props = {
     paymentDate: "30 September 2026",
   },
   representative: {
-    name: "Buyer Demo User",
-    company: "Ubuntu Retail Group Demo",
-    email: "buyer.demo@proofflow.example",
+    name: "Buyer Fixture User",
+    company: "Ubuntu Retail Group",
+    email: "buyer.test@proofflow.example",
     emailVerified: true,
   },
   deliveryPreviewUrl: null,

@@ -1,35 +1,219 @@
 # ProofFlow
 
-ProofFlow helps South African SMEs turn completed work into a funder-ready, buyer-confirmed invoice package. It reduces the time spent proving that an invoice is genuine; it does not pretend to remove a buyer's payment terms or automatically grant credit.
+### Funding starts with evidence everyone can trust.
 
-Built for the ABSA Studentpreneur Hackathon 2026 challenge: **Access to Finance — From Invoice to Cash**.
+[![CI](https://github.com/Baraka-kileo/proofflow/actions/workflows/ci.yml/badge.svg)](https://github.com/Baraka-kileo/proofflow/actions/workflows/ci.yml)
+[![Live application](https://img.shields.io/badge/live-application-087A66)](https://proofflow-sepia.vercel.app)
+[![Next.js](https://img.shields.io/badge/Next.js-16-111111)](https://nextjs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6)](https://www.typescriptlang.org/)
 
-## Demo journey
+ProofFlow is a privacy-first evidence workflow for invoice finance. It turns a purchase order, delivery evidence, an invoice and authenticated customer confirmation into one structured, traceable package that a funding partner can independently review.
 
-1. An SME uploads a purchase order, delivery note, and invoice.
-2. Gemini extracts structured fields; the SME reviews and corrects them.
-3. Deterministic rules compare parties, references, totals, dates, and duplicates.
-4. The buyer confirms or disputes the delivery in their in-app portal.
-5. A funder reviews the evidence and creates a simulated early-payment offer.
-6. The SME accepts the simulated offer and their Trust Passport updates.
+**[Open the live application](https://proofflow-sepia.vercel.app)** · **[Judge's guide](docs/JUDGING-GUIDE.md)** · **[Documentation index](docs/README.md)** · **[Security model](docs/SECURITY.md)**
 
-## Stack
+![ProofFlow landing page showing a confirmed invoice-evidence package](docs/assets/proofflow-home.png)
 
-- Next.js 16 App Router, React 19, TypeScript, Tailwind CSS, shadcn/ui
-- Supabase Auth, Postgres, private Storage, Realtime, and Row Level Security
-- Gemini Flash for document extraction; Zod for runtime validation
-- Vitest and Playwright; GitHub Actions; Vercel deployment
+> **Decision boundary:** ProofFlow verifies transaction evidence. It does not perform KYC/KYB, approve credit, lend money, set rates, hold funds or guarantee repayment.
 
-## Start locally
+## The problem
+
+An SME may have completed real work and issued a valid invoice, yet still wait weeks for payment. A potential funder cannot responsibly act on an invoice alone: the purchase order, delivery, invoice and buyer acknowledgement must agree, while confidential documents must remain controlled. The resulting manual back-and-forth is slow for the SME and expensive to review.
+
+ProofFlow creates a shared evidence trail without pretending to replace regulated judgement:
+
+- the **SME** uploads three private documents, enters 21 required facts and makes a declaration;
+- **ProofFlow** applies 12 fixed, explainable consistency checks;
+- the **large customer** confirms or disputes the underlying transaction;
+- the **funding partner** performs KYC/KYB and underwriting externally, then records its independent proposal or decline.
+
+## Judge fast path
+
+Allow about five minutes:
+
+1. Open the [live application](https://proofflow-sepia.vercel.app) and review the problem, workflow, pricing and trust boundary.
+2. Select **Log in**. The optional **Sample credentials for testing** panel offers SME, large-customer and funder accounts; selecting a role fills the form but never signs in automatically.
+3. As the SME, inspect the application journey, private evidence, deterministic check results and Trust Passport.
+4. Sign out and inspect the large-customer confirmation workspace.
+5. Sign out and inspect the funder's external-compliance and proposal workspace.
+6. Open the public [security page](https://proofflow-sepia.vercel.app/security).
+
+All hosted records are fictional. They exercise the same role-based workflow as any other account; there is no separate simulation product.
+
+## How the workflow works
+
+```mermaid
+flowchart LR
+    SME["SME supplier"] -->|"Uploads PO, delivery evidence and invoice"| ENTRY["Manual evidence entry"]
+    ENTRY --> RULES["Deterministic V001-V012 checks"]
+    RULES --> BUYER["Authenticated customer confirmation"]
+    BUYER --> PACKAGE["Traceable funding package"]
+    PACKAGE --> FUNDER["Independent funder review"]
+    KYC["External KYC / KYB provider"] -->|"Status and reference only"| FUNDER
+    FUNDER --> DECISION["Proposal or decline"]
+```
+
+### Responsibility by stage
+
+| Stage | Accountable party | What ProofFlow does |
+|---|---|---|
+| Evidence submission | SME | Private upload, structured manual entry and declaration |
+| Consistency verification | ProofFlow | Runs versioned V001–V012 rules and records an audit trail |
+| Transaction confirmation | Large customer | Supports authorised system evidence or authenticated confirmation |
+| KYC/KYB and AML | Funder or approved provider | Stores only workflow status and an external reference |
+| Credit, pricing and underwriting | Funding partner | Presents evidence; never makes or disguises the decision |
+| Contracting and disbursement | Funding partner | Waits for a future authorised confirmation; never fabricates money movement |
+
+## What is innovative
+
+ProofFlow's novelty is the combination of a compact, multi-party workflow and a deliberately narrow trust boundary:
+
+- **Evidence lineage, not a black-box score.** Each entered fact retains its source document, actor and timestamp.
+- **Explainable checks.** Every result names the compared values and rule rather than returning an opaque confidence score.
+- **Privacy-minimising design.** Sensitive files are not sent to an AI service; KYC/KYB documents and screening reasoning remain with the regulated party.
+- **No manufactured certainty.** Missing integrations fail closed and route to authenticated confirmation. “Evidence verified” never becomes “funding approved.”
+- **One product, three perspectives.** SME, customer and funder views share the same application and audit history while enforcing different permissions.
+
+See the complete [judging-criteria evidence map](docs/JUDGING-GUIDE.md).
+
+## Technical architecture
+
+```mermaid
+flowchart TB
+    UI["Next.js 16 + React 19 interface"] --> ACTIONS["Server actions and route handlers"]
+    ACTIONS --> AUTH["Server-side role and membership checks"]
+    AUTH --> DB["Supabase Postgres + Row Level Security"]
+    AUTH --> STORAGE["Private Supabase Storage + signed URLs"]
+    ACTIONS --> RULES["Versioned TypeScript verification rules"]
+    ACTIONS -. "authorised adapters only" .-> PARTNERS["Customer and funding-partner systems"]
+    DB --> AUDIT["Append-only workflow audit events"]
+```
+
+| Layer | Choice | Why it fits |
+|---|---|---|
+| Web application | Next.js 16, React 19, TypeScript | One responsive application with server-rendered public and protected role views |
+| Identity and data | Supabase Auth and PostgreSQL | Authenticated sessions, relational evidence lineage and transactional writes |
+| Authorisation | Server checks plus Row Level Security | Defence in depth across organization and role boundaries |
+| Documents | Private Supabase Storage | Controlled paths and short-lived signed access rather than public URLs |
+| Validation | Zod plus database constraints | Complete payload validation before atomic persistence |
+| Verification | Deterministic TypeScript V001–V012 rules | Repeatable, inspectable outcomes suitable for financial evidence |
+| Delivery | Vercel and GitHub Actions | Reproducible production builds and automated quality gates |
+
+Historical database names relating to earlier prototypes remain only where required for migration compatibility. The current application contains no AI processing or interactive simulated connector.
+
+## Security and privacy
+
+![ProofFlow security page showing its six responsibility boundaries](docs/assets/proofflow-security.png)
+
+Key implemented controls include server-enforced role checks, tenant Row Level Security, private object storage, expiring signed URLs, file validation, SHA-256 duplicate detection, atomic manual-evidence submission and traceable state changes. Integrations fail closed. ProofFlow records external compliance workflow metadata but does not collect biometrics or confidential screening reports.
+
+This is a hackathon MVP, not a claim of regulatory certification. Independent penetration testing, legal/privacy review, operational monitoring, retention controls and incident-response rehearsal are required before onboarding real organizations. Read the [threat model and control matrix](docs/SECURITY.md).
+
+## Business model
+
+ProofFlow keeps the essential trust workflow accessible and charges where automation creates operational value.
+
+| Offer | Customer | Included | Revenue |
+|---|---|---|---|
+| **Core** | SME | Evidence upload, manual entry, deterministic checks, customer confirmation, funding application and Trust Passport | Free |
+| **Connect** | Large customer / enterprise | Authorised ERP integration, automatic lookup, bulk suppliers, exception handling, API/webhooks, reporting and multi-entity controls | Contract subscription and integration fee |
+| **Funding Partner** | Bank or alternative funder | Review workspace, external-compliance status, portfolio tools, API/webhooks and reporting | Platform fee and/or agreed share of the funder's collected financing fee after successful funding |
+
+ProofFlow does **not** take a percentage of the invoice principal or the SME advance. Any fee-sharing arrangement requires partner, legal and regulatory approval. The [product plan](docs/PRODUCT-PLAN.md) records the pilot budget assumptions, unit economics to validate and scale strategy.
+
+## Repository map
+
+```text
+.
+├── .github/                 CI and responsible disclosure guidance
+├── docs/                    Product, architecture, security, UX and judging evidence
+│   └── assets/              Current product screenshots used in this README
+├── samples/evidence-packs/  Fictional valid, mismatch and duplicate test fixtures
+├── scripts/                 User provisioning and fixture generation
+├── src/app/                 Next.js routes, layouts, actions and public pages
+├── src/components/          Shared accessible UI building blocks
+├── src/features/            Role workflows and domain interfaces
+├── src/lib/                 Auth, evidence, verification, integration and data logic
+├── supabase/migrations/     Ordered schema, functions, policies and storage changes
+└── tests/                   Unit, browser and database integration tests
+```
+
+Start with [docs/README.md](docs/README.md) rather than reading the historical implementation log from top to bottom.
+
+## Run locally
+
+### Prerequisites
+
+- Node.js 22
+- npm
+- a Supabase project or local Supabase stack
+
+### Setup
 
 ```bash
-npm install
+git clone https://github.com/Baraka-kileo/proofflow.git
+cd proofflow
+npm ci
 cp .env.example .env.local
+npx supabase db push
+npm run supabase:seed
 npm run dev
 ```
 
-Use synthetic documents only. See `docs/BUILD-CHECKLIST.md` for current progress and `docs/DEMO-SCRIPT.md` for the judged flow.
+On Windows PowerShell, use `Copy-Item .env.example .env.local` instead of `cp`.
 
-## Important boundary
+Configure these values in `.env.local`:
 
-ProofFlow is a funding-readiness and workflow demonstration. Credit decisions and disbursement are simulated. A production release would require lender integrations, regulatory/legal review, fraud operations, data-processing agreements, and production security testing.
+| Variable | Exposure | Purpose |
+|---|---|---|
+| `NEXT_PUBLIC_APP_URL` | Browser-safe | Canonical application origin |
+| `NEXT_PUBLIC_SUPABASE_URL` | Browser-safe | Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` | Browser-safe | Supabase publishable key |
+| `SUPABASE_SERVICE_ROLE_KEY` | Server secret | Restricted provisioning and administrative operations |
+| `PROOFFLOW_ENABLE_TEST_CREDENTIALS` | Server configuration | Enables the optional login-only test-account picker |
+| `PROOFFLOW_TEST_PASSWORD` | Server secret | Shared password for provisioned fictional test accounts |
+
+Never add `.env.local`, service-role keys, real customer files or personal information to Git.
+
+## Verification
+
+```bash
+npm run lint
+npm run typecheck
+npm run test:unit
+npm run build
+npm run test:e2e
+```
+
+GitHub Actions runs lint, type checking, all unit tests and the production build on every push to `main` and every pull request. Database integration scripts under `tests/integration/` require a configured Supabase environment.
+
+## Current scope and limitations
+
+The implemented MVP includes the complete role-aware evidence journey, external-compliance status boundary and independent funding proposal boundary. The following deliberately remain outside the submission:
+
+- live ERP, bank and compliance-provider credentials;
+- automatic lending, credit scoring, pricing or disbursement;
+- storage of raw KYC/KYB identity evidence;
+- claims of bank partnership, certification or completed money movement;
+- production onboarding before independent security, privacy, legal and accessibility review.
+
+See [ROADMAP.md](docs/ROADMAP.md) for the authorised-integration path.
+
+## Documentation
+
+| Read this | For |
+|---|---|
+| [Judging guide](docs/JUDGING-GUIDE.md) | Direct evidence for every scoring category |
+| [Product scope](docs/PRODUCT-SCOPE.md) | MVP boundaries and non-goals |
+| [Product plan](docs/PRODUCT-PLAN.md) | Responsibility model, business model and pilot plan |
+| [User flows](docs/USER-FLOWS.md) | SME, customer and funder journeys |
+| [Architecture](docs/ARCHITECTURE.md) | Components, data flow and integration boundaries |
+| [Security](docs/SECURITY.md) | Threats, controls, privacy and production gaps |
+| [UX specification](docs/UX-SPEC.md) | Interaction, responsive and accessibility requirements |
+| [Build checklist](docs/BUILD-CHECKLIST.md) | Completion gates |
+| [Implementation log](docs/IMPLEMENTATION-LOG.md) | Chronological engineering evidence |
+
+## Contributing and responsible disclosure
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for the local quality contract. Please report security issues privately using [GitHub Security Advisories](https://github.com/Baraka-kileo/proofflow/security/advisories/new), not a public issue.
+
+This repository is an ABSA Studentpreneur Hackathon 2026 submission. No open-source licence has been granted.

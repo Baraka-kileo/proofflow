@@ -24,7 +24,7 @@ export type PaymentLookup = { externalInvoiceId: string };
 export type ConnectionTestResult = {
   ok: boolean;
   provider: "coupa";
-  mode: "demo" | "live";
+  mode: "live";
   checkedAt: string;
   errorCode?: string;
 };

@@ -1,6 +1,6 @@
 import { createClient } from "@supabase/supabase-js";
 
-const url=process.env.PROOFFLOW_TEST_SUPABASE_URL;const anonKey=process.env.PROOFFLOW_TEST_PUBLISHABLE_KEY;const password=process.env.PROOFFLOW_DEMO_PASSWORD;
+const url=process.env.PROOFFLOW_TEST_SUPABASE_URL;const anonKey=process.env.PROOFFLOW_TEST_PUBLISHABLE_KEY;const password=process.env.PROOFFLOW_TEST_PASSWORD;
 if(!url||!anonKey||!password)throw new Error("Hosted buyer-confirmation test configuration is missing.");
 const buyer=createClient(url,anonKey,{auth:{persistSession:false,autoRefreshToken:false}});const sme=createClient(url,anonKey,{auth:{persistSession:false,autoRefreshToken:false}});
 const confirmationId="bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbb2",applicationId="aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaa2";

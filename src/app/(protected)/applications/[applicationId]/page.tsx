@@ -7,9 +7,9 @@ import { ApplicationTaskLayout } from "@/features/applications/application-task-
 import { ApplicationDetailsReceipt } from "@/features/applications/application-details-receipt";
 import { DocumentUploadPanel } from "@/features/applications/document-upload-panel";
 import {
-  ExtractionReviewWorkspace,
+  EvidenceEntryWorkspace,
   type ReviewDocument,
-} from "@/features/applications/extraction-review-workspace";
+} from "@/features/applications/evidence-entry-workspace";
 import { ReviewReadyPanel } from "@/features/applications/review-ready-panel";
 import { VerificationPanel } from "@/features/applications/verification-panel";
 import { ApplicationActivity } from "@/features/applications/application-activity";
@@ -19,9 +19,9 @@ import {
 } from "@/features/integrations/buyer-system-evidence";
 import { Alert } from "@/components/ui/alert";
 import { FunderApplicationReview } from "@/features/offers/funder-application-review";
+import { ExternalCompliancePanel } from "@/features/offers/external-compliance-panel";
 import { requireApplicationAccess } from "@/lib/auth/dal";
 import { deriveApplicationProgress } from "@/lib/applications/progress";
-import { getExtractionModeEnvironment } from "@/lib/env/server";
 import { createClient } from "@/lib/supabase/server";
 import type {
   VerificationCheck,
@@ -52,7 +52,7 @@ export default async function ApplicationPage({
     supabase
       .from("documents")
       .select(
-        "id,kind,original_filename,storage_path,byte_size,page_count,upload_completed_at,extraction_status,extraction_provider,document_fields(id,field_name,source_value,normalized_value,confidence_bps,source_label)",
+        "id,kind,original_filename,storage_path,byte_size,page_count,upload_completed_at,extraction_status,document_fields(id,field_name,normalized_value)",
       )
       .eq("application_id", application.id),
     supabase
@@ -155,21 +155,15 @@ export default async function ApplicationPage({
         kind: document.kind,
         filename: document.original_filename,
         previewUrl: data?.signedUrl ?? null,
-        provider: document.extraction_provider,
         fields: document.document_fields.map((field) => ({
           id: field.id,
           name: field.field_name,
-          sourceValue: primitive(field.source_value),
           normalizedValue: primitive(field.normalized_value),
-          confidenceBps: field.confidence_bps,
-          sourceLabel: field.source_label,
         })),
       };
     }),
   );
   const currentStep = progress.steps[progress.currentIndex].id;
-  const extractionMode =
-    getExtractionModeEnvironment().PROOFFLOW_EXTRACTION_MODE;
   const latestRun = verificationRuns?.[0] ?? null;
   const checks = (latestRun?.verification_checks ?? [])
     .map((check) => parseVerificationCheck(check.evidence))
@@ -203,6 +197,11 @@ export default async function ApplicationPage({
           : "invoice",
   }));
   if (session.role === "funder") {
+    const { data: complianceCheck } = await integrationDb
+      .from("external_compliance_checks")
+      .select("status,provider_name,external_reference,completed_at,expires_at")
+      .eq("application_id", application.id)
+      .maybeSingle();
     const funderDocuments = await Promise.all(
       (documents ?? []).map(async (document) => {
         const { data } = await supabase.storage
@@ -233,7 +232,7 @@ export default async function ApplicationPage({
         <PageHeading
           eyebrow={`Funder review · ${application.id.slice(0, 8).toUpperCase()}`}
           title={application.invoice_number ?? "Evidence package"}
-          description="Review the source evidence, deterministic checks, and large-customer evidence before making your own simulated funding decision."
+          description="Review the source evidence, deterministic checks, and large-customer evidence before making your own independent funding decision."
         />
         {systemRun && (
           <div className="mt-8">
@@ -246,6 +245,9 @@ export default async function ApplicationPage({
             />
           </div>
         )}
+        <div className="mt-8">
+          <ExternalCompliancePanel applicationId={application.id} check={complianceCheck as never} />
+        </div>
         <div className="mt-8">
           <FunderApplicationReview
             applicationId={application.id}
@@ -321,10 +323,10 @@ export default async function ApplicationPage({
               offer.decision_kind === "decline"
                 ? "Funder declined this application"
                 : offer.status === "offered"
-                  ? "Simulated offer ready"
+                  ? "Indicative offer ready"
                   : offer.status === "accepted"
-                    ? "Simulated offer accepted"
-                    : "Simulated offer declined"
+                    ? "Indicative offer accepted"
+                    : "Indicative offer declined"
             }
             className="mt-6"
           >
@@ -337,7 +339,7 @@ export default async function ApplicationPage({
               href={`/offers/${offer.id}`}
               className="mt-3 inline-flex min-h-11 items-center rounded-xl border border-[var(--border)] bg-white px-4 font-bold text-[var(--primary)]"
             >
-              View simulated offer
+              View indicative offer
             </Link>
           </Alert>
         )}
@@ -383,7 +385,6 @@ export default async function ApplicationPage({
             purchaseOrder={application.purchase_order_reference}
             amount={amount}
             dueDate={application.invoice_due_on}
-            consented={Boolean(application.ai_processing_consented_at)}
           />
         </div>
         {systemRun && (
@@ -402,7 +403,6 @@ export default async function ApplicationPage({
             <div className="mt-8">
               <ReviewReadyPanel
                 applicationId={application.id}
-                extractionMode={extractionMode}
               />
             </div>
           )}
@@ -410,7 +410,7 @@ export default async function ApplicationPage({
           application.status === "fields_extracted" &&
           reviewDocuments.length === 3 && (
             <div className="mt-8">
-              <ExtractionReviewWorkspace
+              <EvidenceEntryWorkspace
                 applicationId={application.id}
                 documents={reviewDocuments}
               />

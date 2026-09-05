@@ -15,7 +15,6 @@ describe("application task layout", () => {
           invoice_number: "INV-42",
           invoice_total_minor: 4200,
           invoice_due_on: "2099-01-01",
-          ai_processing_consented_at: "2026-09-05T00:00:00Z",
         })}
       >
         <p>Current task</p>

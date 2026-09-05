@@ -49,7 +49,7 @@ export function runCoupaRulesV1(
       "C001",
       "Customer connection",
       true,
-      "Demo Coupa connection responded successfully.",
+      "Authorised customer system connection responded successfully.",
       { provider: external.provider, mode: external.providerMode },
     ),
     result(
@@ -69,7 +69,7 @@ export function runCoupaRulesV1(
       "Purchase order",
       Boolean(po),
       po
-        ? "The purchase order exists in Demo Coupa."
+        ? "The purchase order exists in Authorised customer system."
         : "The purchase order was not found.",
       {
         purchaseOrder: source.purchaseOrderNumber,
@@ -91,7 +91,7 @@ export function runCoupaRulesV1(
       "Invoice",
       Boolean(invoice),
       invoice
-        ? "The invoice exists in Demo Coupa."
+        ? "The invoice exists in Authorised customer system."
         : "Invoice not found — customer review required.",
       {
         invoiceNumber: source.invoiceNumber,

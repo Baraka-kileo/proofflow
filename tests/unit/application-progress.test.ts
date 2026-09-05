@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { deriveApplicationProgress } from "@/lib/applications/progress";
 
-const draft={status:"draft" as const,buyer_organization_id:"buyer",purchase_order_reference:"PO-42",invoice_number:"INV-42",invoice_total_minor:4200,invoice_due_on:"2099-01-01",ai_processing_consented_at:"2026-09-05T00:00:00Z"};
+const draft={status:"draft" as const,buyer_organization_id:"buyer",purchase_order_reference:"PO-42",invoice_number:"INV-42",invoice_total_minor:4200,invoice_due_on:"2099-01-01"};
 
 describe("application progress",()=>{
   it("starts on details before a server draft exists",()=>{const progress=deriveApplicationProgress(null);expect(progress.currentIndex).toBe(0);expect(progress.steps.map(step=>step.state)).toEqual(["current","locked","locked","locked","locked"]);});

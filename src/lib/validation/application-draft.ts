@@ -36,9 +36,6 @@ export const applicationDraftSchema = z.object({
       (value) => value >= today(),
       "Expected due date cannot be in the past.",
     ),
-  aiConsent: z.literal("on", {
-    error: "Consent is required before documents can be processed.",
-  }),
 });
 
 export type ApplicationDraftState = {

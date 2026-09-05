@@ -16,10 +16,10 @@ export async function startFunderReview(applicationId:string,previous:OfferActio
   revalidatePath(`/applications/${id.data}`);revalidatePath("/dashboard");return{status:"idle"};
 }
 
-export async function createSimulatedOffer(previous:OfferActionState,formData:FormData):Promise<OfferActionState>{
+export async function createFundingProposal(previous:OfferActionState,formData:FormData):Promise<OfferActionState>{
   void previous;await requireRole("funder");const parsed=offerFormSchema.safeParse({applicationId:formData.get("applicationId"),advancePercent:formData.get("advancePercent"),feePercent:formData.get("feePercent"),expiryDate:formData.get("expiryDate")});if(!parsed.success)return invalid(parsed.error);
   await requireApplicationAccess(parsed.data.applicationId);const supabase=await createClient();const {data,error}=await supabase.rpc("create_funder_decision_v1",{target_application_id:parsed.data.applicationId,target_advance_bps:parsed.data.advanceBps,target_fee_bps:parsed.data.feeBps,target_expiry_date:parsed.data.expiryDate});
-  const offerId=readOfferId(data);if(error||!offerId)return{status:"error",message:"The simulated offer was not saved. Reload the evidence and try again."};revalidatePath("/dashboard");redirect(`/offers/${offerId}`);
+  const offerId=readOfferId(data);if(error||!offerId)return{status:"error",message:"The funding proposal was not saved. Reload the evidence and try again."};revalidatePath("/dashboard");redirect(`/offers/${offerId}`);
 }
 
 export async function declineApplication(previous:OfferActionState,formData:FormData):Promise<OfferActionState>{

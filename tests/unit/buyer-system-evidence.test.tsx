@@ -30,7 +30,7 @@ describe("buyer-system evidence UI", () => {
     expect(
       screen.getByRole("heading", { name: "Automated verification complete" }),
     ).toBeInTheDocument();
-    expect(screen.getByText("Demo Coupa")).toBeInTheDocument();
+    expect(screen.getByText("customer system")).toBeInTheDocument();
     expect(
       screen.getByRole("link", { name: "Verification certificate" }),
     ).toHaveAttribute(
@@ -46,7 +46,7 @@ describe("buyer-system evidence UI", () => {
       />,
     );
     expect(
-      screen.getByRole("button", { name: "Confirm Coupa value" }),
+      screen.getByRole("button", { name: "Confirm customer-system value" }),
     ).toBeEnabled();
     expect(
       screen.getByRole("button", { name: "Confirm supplier value" }),

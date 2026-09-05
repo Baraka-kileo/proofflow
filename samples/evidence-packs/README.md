@@ -1,17 +1,17 @@
-# ProofFlow synthetic evidence packs
+# Fictional evidence packs
 
-Every file is fictional, visibly marked as Demo material, and contains no real person, company, bank, or transaction data.
+These documents are fictional development fixtures. They contain no real person, organization, bank, or transaction information and are not a separate product mode.
 
 ## `valid`
 
-Three internally consistent documents bound to the explicit hash-based Demo extraction provider. Expected verification: V001-V011 pass and V012 remains review until the buyer confirms.
+Three internally consistent documents for testing manual evidence entry and deterministic V001-V012 verification.
 
 ## `mismatch`
 
-Three deliberately inconsistent documents for explainable verification testing. Expected results are listed in `expected.json`: buyer, PO reference, currency, invoice amount, invoice arithmetic, issue-date ordering, and delivery-date ordering fail; receiver/signature evidence requires review.
+Three deliberately inconsistent documents. The expected values cover buyer, purchase-order reference, currency, amount, arithmetic, date-order, and receiver-signature checks.
 
 ## `duplicate`
 
-Byte-for-byte copies of the valid pack under a separate pack path. Submit the valid pack first, then the corresponding duplicate file. The SHA-256 is intentionally identical and V009 must fail. The extraction fixtures are identical because the underlying bytes are identical.
+Byte-for-byte copies of the valid pack under a separate path. Uploading a corresponding duplicate after the original proves that SHA-256 duplicate detection rejects renamed copies.
 
-Regenerate the files with `scripts/generate-sample-packs.py`. The three canonical source PDFs in `output/pdf` remain unchanged so their hash-bound Demo extraction fixtures stay stable.
+Regenerate these development fixtures with `scripts/generate-sample-packs.py`. Their content must remain fictional and must not be shown as evidence of a real external integration, customer confirmation, credit decision, or money movement.

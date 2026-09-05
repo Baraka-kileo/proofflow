@@ -8,7 +8,7 @@ describe("Trust Passport view", () => {
   it("explains the zero-history state without inventing a score", () => {
     render(
       <TrustPassportView
-        organization="Empty Supplier Demo"
+        organization="Empty Supplier Fixture"
         data={{ confirmedCount: 0, disputedCount: 0, distinctBuyerCount: 0, verifiedValueByCurrency: {}, history: [] }}
       />,
     );
@@ -20,7 +20,7 @@ describe("Trust Passport view", () => {
   it("links every completed event to its source records", () => {
     render(
       <TrustPassportView
-        organization="Ndlovu Office Supply Demo"
+        organization="Ndlovu Office Supplies"
         data={{
           confirmedCount: 1,
           disputedCount: 0,
@@ -33,7 +33,7 @@ describe("Trust Passport view", () => {
               confirmationStatus: "confirmed",
               decidedAt: "2026-09-05T04:43:00.000Z",
               buyerOrganizationId: "buyer-1",
-              buyerName: "Ubuntu Retail Group Demo",
+              buyerName: "Ubuntu Retail Group",
               invoiceNumber: "INV-2040-DEMO",
               invoiceTotalMinor: 2_240_000,
               currency: "ZAR",

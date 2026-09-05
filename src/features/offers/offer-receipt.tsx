@@ -13,8 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { StatusBadge } from "@/components/status-badge";
 import {
-  completeSimulatedFunding,
-  respondToSimulatedOffer,
+  respondToFundingProposal,
   type OfferResponseState,
 } from "@/app/(protected)/offers/[offerId]/actions";
 
@@ -42,11 +41,7 @@ const initial: OfferResponseState = { status: "idle" };
 
 export function OfferReceipt(props: Props) {
   const [responseState, responseAction, responsePending] = useActionState(
-    respondToSimulatedOffer,
-    initial,
-  );
-  const [fundingState, fundingAction, fundingPending] = useActionState(
-    completeSimulatedFunding.bind(null, props.offerId),
+    respondToFundingProposal,
     initial,
   );
   const funderDeclined = props.decisionKind === "decline";
@@ -60,18 +55,18 @@ export function OfferReceipt(props: Props) {
             <div>
               <span className="inline-flex items-center gap-2 rounded-full bg-[var(--review-soft)] px-3 py-1 text-xs font-bold text-[var(--review)]">
                 <HandCoins className="size-4" />
-                Hackathon simulation
+                Funding proposal
               </span>
               <h2 className="mt-4 text-2xl font-bold">
                 {funderDeclined
                   ? "Application declined"
                   : props.status === "offered"
-                    ? "Simulated offer ready"
+                    ? "Funding proposal ready"
                     : props.status === "accepted"
-                      ? "Simulated offer accepted"
+                      ? "Funding proposal accepted"
                       : props.status === "declined"
-                        ? "Simulated offer declined"
-                        : "Simulated offer expired"}
+                        ? "Funding proposal declined"
+                        : "Funding proposal expired"}
               </h2>
               <p className="mt-2 text-sm text-[var(--muted)]">
                 {props.supplier} · {props.invoice}
@@ -109,7 +104,7 @@ export function OfferReceipt(props: Props) {
                   value={`− ${money(props.feeMinor, props.currency)}`}
                 />
                 <Term
-                  label="Net simulated disbursement"
+                  label="Estimated net advance"
                   value={money(props.netMinor, props.currency)}
                   strong
                 />
@@ -125,12 +120,12 @@ export function OfferReceipt(props: Props) {
               <div className="mt-6 rounded-2xl bg-[var(--soft)] p-5">
                 <div className="flex items-center gap-2 font-bold">
                   <Landmark className="size-5 text-[var(--primary)]" />
-                  How the simulation flows
+                  How the proposal is calculated
                 </div>
                 <ol className="mt-4 space-y-3 text-sm leading-6 text-[var(--muted)]">
                   <li>
                     <b className="text-[var(--ink)]">1.</b> The funder advances
-                    the net simulated disbursement.
+                    the estimated net advance.
                   </li>
                   <li>
                     <b className="text-[var(--ink)]">2.</b> {props.buyer} still
@@ -148,15 +143,6 @@ export function OfferReceipt(props: Props) {
           {responseState.status === "error" && (
             <Alert tone="error" title="Response not saved" className="mt-5">
               <p>{responseState.message}</p>
-            </Alert>
-          )}
-          {fundingState.status === "error" && (
-            <Alert
-              tone="error"
-              title="Simulation not completed"
-              className="mt-5"
-            >
-              <p>{fundingState.message}</p>
             </Alert>
           )}
         </CardContent>
@@ -178,12 +164,12 @@ export function OfferReceipt(props: Props) {
                   <DialogTrigger asChild>
                     <Button className="w-full">
                       <CheckCircle2 className="size-4" />
-                      Accept simulated offer
+                      Accept funding proposal
                     </Button>
                   </DialogTrigger>
                   <DialogContent
-                    title="Accept this simulated offer?"
-                    description="This records your decision in the hackathon workflow. It is not a credit agreement and no money will move."
+                    title="Accept this funding proposal?"
+                    description="This records your response to the funder's proposal. The funding partner remains responsible for contracting and disbursement."
                   >
                     <form action={responseAction}>
                       <input
@@ -194,7 +180,7 @@ export function OfferReceipt(props: Props) {
                       <input type="hidden" name="decision" value="accept" />
                       <input type="hidden" name="reason" value="" />
                       <div className="rounded-xl bg-[var(--soft)] p-4 text-sm">
-                        <p>Net simulated disbursement</p>
+                        <p>Estimated net advance</p>
                         <strong className="mt-1 block text-xl text-[var(--primary)]">
                           {money(props.netMinor, props.currency)}
                         </strong>
@@ -223,7 +209,7 @@ export function OfferReceipt(props: Props) {
                     </Button>
                   </DialogTrigger>
                   <DialogContent
-                    title="Decline this simulated offer?"
+                    title="Decline this funding proposal?"
                     description="Your reason will be recorded for the funder and cannot be edited later."
                   >
                     <form action={responseAction}>
@@ -267,28 +253,17 @@ export function OfferReceipt(props: Props) {
                 </Dialog>
               </div>
             )}
-            {props.role === "sme" &&
-              props.status === "accepted" &&
-              props.applicationStatus === "offer_accepted" && (
-                <form action={fundingAction} className="mt-5">
-                  <Button
-                    type="submit"
-                    className="w-full"
-                    loading={fundingPending}
-                  >
-                    Complete simulated funding
-                  </Button>
-                </form>
-              )}
+            {props.role === "sme" && props.status === "accepted" && props.applicationStatus === "offer_accepted" && (
+              <Alert title="Awaiting funding partner confirmation" className="mt-5"><p>Acceptance is recorded. Any disbursement must be completed and confirmed by the regulated funding partner.</p></Alert>
+            )}
             {props.applicationStatus === "funded_simulated" && (
               <Alert
                 tone="success"
-                title="Simulation complete"
+                title="Funding partner confirmation recorded"
                 className="mt-5"
               >
                 <p>
-                  No real money moved. This transaction is ready for the Trust
-                  Passport history.
+                  A funding-partner confirmation is recorded for this historical transaction.
                 </p>
               </Alert>
             )}

@@ -56,7 +56,7 @@ export default async function SystemEvidencePage({
       </Link>
       <div className="mt-5">
         <PageHeading
-          eyebrow="Automated verification · Demo Coupa"
+          eyebrow="Automated verification · customer system"
           title={
             run.outcome === "system_verified"
               ? "Verification details"
@@ -68,7 +68,7 @@ export default async function SystemEvidencePage({
       <Card className="mt-8">
         <CardContent className="pt-6">
           <dl className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            <Fact label="Source" value="Demo Coupa" />
+            <Fact label="Source" value="customer system" />
             <Fact
               label="Checked"
               value={new Date(run.completed_at).toLocaleString("en-ZA", {

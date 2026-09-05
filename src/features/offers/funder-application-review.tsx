@@ -17,7 +17,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { StatusBadge } from "@/components/status-badge";
 import { calculateOffer, parsePercentToBps } from "@/lib/offers/offer-v1";
 import {
-  createSimulatedOffer,
+  createFundingProposal,
   declineApplication,
   startFunderReview,
   type OfferActionState,
@@ -67,7 +67,7 @@ export function FunderApplicationReview(props: Props) {
     initial,
   );
   const [offerState, offerAction, offerPending] = useActionState(
-    createSimulatedOffer,
+    createFundingProposal,
     initial,
   );
   const [declineState, declineAction, declinePending] = useActionState(
@@ -266,7 +266,7 @@ export function FunderApplicationReview(props: Props) {
               ))}
             </div>
           ) : (
-            <Alert title="Legacy Demo evidence">
+            <Alert title="Previously entered evidence">
               <p>
                 This seeded package predates uploaded source files. Newly
                 submitted applications show all three private previews and
@@ -299,14 +299,13 @@ export function FunderApplicationReview(props: Props) {
           <CardContent className="pt-6">
             <span className="inline-flex items-center gap-2 rounded-full bg-[var(--review-soft)] px-3 py-1 text-xs font-bold text-[var(--review)]">
               <Calculator className="size-4" />
-              Hackathon simulation
+              Independent funder decision
             </span>
             <h2 className="mt-4 text-2xl font-bold">
-              Simulated funding decision
+              Funding proposal
             </h2>
             <p className="mt-2 text-sm leading-6 text-[var(--muted)]">
-              These terms are not credit approval, a contract, or a real
-              transfer of money.
+              The funder remains responsible for compliance, underwriting, approval, contracting and disbursement.
             </p>
             {reviewState.status === "error" && (
               <Alert tone="error" title="Review not started" className="mt-4">
@@ -406,7 +405,7 @@ export function FunderApplicationReview(props: Props) {
                     loading={offerPending}
                     disabled={!calculation}
                   >
-                    Create simulated offer
+                    Create funding proposal
                   </Button>
                 </form>
                 <details className="mt-4 rounded-xl border border-[#efc6c2] p-4">
@@ -459,7 +458,7 @@ export function FunderApplicationReview(props: Props) {
                 className="mt-5"
               >
                 <p>
-                  Open the simulated offer receipt from the dashboard or
+                  Open the funding proposal receipt from the dashboard or
                   supplier application.
                 </p>
               </Alert>

@@ -19,7 +19,7 @@ export function FunderDashboard({ data }: { data: FunderData }) {
             ? `${count} ${count === 1 ? "application is" : "applications are"} ready.`
             : "No applications are waiting."
         }
-        description="Review evidence first, then record a simulated decision."
+        description="Review evidence first, then record a funding decision."
       />
       <Metrics items={data.metrics} />
       <section
@@ -35,7 +35,7 @@ export function FunderDashboard({ data }: { data: FunderData }) {
         />
         <TaskCard
           title="Offers"
-          description="View simulated offers and declines."
+          description="View funding proposals and declines."
           count={`${data.offers.length} decisions`}
           href="/offers"
           action="View offers"
@@ -80,7 +80,7 @@ export function FunderOffersView({ data }: { data: FunderData }) {
       <PageHeading
         eyebrow="Funder / Bank"
         title="Offers"
-        description="Your recorded simulated offers and declines."
+        description="Your recorded funding proposals and declines."
       />
       <Card className="mt-8">
         <CardContent className="pt-6">
@@ -101,7 +101,7 @@ export function FunderOffersView({ data }: { data: FunderData }) {
         </CardContent>
       </Card>
       <p className="mt-4 text-xs text-[var(--muted)]">
-        All offers and funding actions are hackathon simulations.
+        Funding partners remain responsible for compliance, underwriting, contracting and disbursement.
       </p>
     </div>
   );

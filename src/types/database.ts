@@ -1128,6 +1128,14 @@ export type Database = {
         }
         Returns: undefined
       }
+      initialize_manual_evidence_v1: {
+        Args: { target_application_id: string }
+        Returns: Json
+      }
+      submit_manual_evidence_v1: {
+        Args: { entered_fields: Json; target_application_id: string }
+        Returns: Json
+      }
       persist_verification_run_v1: {
         Args: {
           checks: Json
@@ -1154,7 +1162,7 @@ export type Database = {
         }
         Returns: Json
       }
-      respond_to_simulated_offer_v1: {
+      respond_to_funding_proposal_v1: {
         Args: {
           target_decision: string
           target_offer_id: string

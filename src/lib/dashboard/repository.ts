@@ -92,12 +92,12 @@ const statuses: Record<
   documents_uploaded: {
     label: "Documents uploaded",
     progress: 30,
-    next: "Extract the document fields",
+    next: "Enter the evidence details",
   },
   fields_extracted: {
-    label: "Fields extracted",
+    label: "Evidence entered",
     progress: 45,
-    next: "Review the extracted fields",
+    next: "Review the entered evidence",
   },
   sme_reviewed: {
     label: "Evidence reviewed",
@@ -152,12 +152,12 @@ const statuses: Record<
   offer_made: {
     label: "Offer ready",
     progress: 90,
-    next: "Review the simulated offer",
+    next: "Review the funding proposal",
   },
   offer_accepted: {
     label: "Offer accepted",
     progress: 96,
-    next: "Complete simulated funding",
+    next: "Await funding partner confirmation",
   },
   offer_declined: {
     label: "Offer declined",
@@ -165,7 +165,7 @@ const statuses: Record<
     next: "Application closed",
   },
   funded_simulated: {
-    label: "Simulated funded",
+    label: "Funding confirmed",
     progress: 100,
     next: "View the Trust Passport",
   },
@@ -507,7 +507,7 @@ export async function getDashboard(
       {
         label: "Recorded decisions",
         value: String(offers.length),
-        note: "Simulated offers and declines",
+        note: "Funding proposals and declines",
       },
     ],
     applications,

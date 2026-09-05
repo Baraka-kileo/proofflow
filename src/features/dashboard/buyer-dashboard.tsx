@@ -161,7 +161,7 @@ function BuyerRequestList({ data }: { data: BuyerData }) {
               <b>{request.supplier}</b>
               <StatusBadge status="review">
                 {request.kind === "system_exception"
-                  ? "Demo Coupa difference"
+                  ? "customer system difference"
                   : "Signature required"}
               </StatusBadge>
               {request.warnings > 0 && (

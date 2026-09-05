@@ -1,10 +1,10 @@
 {
   "pack": "valid",
-  "synthetic": true,
+  "fictionalFixture": true,
   "documents": {
-    "purchase_order": { "buyerLegalName": "Ubuntu Retail Group Demo", "supplierLegalName": "Ndlovu Office Supply Demo", "purchaseOrderReference": "PO-DEMO-1042", "issueDate": "2026-08-20", "currency": "ZAR", "orderTotal": "48750.25" },
-    "delivery_evidence": { "buyerLegalName": "Ubuntu Retail Group Demo", "supplierLegalName": "Ndlovu Office Supply Demo", "purchaseOrderReference": "PO-DEMO-1042", "deliveryOrCompletionDate": "2026-08-22", "receiverOrSignaturePresent": true },
-    "invoice": { "buyerLegalName": "Ubuntu Retail Group Demo", "supplierLegalName": "Ndlovu Office Supply Demo", "invoiceNumber": "INV-DEMO-1042", "purchaseOrderReference": "PO-DEMO-1042", "issueDate": "2026-08-22", "dueDate": "2026-10-21", "currency": "ZAR", "subtotal": "42391.52", "tax": "6358.73", "total": "48750.25" }
+    "purchase_order": { "buyerLegalName": "Ubuntu Retail Group", "supplierLegalName": "Ndlovu Office Supplies", "purchaseOrderReference": "PO-8841", "issueDate": "2026-08-20", "currency": "ZAR", "orderTotal": "48750.25" },
+    "delivery_evidence": { "buyerLegalName": "Ubuntu Retail Group", "supplierLegalName": "Ndlovu Office Supplies", "purchaseOrderReference": "PO-8841", "deliveryOrCompletionDate": "2026-08-22", "receiverOrSignaturePresent": true },
+    "invoice": { "buyerLegalName": "Ubuntu Retail Group", "supplierLegalName": "Ndlovu Office Supplies", "invoiceNumber": "INV-2039", "purchaseOrderReference": "PO-8841", "issueDate": "2026-08-22", "dueDate": "2026-10-21", "currency": "ZAR", "subtotal": "42391.52", "tax": "6358.73", "total": "48750.25" }
   },
   "expectedRulesBeforeBuyer": { "V001": "pass", "V002": "pass", "V003": "pass", "V004": "pass", "V005": "pass", "V006": "pass", "V007": "pass", "V008": "pass", "V009": "pass", "V010": "pass", "V011": "pass", "V012": "review" }
 }

@@ -222,9 +222,9 @@ export function VerificationPanel({
                 </h3>
                 <p className="mt-1 max-w-2xl text-sm leading-6 text-[var(--muted)]">
                   {pendingBuyer
-                    ? "Demo Coupa was unavailable, so the large customer received the six-question signature flow."
+                    ? "customer system was unavailable, so the large customer received the six-question signature flow."
                     : canCheck
-                      ? "ProofFlow will match the PO, invoice, amount, delivery and payment status against synthetic Demo Coupa records."
+                      ? "ProofFlow will match the PO, invoice, amount, delivery and payment status against authorised customer-system records."
                       : "Automated verification becomes available when the document checks have no blocking failures."}
                 </p>
               </div>
@@ -241,7 +241,7 @@ export function VerificationPanel({
             </div>
             {canCheck && (
               <p className="mt-4 text-xs text-[var(--muted)]">
-                Demo Coupa · Synthetic evidence · No funding decision
+                Customer-system evidence · No funding decision
               </p>
             )}
             {overallResult === "fail" && (

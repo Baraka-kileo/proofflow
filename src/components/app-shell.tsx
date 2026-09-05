@@ -36,14 +36,14 @@ export function AppShell({
               className="size-2 rounded-full bg-[var(--review)]"
               aria-hidden="true"
             />
-            Demo workspace
+            Secure workspace
           </div>
           <OrganizationBadge
             organization={user.organization}
             role={user.role}
           />
           <p className="mt-2 leading-5">
-            Hosted with synthetic data. No real money moves.
+            Private evidence and actions are restricted by organization and role.
           </p>
         </div>
       </aside>

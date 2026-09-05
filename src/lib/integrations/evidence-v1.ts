@@ -71,7 +71,7 @@ export const externalPaymentStatusSchema = z
 export const canonicalEvidenceSchema = z
   .object({
     provider: z.literal("coupa"),
-    providerMode: z.enum(["demo", "live"]),
+    providerMode: z.literal("live"),
     supplier: externalSupplierSchema.nullable(),
     purchaseOrder: externalPurchaseOrderSchema.nullable(),
     invoice: externalInvoiceSchema.nullable(),

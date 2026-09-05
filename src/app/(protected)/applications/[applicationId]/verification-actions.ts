@@ -1,19 +1,10 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { randomUUID } from "node:crypto";
-import type { SupabaseClient } from "@supabase/supabase-js";
 import { z } from "zod";
 import { requireApplicationAccess, requireRole } from "@/lib/auth/dal";
 import { createClient } from "@/lib/supabase/server";
 import { normalizeReference } from "@/lib/verification/normalizers";
-import {
-  DemoCoupaConnector,
-  demoCoupaScenarios,
-  retrieveDemoCoupaEvidence,
-} from "@/lib/integrations/demo-coupa";
-import { runCoupaRulesV1 } from "@/lib/integrations/rules-v1";
-import { withSafeRetry } from "@/lib/integrations/resilience";
 import {
   calculateOverallResult,
   runVerificationRulesV1,
@@ -102,7 +93,7 @@ export async function runApplicationVerification(
   ) {
     return {
       status: "error",
-      message: "Every extracted field must be reviewed before verification.",
+      message: "Every required evidence field must be entered before verification.",
     };
   }
 
@@ -126,7 +117,7 @@ export async function runApplicationVerification(
   if (!purchaseOrder || !deliveryEvidence || !invoice)
     return {
       status: "error",
-      message: "All three reviewed evidence categories are required.",
+      message: "All three submitted evidence categories are required.",
     };
   const normalizedInvoiceNumber = normalizeReference(
     typeof invoice.fields.invoice_number === "string"
@@ -136,7 +127,7 @@ export async function runApplicationVerification(
   if (!normalizedInvoiceNumber)
     return {
       status: "error",
-      message: "The reviewed invoice number is missing or invalid.",
+      message: "The submitted invoice number is missing or invalid.",
     };
   const duplicateInvoiceIdentity = (otherApplications ?? []).some(
     (other) =>
@@ -221,18 +212,6 @@ export async function sendApplicationToBuyer(
   };
 }
 
-const connectionSchema = z.object({
-  id: z.uuid(),
-  status: z.enum(["active", "disconnected", "error", "revoked"]),
-  mode: z.enum(["demo", "live"]),
-  demo_scenario: z.enum(demoCoupaScenarios),
-});
-const mappingSchema = z.object({
-  external_supplier_id: z.string().min(1),
-  external_supplier_name: z.string().min(1),
-  status: z.string(),
-});
-
 export async function checkBuyerSystem(
   applicationId: string,
   previous: VerificationActionState,
@@ -240,147 +219,16 @@ export async function checkBuyerSystem(
   void previous;
   const parsedId = z.uuid().safeParse(applicationId);
   if (!parsedId.success)
-    return {
-      status: "error",
-      message: "The application could not be identified.",
-    };
+    return { status: "error", message: "The application could not be identified." };
+
   const session = await requireRole("sme");
   const { application } = await requireApplicationAccess(parsedId.data);
-  if (
-    application.owner_organization_id !== session.organizationId ||
-    ![
-      "checks_complete",
-      "buyer_exception_review",
-      "buyer_system_blocked",
-      "buyer_system_verified",
-      "buyer_pending",
-    ].includes(application.status)
-  )
-    return {
-      status: "error",
-      message: "This application is not ready for automated verification.",
-    };
-  if (
-    !application.purchase_order_reference ||
-    !application.invoice_number ||
-    application.invoice_total_minor === null
-  )
-    return {
-      status: "error",
-      message: "The reviewed PO, invoice number, and amount are required.",
-    };
+  if (application.owner_organization_id !== session.organizationId)
+    return { status: "error", message: "This application is not available." };
 
-  const supabase = await createClient();
-  const db = supabase as unknown as SupabaseClient;
-  const [{ data: contextRaw }, { data: latestRun }, { data: owner }] =
-    await Promise.all([
-      db.rpc("get_demo_coupa_context", {
-        target_application_id: application.id,
-      }),
-      supabase
-        .from("verification_runs")
-        .select("id")
-        .eq("application_id", application.id)
-        .eq("status", "completed")
-        .order("completed_at", { ascending: false })
-        .limit(1)
-        .maybeSingle(),
-      supabase
-        .from("organizations")
-        .select("name")
-        .eq("id", application.owner_organization_id)
-        .maybeSingle(),
-    ]);
-  const context = z
-    .object({ connection: connectionSchema, mapping: mappingSchema.nullable() })
-    .safeParse(contextRaw);
-  const connection = context.success
-    ? { success: true as const, data: context.data.connection }
-    : { success: false as const };
-  const mapping = mappingSchema.safeParse(
-    context.success ? context.data.mapping : null,
-  );
-  if (!connection.success || connection.data.mode !== "demo")
-    return {
-      status: "error",
-      message:
-        "Automated verification is unavailable. Request manual customer confirmation instead.",
-    };
-  const correlationId = `coupa-${randomUUID()}`;
-  const idempotencyKey = `${latestRun?.id ?? application.id}:${connection.data.demo_scenario}`;
-  const transaction = {
-    supplierId: mapping.success
-      ? mapping.data.external_supplier_id
-      : "UNMAPPED",
-    supplierName: mapping.success
-      ? mapping.data.external_supplier_name
-      : (owner?.name ?? "Unmapped supplier"),
-    purchaseOrderNumber: application.purchase_order_reference,
-    invoiceNumber: application.invoice_number,
-    invoiceTotalMinor: application.invoice_total_minor,
-    currency: application.currency,
-    invoiceDate: application.invoice_issued_on,
-    dueDate: application.invoice_due_on,
+  return {
+    status: "error",
+    message:
+      "No authorised customer-system integration is configured for this application. Request authenticated customer confirmation instead.",
   };
-  const scenario =
-    connection.data.status === "active"
-      ? connection.data.demo_scenario
-      : "disconnected";
-  const connector = new DemoCoupaConnector(scenario, transaction);
-  let evidence;
-  try {
-    evidence = await withSafeRetry(
-      () => retrieveDemoCoupaEvidence(connector, transaction, correlationId),
-      { timeoutMs: 5_000, retries: 1 },
-    );
-  } catch {
-    return {
-      status: "error",
-      message: "Demo Coupa returned invalid evidence. Nothing was saved.",
-    };
-  }
-  const rules = evidence
-    ? runCoupaRulesV1(
-        {
-          supplierId: transaction.supplierId,
-          supplierName: transaction.supplierName,
-          supplierMapped: mapping.success && mapping.data.status === "verified",
-          purchaseOrderNumber: transaction.purchaseOrderNumber,
-          invoiceNumber: transaction.invoiceNumber,
-          totalMinor: transaction.invoiceTotalMinor,
-          currency: transaction.currency,
-          dueDate: transaction.dueDate,
-        },
-        evidence,
-      )
-    : null;
-  const outcome = rules?.outcome ?? "manual_confirmation_required";
-  const { error } = await db.rpc("persist_demo_coupa_result_v1", {
-    target_application_id: application.id,
-    target_connection_id: connection.data.id,
-    target_idempotency_key: idempotencyKey,
-    target_correlation_id: correlationId,
-    target_outcome: outcome,
-    target_evidence: evidence ?? {},
-    target_checks: rules?.checks ?? [],
-    target_error_code: evidence ? null : "COUPA_UNAVAILABLE",
-  });
-  if (error)
-    return {
-      status: "error",
-      message:
-        "The automated verification result could not be saved. Please try again.",
-    };
-  revalidatePath(`/applications/${application.id}`);
-  revalidatePath("/dashboard");
-  revalidatePath("/confirmations");
-  const messages = {
-    system_verified: "Automated verification completed using Demo Coupa.",
-    review_required:
-      "Demo Coupa found a difference. Customer review is required.",
-    blocked: "Demo Coupa reports this invoice cannot proceed.",
-    manual_confirmation_required:
-      "Demo Coupa is unavailable. Signed customer confirmation has been requested.",
-  };
-  return { status: "success", message: messages[outcome] };
 }

@@ -52,4 +52,4 @@ Every interactive component defines default, hover, focus-visible, active, disab
 
 ## Charts and finance
 
-Prefer labelled numbers and timelines over decorative charts. Every amount shows currency, fee, net advance, and relevant date. Never imply that a simulated amount is approved cash.
+Prefer labelled numbers and timelines over decorative charts. Every amount shows currency, fee, net advance, and relevant date. Never imply that a proposal response is approved or transferred cash.

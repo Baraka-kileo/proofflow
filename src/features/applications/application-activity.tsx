@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 const labels: Record<string, string> = {
   "application.created": "Application created",
   "application.documents_uploaded": "Evidence documents uploaded",
-  "application.fields_extracted": "Document fields extracted",
+  "application.fields_extracted": "Evidence details entered",
   "application.fields_reviewed": "SME review completed",
   "application.verification_completed": "Verification completed",
   "application.sent_to_buyer": "Sent to large customer",

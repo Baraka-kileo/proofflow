@@ -2,7 +2,7 @@ import { createClient } from "@supabase/supabase-js";
 
 const url = process.env.PROOFFLOW_TEST_SUPABASE_URL;
 const anonKey = process.env.PROOFFLOW_TEST_PUBLISHABLE_KEY;
-const password = process.env.PROOFFLOW_DEMO_PASSWORD;
+const password = process.env.PROOFFLOW_TEST_PASSWORD;
 if (!url || !anonKey || !password) throw new Error("Hosted Trust Passport test configuration is missing.");
 
 const sme = createClient(url, anonKey, { auth: { persistSession: false, autoRefreshToken: false } });

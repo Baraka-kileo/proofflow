@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import { Logo } from "@/components/logo";
-import { LoginForm, type DemoCredential } from "@/features/auth/login-form";
-import { getDemoAuthEnvironment } from "@/lib/env/server";
+import { LoginForm, type TestCredential } from "@/features/auth/login-form";
+import { getServerEnvironment } from "@/lib/env/server";
 
 export const metadata: Metadata = { title: "Sign in" };
 
 export default function LoginPage() {
-  const { PROOFFLOW_DEMO_PASSWORD: password } = getDemoAuthEnvironment();
-  const demoCredentials: DemoCredential[] = [
+  const environment = getServerEnvironment();
+  const password = environment.PROOFFLOW_TEST_PASSWORD;
+  const testCredentials: TestCredential[] = password && environment.PROOFFLOW_ENABLE_TEST_CREDENTIALS === "true" ? [
     {
       role: "sme",
       label: "SME",
@@ -32,7 +33,7 @@ export default function LoginPage() {
       password,
       tone: "funder",
     },
-  ];
+  ] : [];
   return (
     <main className="login-layout">
       <section className="login-story">
@@ -50,7 +51,7 @@ export default function LoginPage() {
           </p>
         </div>
         <p className="text-xs text-[#9fd4c5]">
-          Hackathon demonstration · Synthetic data · No real money moves
+          Private evidence · Explainable checks · Role-based access
         </p>
       </section>
       <section className="login-panel">
@@ -62,11 +63,10 @@ export default function LoginPage() {
             Sign in to ProofFlow
           </h2>
           <p className="mt-3 text-sm leading-6 text-[var(--muted)]">
-            Use your hosted account. Fictional demo accounts are available below
-            the Sign in button.
+            Use your hosted account. Sample credentials for testing appear below when enabled.
           </p>
           <div className="mt-8">
-            <LoginForm demoCredentials={demoCredentials} />
+            <LoginForm testCredentials={testCredentials} />
           </div>
         </div>
       </section>

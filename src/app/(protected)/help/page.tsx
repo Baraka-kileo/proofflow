@@ -10,7 +10,7 @@ export const metadata: Metadata = { title: "Help" };
 const roles = [
   {
     title: "SME supplier",
-    text: "Creates the application, uploads private evidence, reviews extracted fields, and sends an explainable package to the large customer.",
+    text: "Creates the application, uploads private evidence, enters and reviews the required details, and sends an explainable package to the large customer.",
     icon: Store,
   },
   {
@@ -20,7 +20,7 @@ const roles = [
   },
   {
     title: "Funder / Bank",
-    text: "Reads the evidence and customer certificate, then records a clearly simulated offer or decline without changing source facts.",
+    text: "Reviews the evidence and customer confirmation, then records an independent funding proposal or decline without changing source facts.",
     icon: Landmark,
   },
 ];
@@ -54,14 +54,13 @@ export default async function HelpPage() {
       </section>
       <Alert
         tone="info"
-        title="Privacy and simulation boundary"
+        title="Privacy and funding boundary"
         className="mt-6"
       >
         <div className="flex gap-3">
           <ShieldCheck aria-hidden="true" className="mt-0.5 size-5 shrink-0" />
           <p>
-            Evidence is private and role-filtered. Demo identities and documents
-            are synthetic. ProofFlow does not make a credit decision, create a
+            Evidence is private and role-filtered. ProofFlow does not make a credit decision, create a
             guarantee, or move money.
           </p>
         </div>

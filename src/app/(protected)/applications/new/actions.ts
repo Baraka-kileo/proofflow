@@ -22,7 +22,6 @@ export async function createApplicationDraft(
     invoiceAmount: formData.get("invoiceAmount"),
     currency: formData.get("currency"),
     expectedDueDate: formData.get("expectedDueDate"),
-    aiConsent: formData.get("aiConsent"),
   });
   if (!parsed.success) {
     const errors = parsed.error.issues.map((issue) => ({
@@ -63,7 +62,6 @@ export async function createApplicationDraft(
     requested_amount_minor: Math.floor(amountMinor * 0.8),
     currency: parsed.data.currency,
     invoice_due_on: parsed.data.expectedDueDate,
-    ai_processing_consented_at: new Date().toISOString(),
     status: "draft",
   });
   if (error) {

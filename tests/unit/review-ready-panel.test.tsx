@@ -2,11 +2,11 @@ import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { ReviewReadyPanel } from "@/features/applications/review-ready-panel";
 
-describe("review-ready extraction disclosure",()=>{
-  it("shows the required disclosure only in explicit demo mode",()=>{
-    const {rerender}=render(<ReviewReadyPanel extractionMode="live"/>);
-    expect(screen.queryByText("Demo extraction—not processed by live AI")).not.toBeInTheDocument();
-    rerender(<ReviewReadyPanel extractionMode="demo"/>);
-    expect(screen.getByRole("status")).toHaveTextContent("Demo extraction—not processed by live AI");
+describe("evidence entry ready panel", () => {
+  it("explains manual evidence entry without external processing", () => {
+    render(<ReviewReadyPanel />);
+    expect(screen.getByText("Documents are ready for evidence entry")).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Enter evidence details" })).toBeInTheDocument();
+    expect(screen.queryByText(/\bAI\b/i)).not.toBeInTheDocument();
   });
 });

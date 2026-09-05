@@ -16,6 +16,10 @@
 /playwright-report/
 /tmp/
 /output/ui/
+/output/pdf/
+/.codex-deck-build/
+/.codex-finalizer/
+/deliverables/
 
 # next.js
 /.next/

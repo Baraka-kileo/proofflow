@@ -10,7 +10,7 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 # ProofFlow delivery contract
 
-This repository is a 12-hour hackathon MVP. Before coding, read `docs/PRODUCT-SCOPE.md`, `docs/USER-FLOWS.md`, `docs/UX-SPEC.md`, `docs/DESIGN-SYSTEM.md`, `docs/ARCHITECTURE.md`, `docs/SECURITY.md`, `docs/BUILD-CHECKLIST.md`, and `docs/IMPLEMENTATION-LOG.md`.
+This repository implements the unified ProofFlow product architecture. Before coding, read `docs/PRODUCT-SCOPE.md`, `docs/USER-FLOWS.md`, `docs/UX-SPEC.md`, `docs/DESIGN-SYSTEM.md`, `docs/ARCHITECTURE.md`, `docs/SECURITY.md`, `docs/BUILD-CHECKLIST.md`, and `docs/IMPLEMENTATION-LOG.md`.
 
 ## Non-negotiable rules
 
@@ -19,12 +19,12 @@ This repository is a 12-hour hackathon MVP. Before coding, read `docs/PRODUCT-SC
 - Keep `main` runnable and demoable. Do not commit secrets or real financial/customer documents.
 - Enabled controls must work. If a feature is not implemented, remove it or label it clearly as unavailable.
 - Build one application with role-based views for SME, buyer, and funder; do not create separate products.
-- Use Gemini only to extract structured fields. Use deterministic TypeScript rules for financial comparisons and decisions.
-- AI output is untrusted input: validate it with Zod and require human review before verification.
+- Do not add AI processing. SMEs enter evidence manually and deterministic TypeScript rules perform consistency checks.
+- Validate the complete manual evidence payload and persist it atomically before verification.
 - Enforce authorization on the server and with Supabase Row Level Security. Client-side hiding is never authorization.
 - Every page needs responsive, keyboard-accessible loading, empty, error, success, and disabled states where relevant.
 - Motion must explain progress or state change, stay between 150–250 ms, and respect `prefers-reduced-motion`.
-- Use synthetic hackathon data only. Money movement and credit approval are simulated and must be labelled as such.
+- Seeded records must be fictional and professional. Never fabricate an external integration result, credit approval, or money movement.
 
 ## Completion gate
 

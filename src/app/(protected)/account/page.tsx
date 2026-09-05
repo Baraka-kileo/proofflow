@@ -1,20 +1,16 @@
 import {
   Building2,
   Cable,
-  CheckCircle2,
   LogOut,
   Mail,
   ShieldCheck,
   UserRound,
 } from "lucide-react";
-import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Metadata } from "next";
 import { PageHeading } from "@/components/page-heading";
 import { Card, CardContent } from "@/components/ui/card";
 import { requireRole, requireUser } from "@/lib/auth/dal";
 import { signOut } from "@/lib/auth/actions";
-import { createClient } from "@/lib/supabase/server";
-import { DemoConnectionControl } from "@/features/integrations/demo-connection-control";
 import type { SessionUser } from "@/types/domain";
 
 export const metadata: Metadata = { title: "Account" };
@@ -49,18 +45,6 @@ export default async function AccountPage() {
     requireRole(["sme", "buyer", "funder"]),
     requireUser(),
   ]);
-  const client = (await createClient()) as unknown as SupabaseClient;
-  const { data: connection } =
-    session.role === "buyer"
-      ? await client
-          .from("integration_connections")
-          .select(
-            "id,provider,mode,status,demo_scenario,last_successful_sync_at",
-          )
-          .eq("buyer_organization_id", session.organizationId)
-          .eq("provider", "coupa")
-          .maybeSingle()
-      : { data: null };
   return (
     <div className="page-enter mx-auto max-w-3xl">
       <PageHeading
@@ -111,28 +95,9 @@ export default async function AccountPage() {
                   Business connections
                 </p>
                 <h2 className="mt-1 text-xl font-bold">Coupa</h2>
-                {connection ? (
-                  <div className="mt-2 flex items-center gap-2 text-sm">
-                    <CheckCircle2 className="size-4 text-[var(--primary)]" />
-                    <span>
-                      <b>Demo connection active</b> · Synthetic evidence only
-                    </span>
-                  </div>
-                ) : (
-                  <p className="mt-2 text-sm text-[var(--muted)]">
-                    No Coupa connection is available. Applications use signed
-                    large-customer confirmation.
-                  </p>
-                )}
-                {connection && (
-                  <DemoConnectionControl
-                    connectionId={connection.id}
-                    scenario={connection.demo_scenario}
-                  />
-                )}
+                <p className="mt-2 text-sm text-[var(--muted)]">No authorised Coupa connection is configured. Applications use authenticated large-customer confirmation.</p>
                 <p className="mt-3 text-xs text-[var(--muted)]">
-                  Live Coupa is unavailable until an authorised customer sandbox
-                  and read-only credentials are configured.
+                  An ERP connection is activated only after the customer authorises read-only access and configuration is verified.
                 </p>
               </div>
             </div>

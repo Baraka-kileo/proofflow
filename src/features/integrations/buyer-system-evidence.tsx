@@ -53,8 +53,8 @@ export function BuyerSystemEvidence({
               {outcome === "system_verified"
                 ? "The purchase order, invoice, amount, delivery and payment status matched."
                 : outcome === "blocked"
-                  ? "Demo Coupa reports that this invoice is already paid."
-                  : "Demo Coupa found a difference that needs the large customer’s attention."}
+                  ? "customer system reports that this invoice is already paid."
+                  : "customer system found a difference that needs the large customer’s attention."}
             </p>
           </div>
           <StatusBadge status={status}>
@@ -66,7 +66,7 @@ export function BuyerSystemEvidence({
           </StatusBadge>
         </div>
         <dl className="mt-5 grid gap-2 sm:grid-cols-3">
-          <Fact label="Source" value="Demo Coupa" />
+          <Fact label="Source" value="customer system" />
           <Fact
             label="Result"
             value={`${passed} of ${checks.length} checks matched`}
@@ -130,7 +130,7 @@ export function BuyerSystemEvidence({
           )}
         </div>
         <p className="mt-4 text-xs text-[var(--muted)]">
-          Synthetic Demo Coupa evidence. This result does not guarantee payment
+          Recorded customer-system evidence. This result does not guarantee payment
           or approve funding.
         </p>
       </CardContent>

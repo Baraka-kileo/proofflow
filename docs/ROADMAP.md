@@ -1,24 +1,22 @@
-# Roadmap and judging-criteria map
+# Roadmap
 
-## Hackathon MVP
+## Current product
 
-Deliver the complete three-role evidence workflow in `BUILD-CHECKLIST.md`. Revenue hypothesis: funder pays a per-funded-invoice platform fee or SaaS/API fee because faster verification reduces operational cost and fraud exposure. Validate pricing after interviews; do not invent market traction.
+- Three role workspaces
+- Manual private evidence entry
+- Deterministic V001–V012 verification
+- Authenticated customer confirmation
+- Funding-ready package and Trust Passport
+- External compliance status boundary
+- Funding proposal workflow
+- Free Core, enterprise Connect and Funding Partner positioning
 
-## After the hackathon
+## Next integrations
 
-1. Buyer email/secure-link invitations and organization-domain verification
-2. Accounting, ERP, bank-statement, and open-finance integrations
-3. Production KYC/AML, lender decision APIs, e-signatures, and settlement reconciliation
-4. Fraud operations console, malware scanning, and privacy retention automation
-5. Multi-country tax/currency/rules configuration and lender marketplace
+1. Authorised ERP connectors and webhooks for SAP, Coupa and accounting systems
+2. Approved KYC/KYB provider status callbacks
+3. Funding-partner decision and disbursement callbacks
+4. Portfolio reporting, multi-entity controls and enterprise administration
+5. Legal and regulatory validation of any financing-fee revenue share
 
-## Judging criteria evidence
-
-| Criterion | Proof in the MVP |
-|---|---|
-| Innovation & creativity (20) | Buyer-confirmed, reusable evidence pack and explainable Trust Passport |
-| Technical implementation (20) | Real role workflow, private documents, AI extraction, deterministic rules, audit events |
-| Best use of tools (15) | AI used narrowly for extraction; typed rules for decisions; fit-for-purpose managed platform |
-| Security & data privacy (15) | RLS, private storage, signed links, validation, hashing, role boundaries, synthetic data |
-| Business model (15) | Funder-paid workflow/API hypothesis with measurable verification-time value |
-| Scalability & interoperability (15) | One multi-tenant app, structured evidence, versioned rules, modular integrations/API boundary |
+No roadmap integration may fabricate an external response when credentials or authorisation are unavailable.

@@ -34,7 +34,7 @@ export async function generateSystemVerificationCertificate(
     `ProofFlow System Verification Certificate ${data.verificationId}`,
   );
   pdf.setAuthor("ProofFlow");
-  pdf.setSubject("Demo Coupa evidence verification");
+  pdf.setSubject("Customer system evidence verification");
   const page = pdf.addPage([595.28, 841.89]),
     regular = await pdf.embedFont(StandardFonts.Helvetica),
     bold = await pdf.embedFont(StandardFonts.HelveticaBold);
@@ -60,7 +60,7 @@ export async function generateSystemVerificationCertificate(
     font: bold,
     color: rgb(0.76, 0.9, 0.85),
   });
-  page.drawText("DEMO COUPA", {
+  page.drawText("CUSTOMER SYSTEM", {
     x: 462,
     y: 797,
     size: 8,
@@ -140,7 +140,7 @@ export async function generateSystemVerificationCertificate(
   label(page, bold, "AUDIT REFERENCE", y);
   y -= 22;
   page.drawRectangle({ x: 42, y: y - 75, width: 511, height: 84, color: soft });
-  pair(page, bold, regular, "Source", "Demo Coupa", 55, y - 13);
+  pair(page, bold, regular, "Source", "Customer system", 55, y - 13);
   pair(page, bold, regular, "Retrieved", data.retrievedAt, 55, y - 35);
   pair(page, bold, regular, "Evidence hash", data.evidenceHash, 55, y - 57);
   y -= 96;
@@ -167,7 +167,7 @@ export async function generateSystemVerificationCertificate(
     color: ink,
   });
   page.drawText(
-    "No person signed this certificate. It records evidence retrieved from Demo Coupa and deterministic ProofFlow checks.",
+    "No person signed this certificate. It records evidence retrieved from Customer system and deterministic ProofFlow checks.",
     { x: 42, y: 61, size: 7.7, font: bold, color: ink },
   );
   wrap(

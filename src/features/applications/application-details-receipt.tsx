@@ -6,13 +6,11 @@ export function ApplicationDetailsReceipt({
   purchaseOrder,
   amount,
   dueDate,
-  consented,
 }: {
   buyer: string;
   purchaseOrder: string | null;
   amount: string;
   dueDate: string | null;
-  consented: boolean;
 }) {
   const due = dueDate
     ? new Intl.DateTimeFormat("en-ZA", {
@@ -47,10 +45,7 @@ export function ApplicationDetailsReceipt({
           <Detail label="Expected payment" value={due} />
         </dl>
         <p className="mt-5 flex items-center gap-2 border-t border-[var(--border)] pt-4 text-xs text-[var(--muted)]">
-          <LockKeyhole className="size-4" aria-hidden="true" />
-          {consented
-            ? "AI processing consent recorded for these Demo documents."
-            : "AI processing consent has not been recorded."}
+          <LockKeyhole className="size-4" aria-hidden="true" /> Private documents are stored in the role-protected application workspace.
         </p>
       </CardContent>
     </Card>

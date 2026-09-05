@@ -8,7 +8,6 @@ type Application = Pick<
   | "invoice_number"
   | "invoice_total_minor"
   | "invoice_due_on"
-  | "ai_processing_consented_at"
 >;
 type DocumentKind = Database["public"]["Enums"]["document_kind"];
 
@@ -64,8 +63,7 @@ export function deriveApplicationProgress(
         application.invoice_number &&
         application.invoice_total_minor &&
         application.invoice_total_minor > 0 &&
-        application.invoice_due_on &&
-        application.ai_processing_consented_at)),
+        application.invoice_due_on)),
   );
   const documentsComplete = Boolean(
     application &&
@@ -114,14 +112,14 @@ export function deriveApplicationProgress(
     {
       id: "review",
       label: "Review",
-      description: "Confirm extracted fields",
+      description: "Enter evidence details",
       lockedReason: "Upload all three evidence documents first.",
     },
     {
       id: "verification",
       label: "Document checks",
       description: "Check the uploaded evidence",
-      lockedReason: "Review and approve the extracted fields first.",
+      lockedReason: "Enter and submit all required evidence fields first.",
     },
     {
       id: "buyer",

@@ -1,6 +1,6 @@
 {
   "pack": "duplicate",
-  "synthetic": true,
+  "fictionalFixture": true,
   "relationship": "Each PDF is byte-for-byte identical to the same filename in ../valid.",
   "expectedRulesBeforeBuyer": { "V009": "fail" },
   "expectedBehavior": "The duplicate upload is rejected or recorded as a V009 exact SHA-256 duplicate without overwriting the original evidence."

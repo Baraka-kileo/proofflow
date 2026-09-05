@@ -32,7 +32,7 @@ async function createIdentity(label, role, organizationId) {
 
   const { error: profileError } = await admin.from("profiles").insert({
     id: created.user.id,
-    display_name: `${label} RLS Demo User`,
+    display_name: `${label} RLS Fixture User`,
   });
   if (profileError) throw profileError;
   const { error: membershipError } = await admin.from("memberships").insert({
@@ -54,10 +54,10 @@ async function createOrganization(label, kind) {
   const { data, error } = await admin
     .from("organizations")
     .insert({
-      name: `${label} RLS Demo Organization`,
+      name: `${label} RLS Fixture Organization`,
       slug: `rls-${label.toLowerCase()}-${run}`,
       kind,
-      is_demo: true,
+      is_demo: false,
     })
     .select("id")
     .single();
@@ -73,7 +73,7 @@ async function createApplication(ownerId, buyerId, creatorId, label, status) {
       owner_organization_id: ownerId,
       buyer_organization_id: buyerId,
       created_by: creatorId,
-      title: `${label} RLS Demo Application`,
+      title: `${label} RLS Fixture Application`,
       invoice_number: `INV-${label}-${run}`,
       status,
     })
@@ -118,7 +118,7 @@ try {
     owner_organization_id: smeAOrganization,
     buyer_organization_id: buyerAOrganization,
     created_by: smeA.id,
-    title: "SME A Created RLS Demo",
+    title: "SME A Created RLS Fixture",
     invoice_number: `INV-CREATE-A-${run}`,
   });
   assert(!ownInsertError, `SME A could not create its own draft: ${ownInsertError?.message}`);
@@ -127,14 +127,14 @@ try {
     owner_organization_id: smeBOrganization,
     buyer_organization_id: buyerBOrganization,
     created_by: smeA.id,
-    title: "Blocked Cross Tenant RLS Demo",
+    title: "Blocked Cross Tenant RLS Fixture",
     invoice_number: `INV-BLOCKED-${run}`,
   });
   assert(crossInsertError, "SME A inserted an application into SME B's tenant.");
 
   const { data: ownUpdate, error: ownUpdateError } = await smeA.client
     .from("applications")
-    .update({ title: "SME A Updated RLS Demo" })
+    .update({ title: "SME A Updated RLS Fixture" })
     .eq("id", draftA)
     .select("id");
   assert(!ownUpdateError && ownUpdate.length === 1, "SME A could not update its own draft.");
@@ -262,7 +262,7 @@ try {
       application_id: confirmedA,
       rule_code: "RLS_DEMO_CHECK",
       result: "pass",
-      explanation: "Synthetic immutable RLS demonstration check.",
+      explanation: "Fictional immutable RLS integration check.",
     })
     .select("id")
     .single();

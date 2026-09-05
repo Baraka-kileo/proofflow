@@ -16,7 +16,6 @@ export default async function NewApplicationPage() {
     .from("organizations")
     .select("id,name")
     .eq("kind", "buyer")
-    .eq("is_demo", true)
     .order("name");
   if (error)
     throw new Error(

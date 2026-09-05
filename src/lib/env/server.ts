@@ -13,10 +13,11 @@ const environmentSchema = z.object({
   NEXT_PUBLIC_SUPABASE_URL: optionalUrl,
   NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: optionalSecret,
   SUPABASE_SERVICE_ROLE_KEY: optionalSecret,
-  GEMINI_API_KEY: optionalSecret,
-  PROOFFLOW_EXTRACTION_MODE: z.preprocess(blankToUndefined, z.enum(["live", "demo"]).default("live")),
-  PROOFFLOW_ENABLE_DEMO_ACCESS: z.enum(["true", "false"]).default("false"),
-  PROOFFLOW_DEMO_PASSWORD: optionalSecret,
+  PROOFFLOW_ENABLE_TEST_CREDENTIALS: z.preprocess(
+    blankToUndefined,
+    z.enum(["true", "false"]).default("false"),
+  ),
+  PROOFFLOW_TEST_PASSWORD: optionalSecret,
 });
 
 export type ServerEnvironment = z.infer<typeof environmentSchema>;
@@ -28,10 +29,8 @@ function readEnvironment(): Record<keyof ServerEnvironment, string | undefined> 
     NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY:
       process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY,
     SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
-    GEMINI_API_KEY: process.env.GEMINI_API_KEY,
-    PROOFFLOW_EXTRACTION_MODE: process.env.PROOFFLOW_EXTRACTION_MODE,
-    PROOFFLOW_ENABLE_DEMO_ACCESS: process.env.PROOFFLOW_ENABLE_DEMO_ACCESS,
-    PROOFFLOW_DEMO_PASSWORD: process.env.PROOFFLOW_DEMO_PASSWORD,
+    PROOFFLOW_ENABLE_TEST_CREDENTIALS: process.env.PROOFFLOW_ENABLE_TEST_CREDENTIALS,
+    PROOFFLOW_TEST_PASSWORD: process.env.PROOFFLOW_TEST_PASSWORD,
   };
 }
 
@@ -81,29 +80,4 @@ export function getSupabaseAdminEnvironment() {
     ...supabase,
     SUPABASE_SERVICE_ROLE_KEY: environment.SUPABASE_SERVICE_ROLE_KEY,
   };
-}
-
-export function getGeminiEnvironment() {
-  const environment = getServerEnvironment();
-
-  if (!environment.GEMINI_API_KEY) {
-    throw new Error(
-      "ProofFlow live document extraction is not configured. Add GEMINI_API_KEY to the server environment.",
-    );
-  }
-
-  return { GEMINI_API_KEY: environment.GEMINI_API_KEY };
-}
-
-export function getExtractionModeEnvironment() {
-  const environment = getServerEnvironment();
-  return { PROOFFLOW_EXTRACTION_MODE: environment.PROOFFLOW_EXTRACTION_MODE };
-}
-
-export function getDemoAuthEnvironment() {
-  const environment = getServerEnvironment();
-  if (environment.PROOFFLOW_ENABLE_DEMO_ACCESS !== "true" || !environment.PROOFFLOW_DEMO_PASSWORD) {
-    throw new Error("ProofFlow one-click demo access is disabled or missing its server-only demo password.");
-  }
-  return { PROOFFLOW_DEMO_PASSWORD: environment.PROOFFLOW_DEMO_PASSWORD };
 }
