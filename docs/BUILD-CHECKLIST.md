@@ -343,9 +343,26 @@ Dependencies: P3–P8 surfaces.
 
 **P9 gate: PASS.** A first-time user can complete each role's job on mobile without verbal coaching, and failures are recoverable.
 
+### P9C — Demo Coupa buyer-system evidence
+
+Dependencies: P5, P6, P7, P9.
+
+- [x] **P9C-01 MUST — Contracts and synthetic connector.** Define strict canonical supplier/PO/invoice/receipt/payment schemas, one shared connector interface, and a server-only Demo Coupa implementation for match, missing invoice, amount mismatch, missing receipt, paid invoice, and disconnected scenarios.
+  - Accept: malformed responses fail before comparison; every UI/result says Demo Coupa; no real customer records or credentials.
+- [x] **P9C-02 MUST — Persistence and isolation.** Add connections, supplier mappings, idempotent sync runs, immutable evidence snapshots with SHA-256 hashes, C001-C010 checks, exception resolutions, audit events, and RLS/column restrictions.
+  - Accept: buyer tenancy, SME safe-result access, funder eligibility, credential non-disclosure, snapshot immutability, and retry idempotency are proven against the hosted schema.
+- [x] **P9C-03 MUST — Deterministic orchestration.** Authorize, retrieve, validate, minimise, hash, persist, compare, audit, and select system-verified, exception-review, blocked, or signed-confirmation fallback without Gemini.
+  - Accept: exact match verifies; missing/mismatch/receipt exceptions review; paid blocks; disconnected creates one manual confirmation request.
+- [x] **P9C-04 MUST — Three-role experience.** Add SME status/action, buyer Business Connections and exception review, and funder system-evidence/certificate access with concise responsive states.
+  - Accept: buyer sees only differences; SME sees no unrelated buyer data; funder can distinguish human and system evidence and still makes the decision.
+- [ ] **P9C-05 MUST — System certificate and release tests.** Generate an authorized system-verification PDF containing Demo Coupa source/mode, transaction, C001-C010, retrieval time, hash, verification ID/reference, and disclaimer, with no person/signature.
+  - Accept: PDF text and render pass; unit, RLS/integration, browser, mobile, keyboard, lint, typecheck, and build gates pass and are logged.
+
+**P9C gate:** all five units require implementation-log evidence. Live Coupa remains unavailable until a buyer supplies an authorized sandbox, instance URL, and read-only credentials.
+
 ### P10 — Final verification, deployment, and judging evidence
 
-Dependencies: all MUST units P1–P9.
+Dependencies: all MUST units P1–P9C.
 
 - [ ] **P10-01 MUST — Automated suite.** Unit tests cover normalization, V001–V012, offer math, validation, and state transitions; integration/policy tests cover roles; browser smoke covers the critical flow.
   - Accept: tests fail when a representative rule/permission is intentionally broken, then pass after restoration.

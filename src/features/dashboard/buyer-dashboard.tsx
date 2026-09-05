@@ -92,7 +92,7 @@ function TaskCard({ title, description, count, href, action }: { title: string; 
 }
 
 function BuyerRequestList({ data }: { data: BuyerData }) {
-  return <div className="mt-6 divide-y divide-[var(--border)]">{data.requests.map((request) => <article key={request.id} className="grid gap-4 py-5 sm:grid-cols-[1fr_auto] sm:items-center"><div><div className="flex flex-wrap gap-2"><b>{request.supplier}</b>{request.warnings > 0 && <StatusBadge status="review">{request.warnings} {request.warnings === 1 ? "warning" : "warnings"}</StatusBadge>}</div><p className="mt-1 text-xs font-semibold text-[var(--muted)]">{request.reference}</p><p className="mt-2 text-sm text-[var(--muted)]">{request.invoice} · {request.amount} · Waiting {request.age}</p></div><QueueButton label="Review request" href={request.href} /></article>)}</div>;
+  return <div className="mt-6 divide-y divide-[var(--border)]">{data.requests.map((request) => <article key={request.id} className="grid gap-4 py-5 sm:grid-cols-[1fr_auto] sm:items-center"><div><div className="flex flex-wrap gap-2"><b>{request.supplier}</b><StatusBadge status="review">{request.kind==="system_exception"?"Demo Coupa difference":"Signature required"}</StatusBadge>{request.warnings > 0 && <StatusBadge status="review">{request.warnings} {request.warnings === 1 ? "item" : "items"}</StatusBadge>}</div><p className="mt-1 text-xs font-semibold text-[var(--muted)]">{request.reference}</p><p className="mt-2 text-sm text-[var(--muted)]">{request.invoice} · {request.amount} · Waiting {request.age}</p></div><QueueButton label={request.kind==="system_exception"?"Review difference":"Review confirmation"} href={request.href} /></article>)}</div>;
 }
 
 function BuyerHistoryList({ data }: { data: BuyerData }) {

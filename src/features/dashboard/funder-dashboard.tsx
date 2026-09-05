@@ -19,7 +19,7 @@ export function FunderDashboard({ data }: { data: FunderData }) {
       />
       <Metrics items={data.metrics} />
       <section aria-label="Funder tasks" className="mt-8 grid gap-4 md:grid-cols-2">
-        <TaskCard title="Applications" description="Open buyer-confirmed evidence packages." count={`${count} ready`} href="/applications" action="Review applications" />
+        <TaskCard title="Applications" description="Open buyer-evidenced packages." count={`${count} ready`} href="/applications" action="Review applications" />
         <TaskCard title="Offers" description="View simulated offers and declines." count={`${data.offers.length} decisions`} href="/offers" action="View offers" />
       </section>
     </div>
@@ -30,7 +30,7 @@ export function FunderApplicationsView({ data }: { data: FunderData }) {
   const count = data.applications.length;
   return (
     <div className="page-enter mx-auto max-w-5xl">
-      <PageHeading eyebrow="Funder" title="Applications" description="Only buyer-confirmed packages appear here." />
+      <PageHeading eyebrow="Funder" title="Applications" description="Only packages with completed buyer evidence appear here." />
       <Card className="mt-8"><CardContent className="pt-6"><div className="flex items-center justify-between gap-4"><h2 className="text-xl font-bold">Ready for review</h2><StatusBadge status="success">{count} ready</StatusBadge></div>{count ? <FunderApplicationList data={data} /> : <EmptyState title="Nothing to review" description="Buyer-confirmed applications will appear here." />}</CardContent></Card>
     </div>
   );
@@ -51,7 +51,7 @@ function TaskCard({ title, description, count, href, action }: { title: string; 
 }
 
 function FunderApplicationList({ data }: { data: FunderData }) {
-  return <div className="mt-6 divide-y divide-[var(--border)]">{data.applications.map((application) => <article key={application.id} className="grid gap-4 py-5 lg:grid-cols-[1fr_auto] lg:items-center"><div><div className="flex flex-wrap items-center gap-2"><b>{application.supplier}</b><StatusBadge status="success">Buyer Confirmed ✓</StatusBadge><StatusBadge status={application.warnings ? "review" : "success"}>{application.warnings ? `${application.warnings} ${application.warnings === 1 ? "review item" : "review items"}` : "Checks clear"}</StatusBadge></div><p className="mt-2 text-sm text-[var(--muted)]">{application.buyer} · {application.amount} · Due {application.dueDate} · Confirmed {application.confirmed}</p></div><div className="flex flex-wrap gap-2"><QueueButton label="Review evidence" href={application.href} /><QueueButton label={application.certificateHref ? "Certificate" : "Unavailable"} href={application.certificateHref ?? undefined} /></div></article>)}</div>;
+  return <div className="mt-6 divide-y divide-[var(--border)]">{data.applications.map((application) => <article key={application.id} className="grid gap-4 py-5 lg:grid-cols-[1fr_auto] lg:items-center"><div><div className="flex flex-wrap items-center gap-2"><b>{application.supplier}</b><StatusBadge status="success">{application.buyerEvidence==="system"?"Buyer System Verified ✓":"Buyer Confirmed ✓"}</StatusBadge><StatusBadge status={application.warnings ? "review" : "success"}>{application.warnings ? `${application.warnings} ${application.warnings === 1 ? "review item" : "review items"}` : "Checks clear"}</StatusBadge></div><p className="mt-2 text-sm text-[var(--muted)]">{application.buyer} · {application.amount} · Due {application.dueDate} · Confirmed {application.confirmed}</p></div><div className="flex flex-wrap gap-2"><QueueButton label="Review evidence" href={application.href} /><QueueButton label={application.certificateHref ? "Certificate" : "Unavailable"} href={application.certificateHref ?? undefined} /></div></article>)}</div>;
 }
 
 function FunderOfferList({ data }: { data: FunderData }) {

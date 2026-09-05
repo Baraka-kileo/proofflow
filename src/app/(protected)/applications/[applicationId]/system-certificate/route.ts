@@ -1,0 +1,16 @@
+import type { SupabaseClient } from "@supabase/supabase-js";
+import { NextResponse,type NextRequest } from "next/server";
+import { z } from "zod";
+import { getSessionUser } from "@/lib/auth/dal";
+import { generateSystemVerificationCertificate } from "@/lib/integrations/system-certificate";
+import { createClient } from "@/lib/supabase/server";
+
+export async function GET(request:NextRequest,{params}:{params:Promise<{applicationId:string}>}){
+  const id=z.uuid().safeParse((await params).applicationId),session=await getSessionUser();if(!id.success||!session)return new NextResponse("Certificate not found",{status:404});
+  const typed=await createClient();const {data:app}=await typed.from("applications").select("id,invoice_number,purchase_order_reference,invoice_total_minor,invoice_due_on,currency,owner:organizations!applications_owner_organization_id_fkey(name),buyer:organizations!applications_buyer_organization_id_fkey(name)").eq("id",id.data).maybeSingle();if(!app)return new NextResponse("Certificate not found",{status:404});
+  const db=typed as unknown as SupabaseClient;const {data:run}=await db.from("integration_sync_runs").select("id,outcome,completed_at,integration_checks(rule_code,title,result,integration_exception_resolutions(choice)),external_evidence_snapshots(payload_hash,canonical_evidence,retrieved_at)").eq("application_id",app.id).eq("outcome","system_verified").order("completed_at",{ascending:false}).limit(1).maybeSingle();if(!run)return new NextResponse("Certificate not found",{status:404});
+  const snapshot=Array.isArray(run.external_evidence_snapshots)?run.external_evidence_snapshots[0]:run.external_evidence_snapshots,evidence=snapshot?.canonical_evidence as Record<string,unknown>|undefined,invoice=evidence?.invoice as Record<string,unknown>|undefined,payment=evidence?.paymentStatus as Record<string,unknown>|undefined;
+  const money=(minor:unknown)=>new Intl.NumberFormat("en-ZA",{style:"currency",currency:app.currency,maximumFractionDigits:2}).format((typeof minor==="number"?minor:0)/100),base=process.env.NEXT_PUBLIC_APP_URL??request.nextUrl.origin;
+  const bytes=await generateSystemVerificationCertificate({verificationId:run.id,buyer:app.buyer.name,supplier:app.owner.name,purchaseOrder:app.purchase_order_reference??"Unavailable",invoice:app.invoice_number??"Unavailable",invoiceAmount:money(invoice?.totalMinor??app.invoice_total_minor),outstandingAmount:money(payment?.outstandingMinor),expectedPaymentDate:app.invoice_due_on??"Unavailable",retrievedAt:new Date(snapshot.retrieved_at).toLocaleString("en-ZA",{timeZone:"Africa/Johannesburg"}),evidenceHash:snapshot.payload_hash,checks:(run.integration_checks??[]).map((check:{rule_code:string;title:string;result:string;integration_exception_resolutions:unknown[]})=>({code:check.rule_code,title:check.title,result:check.result==="pass"?"pass":check.integration_exception_resolutions?.length?"resolved":check.result})),verificationUrl:`${base}/applications/${app.id}/system-evidence`});
+  const download=request.nextUrl.searchParams.get("download")==="1";return new NextResponse(Buffer.from(bytes),{headers:{"Content-Type":"application/pdf","Content-Disposition":`${download?"attachment":"inline"}; filename="ProofFlow-System-Verification-${run.id}.pdf"`,"Cache-Control":"private, no-store","X-Content-Type-Options":"nosniff"}});
+}

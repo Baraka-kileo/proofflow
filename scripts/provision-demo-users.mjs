@@ -13,6 +13,13 @@ const { error: organizationsError } = await admin.from("organizations").upsert([
   { id: "44444444-4444-4444-8444-444444444444", name: "Mokoena Catering Demo", slug: "mokoena-catering-demo", kind: "sme", registration_number: "DEMO-SME-002", is_demo: true },
 ]);
 if (organizationsError) throw organizationsError;
+const { error: connectionError } = await admin.from("integration_connections").upsert({ id:"c0000000-0000-4000-8000-000000000001",buyer_organization_id:"22222222-2222-4222-8222-222222222222",provider:"coupa",mode:"demo",instance_url:"https://demo.coupa.invalid",status:"active",demo_scenario:"match",credential_reference:null },{onConflict:"buyer_organization_id,provider"});
+if(connectionError)throw connectionError;
+const { error: mappingsError }=await admin.from("supplier_mappings").upsert([
+  {buyer_organization_id:"22222222-2222-4222-8222-222222222222",sme_organization_id:"11111111-1111-4111-8111-111111111111",connection_id:"c0000000-0000-4000-8000-000000000001",external_supplier_id:"DEMO-SUP-NDLOVU",external_supplier_name:"Ndlovu Office Supply Demo",status:"verified",verified_at:new Date().toISOString()},
+  {buyer_organization_id:"22222222-2222-4222-8222-222222222222",sme_organization_id:"44444444-4444-4444-8444-444444444444",connection_id:"c0000000-0000-4000-8000-000000000001",external_supplier_id:"DEMO-SUP-MOKOENA",external_supplier_name:"Mokoena Catering Demo",status:"verified",verified_at:new Date().toISOString()},
+],{onConflict:"connection_id,sme_organization_id"});
+if(mappingsError)throw mappingsError;
 const identities = [
   { email: "sme.demo@proofflow.example", name: "Amara Ndlovu", role: "sme", organization_id: "11111111-1111-4111-8111-111111111111" },
   { email: "buyer.demo@proofflow.example", name: "Lebo Molefe", role: "buyer", organization_id: "22222222-2222-4222-8222-222222222222" },

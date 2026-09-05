@@ -56,3 +56,13 @@ Alternative paths: extraction can fail and be retried/manual; automated checks c
 - Buyer owns the immutable answers, reasoned dispute or signed confirmation, and declaration. Profile, organization, verified email, timestamp, and approval ID are server-derived.
 - Funder owns offer/decline.
 - No role may edit another role's completed decision.
+
+## Demo Coupa buyer-evidence branch
+
+1. After the document checks, the SME selects **Run automated verification**.
+2. ProofFlow loads the buyer connection and supplier mapping, retrieves canonical PO/invoice/receipt/payment evidence, validates it, and runs C001-C010.
+3. All pass: the application shows **Automated verification complete** and a system certificate is available.
+4. Missing/different evidence: the buyer sees only the exceptions and chooses **Confirm Coupa value**, **Confirm supplier value**, or **Report another issue**.
+5. Paid invoice: the application cannot proceed.
+6. Disconnected/unavailable: ProofFlow creates the existing six-question confirmation request; the buyer answers, reviews the summary, and signs.
+7. The funder sees the applicable evidence path and certificate, then independently starts review and makes a simulated decision.

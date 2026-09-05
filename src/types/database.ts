@@ -12,31 +12,6 @@ export type Database = {
   __InternalSupabase: {
     PostgrestVersion: "14.5"
   }
-  graphql_public: {
-    Tables: {
-      [_ in never]: never
-    }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      graphql: {
-        Args: {
-          extensions?: Json
-          operationName?: string
-          query?: string
-          variables?: Json
-        }
-        Returns: Json
-      }
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
-  }
   public: {
     Tables: {
       applications: {
@@ -442,6 +417,292 @@ export type Database = {
           },
         ]
       }
+      external_evidence_snapshots: {
+        Row: {
+          application_id: string
+          canonical_evidence: Json
+          created_at: string
+          external_invoice_id: string | null
+          external_po_id: string | null
+          external_supplier_id: string | null
+          id: string
+          payload_hash: string
+          provider: Database["public"]["Enums"]["integration_provider"]
+          provider_mode: Database["public"]["Enums"]["integration_mode"]
+          retrieved_at: string
+          sync_run_id: string
+        }
+        Insert: {
+          application_id: string
+          canonical_evidence: Json
+          created_at?: string
+          external_invoice_id?: string | null
+          external_po_id?: string | null
+          external_supplier_id?: string | null
+          id?: string
+          payload_hash: string
+          provider: Database["public"]["Enums"]["integration_provider"]
+          provider_mode: Database["public"]["Enums"]["integration_mode"]
+          retrieved_at: string
+          sync_run_id: string
+        }
+        Update: {
+          application_id?: string
+          canonical_evidence?: Json
+          created_at?: string
+          external_invoice_id?: string | null
+          external_po_id?: string | null
+          external_supplier_id?: string | null
+          id?: string
+          payload_hash?: string
+          provider?: Database["public"]["Enums"]["integration_provider"]
+          provider_mode?: Database["public"]["Enums"]["integration_mode"]
+          retrieved_at?: string
+          sync_run_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "external_evidence_snapshots_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "external_evidence_snapshots_sync_run_id_fkey"
+            columns: ["sync_run_id"]
+            isOneToOne: true
+            referencedRelation: "integration_sync_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      integration_checks: {
+        Row: {
+          application_id: string
+          created_at: string
+          evidence: Json
+          explanation: string
+          id: string
+          result: Database["public"]["Enums"]["check_result"]
+          rule_code: string
+          sync_run_id: string
+          title: string
+        }
+        Insert: {
+          application_id: string
+          created_at?: string
+          evidence?: Json
+          explanation: string
+          id?: string
+          result: Database["public"]["Enums"]["check_result"]
+          rule_code: string
+          sync_run_id: string
+          title: string
+        }
+        Update: {
+          application_id?: string
+          created_at?: string
+          evidence?: Json
+          explanation?: string
+          id?: string
+          result?: Database["public"]["Enums"]["check_result"]
+          rule_code?: string
+          sync_run_id?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "integration_checks_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "integration_checks_sync_run_id_fkey"
+            columns: ["sync_run_id"]
+            isOneToOne: false
+            referencedRelation: "integration_sync_runs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      integration_connections: {
+        Row: {
+          buyer_organization_id: string
+          connected_at: string
+          connected_by: string | null
+          created_at: string
+          credential_reference: string | null
+          demo_scenario: string
+          id: string
+          instance_url: string | null
+          last_error_code: string | null
+          last_successful_sync_at: string | null
+          mode: Database["public"]["Enums"]["integration_mode"]
+          provider: Database["public"]["Enums"]["integration_provider"]
+          status: Database["public"]["Enums"]["integration_connection_status"]
+          updated_at: string
+        }
+        Insert: {
+          buyer_organization_id: string
+          connected_at?: string
+          connected_by?: string | null
+          created_at?: string
+          credential_reference?: string | null
+          demo_scenario?: string
+          id?: string
+          instance_url?: string | null
+          last_error_code?: string | null
+          last_successful_sync_at?: string | null
+          mode?: Database["public"]["Enums"]["integration_mode"]
+          provider: Database["public"]["Enums"]["integration_provider"]
+          status?: Database["public"]["Enums"]["integration_connection_status"]
+          updated_at?: string
+        }
+        Update: {
+          buyer_organization_id?: string
+          connected_at?: string
+          connected_by?: string | null
+          created_at?: string
+          credential_reference?: string | null
+          demo_scenario?: string
+          id?: string
+          instance_url?: string | null
+          last_error_code?: string | null
+          last_successful_sync_at?: string | null
+          mode?: Database["public"]["Enums"]["integration_mode"]
+          provider?: Database["public"]["Enums"]["integration_provider"]
+          status?: Database["public"]["Enums"]["integration_connection_status"]
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "integration_connections_buyer_organization_id_fkey"
+            columns: ["buyer_organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "integration_connections_connected_by_fkey"
+            columns: ["connected_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      integration_exception_resolutions: {
+        Row: {
+          application_id: string
+          choice: Database["public"]["Enums"]["integration_resolution_choice"]
+          explanation: string | null
+          id: string
+          integration_check_id: string
+          resolved_at: string
+          resolved_by: string
+        }
+        Insert: {
+          application_id: string
+          choice: Database["public"]["Enums"]["integration_resolution_choice"]
+          explanation?: string | null
+          id?: string
+          integration_check_id: string
+          resolved_at?: string
+          resolved_by: string
+        }
+        Update: {
+          application_id?: string
+          choice?: Database["public"]["Enums"]["integration_resolution_choice"]
+          explanation?: string | null
+          id?: string
+          integration_check_id?: string
+          resolved_at?: string
+          resolved_by?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "integration_exception_resolutions_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "integration_exception_resolutions_integration_check_id_fkey"
+            columns: ["integration_check_id"]
+            isOneToOne: true
+            referencedRelation: "integration_checks"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "integration_exception_resolutions_resolved_by_fkey"
+            columns: ["resolved_by"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      integration_sync_runs: {
+        Row: {
+          application_id: string
+          completed_at: string | null
+          connection_id: string
+          correlation_id: string
+          created_at: string
+          error_code: string | null
+          id: string
+          idempotency_key: string
+          outcome: Database["public"]["Enums"]["integration_outcome"] | null
+          started_at: string
+          status: Database["public"]["Enums"]["integration_sync_status"]
+        }
+        Insert: {
+          application_id: string
+          completed_at?: string | null
+          connection_id: string
+          correlation_id: string
+          created_at?: string
+          error_code?: string | null
+          id?: string
+          idempotency_key: string
+          outcome?: Database["public"]["Enums"]["integration_outcome"] | null
+          started_at?: string
+          status: Database["public"]["Enums"]["integration_sync_status"]
+        }
+        Update: {
+          application_id?: string
+          completed_at?: string | null
+          connection_id?: string
+          correlation_id?: string
+          created_at?: string
+          error_code?: string | null
+          id?: string
+          idempotency_key?: string
+          outcome?: Database["public"]["Enums"]["integration_outcome"] | null
+          started_at?: string
+          status?: Database["public"]["Enums"]["integration_sync_status"]
+        }
+        Relationships: [
+          {
+            foreignKeyName: "integration_sync_runs_application_id_fkey"
+            columns: ["application_id"]
+            isOneToOne: false
+            referencedRelation: "applications"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "integration_sync_runs_connection_id_fkey"
+            columns: ["connection_id"]
+            isOneToOne: false
+            referencedRelation: "integration_connections"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       memberships: {
         Row: {
           created_at: string
@@ -636,6 +897,64 @@ export type Database = {
         }
         Relationships: []
       }
+      supplier_mappings: {
+        Row: {
+          buyer_organization_id: string
+          connection_id: string
+          created_at: string
+          external_supplier_id: string
+          external_supplier_name: string
+          id: string
+          sme_organization_id: string
+          status: string
+          verified_at: string | null
+        }
+        Insert: {
+          buyer_organization_id: string
+          connection_id: string
+          created_at?: string
+          external_supplier_id: string
+          external_supplier_name: string
+          id?: string
+          sme_organization_id: string
+          status?: string
+          verified_at?: string | null
+        }
+        Update: {
+          buyer_organization_id?: string
+          connection_id?: string
+          created_at?: string
+          external_supplier_id?: string
+          external_supplier_name?: string
+          id?: string
+          sme_organization_id?: string
+          status?: string
+          verified_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "supplier_mappings_buyer_organization_id_fkey"
+            columns: ["buyer_organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "supplier_mappings_connection_id_fkey"
+            columns: ["connection_id"]
+            isOneToOne: false
+            referencedRelation: "integration_connections"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "supplier_mappings_sme_organization_id_fkey"
+            columns: ["sme_organization_id"]
+            isOneToOne: false
+            referencedRelation: "organizations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       verification_checks: {
         Row: {
           application_id: string
@@ -773,12 +1092,29 @@ export type Database = {
         }
         Returns: Json
       }
+      get_demo_coupa_context: {
+        Args: { target_application_id: string }
+        Returns: Json
+      }
       has_organization_role: {
         Args: {
           target_organization_id: string
           target_role: Database["public"]["Enums"]["user_role"]
         }
         Returns: boolean
+      }
+      persist_demo_coupa_result_v1: {
+        Args: {
+          target_application_id: string
+          target_checks: Json
+          target_connection_id: string
+          target_correlation_id: string
+          target_error_code?: string
+          target_evidence: Json
+          target_idempotency_key: string
+          target_outcome: Database["public"]["Enums"]["integration_outcome"]
+        }
+        Returns: Json
       }
       persist_document_extraction_v1: {
         Args: {
@@ -810,6 +1146,14 @@ export type Database = {
         }
         Returns: string
       }
+      resolve_coupa_exception_v1: {
+        Args: {
+          target_check_id: string
+          target_choice: Database["public"]["Enums"]["integration_resolution_choice"]
+          target_explanation?: string
+        }
+        Returns: Json
+      }
       respond_to_simulated_offer_v1: {
         Args: {
           target_decision: string
@@ -821,6 +1165,10 @@ export type Database = {
       send_application_to_buyer: {
         Args: { target_application_id: string }
         Returns: string
+      }
+      set_demo_coupa_scenario: {
+        Args: { target_connection_id: string; target_scenario: string }
+        Returns: Json
       }
       start_funder_review: {
         Args: { target_application_id: string }
@@ -861,6 +1209,10 @@ export type Database = {
         | "offer_accepted"
         | "offer_declined"
         | "funded_simulated"
+        | "buyer_system_checking"
+        | "buyer_system_verified"
+        | "buyer_exception_review"
+        | "buyer_system_blocked"
       check_result: "pass" | "review" | "fail"
       confirmation_status: "pending" | "confirmed" | "disputed"
       document_kind: "purchase_order" | "delivery_evidence" | "invoice"
@@ -871,6 +1223,27 @@ export type Database = {
         | "reviewed"
         | "failed"
       field_review_status: "unreviewed" | "accepted" | "corrected"
+      integration_connection_status:
+        | "active"
+        | "disconnected"
+        | "error"
+        | "revoked"
+      integration_mode: "demo" | "live"
+      integration_outcome:
+        | "system_verified"
+        | "review_required"
+        | "blocked"
+        | "manual_confirmation_required"
+      integration_provider: "coupa"
+      integration_resolution_choice:
+        | "external_value"
+        | "supplier_value"
+        | "other_issue"
+      integration_sync_status:
+        | "running"
+        | "completed"
+        | "unavailable"
+        | "failed"
       offer_status: "draft" | "offered" | "accepted" | "declined" | "expired"
       organization_kind: "sme" | "buyer" | "funder"
       user_role: "sme" | "buyer" | "funder"
@@ -1000,9 +1373,6 @@ export type CompositeTypes<
     : never
 
 export const Constants = {
-  graphql_public: {
-    Enums: {},
-  },
   public: {
     Enums: {
       application_status: [
@@ -1019,6 +1389,10 @@ export const Constants = {
         "offer_accepted",
         "offer_declined",
         "funded_simulated",
+        "buyer_system_checking",
+        "buyer_system_verified",
+        "buyer_exception_review",
+        "buyer_system_blocked",
       ],
       check_result: ["pass", "review", "fail"],
       confirmation_status: ["pending", "confirmed", "disputed"],
@@ -1031,6 +1405,31 @@ export const Constants = {
         "failed",
       ],
       field_review_status: ["unreviewed", "accepted", "corrected"],
+      integration_connection_status: [
+        "active",
+        "disconnected",
+        "error",
+        "revoked",
+      ],
+      integration_mode: ["demo", "live"],
+      integration_outcome: [
+        "system_verified",
+        "review_required",
+        "blocked",
+        "manual_confirmation_required",
+      ],
+      integration_provider: ["coupa"],
+      integration_resolution_choice: [
+        "external_value",
+        "supplier_value",
+        "other_issue",
+      ],
+      integration_sync_status: [
+        "running",
+        "completed",
+        "unavailable",
+        "failed",
+      ],
       offer_status: ["draft", "offered", "accepted", "declined", "expired"],
       organization_kind: ["sme", "buyer", "funder"],
       user_role: ["sme", "buyer", "funder"],

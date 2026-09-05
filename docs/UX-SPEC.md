@@ -71,3 +71,14 @@ Account shows identity, organization, role, and sign-out. Help contains a short 
 ## Accessibility acceptance
 
 Keyboard order follows the visual flow; focus is always visible; dialogs trap and restore focus; headings are hierarchical; form inputs have persistent labels; progress and status changes announce through `aria-live`; text contrast meets WCAG 2.2 AA; touch targets are at least 44px; all meaningful icons have accessible names or adjacent text.
+
+## Demo Coupa states
+
+- SME: `Automated verification` explains that reviewed invoice fields are being compared with synthetic Demo Coupa data. Success says `Automated verification complete`; a difference says `Buyer review needed`; paid says `Application cannot proceed`; unavailable says the signed confirmation fallback was requested.
+- Buyer Account: **Business connections** shows Coupa, `Demo connection active`, and that live Coupa is unavailable without an authorized sandbox.
+- Buyer Confirmations: system differences and signed confirmations share one short task queue but are clearly labelled. The exception detail reveals only differing fields and uses three direct actions.
+- Funder: eligible packages say either `Buyer Confirmed` or `Automated verification complete`, show source/time/checks/reference, and link to the correct certificate.
+- Application detail uses progressive disclosure: the result, action, source, time, and exceptions appear first; successful V001-V012 and C001-C010 details stay available inside keyboard-accessible native disclosure controls.
+- Demo sign-in role buttons only fill the visible email and password fields. They never authenticate immediately; the user reviews the selected credentials and presses **Sign in**.
+- System certificates never show a human representative or signature. Both certificate types carry a verification reference and the payment/funding non-guarantee.
+- All new routes require loading, empty/not-found/error, keyboard focus, 44px controls, responsive layouts, and concise copy.

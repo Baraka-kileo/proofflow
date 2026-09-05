@@ -4,6 +4,8 @@
 
 Use synthetic people, companies, documents, bank details, and amounts only. The selected Gemini free tier may process data under terms unsuitable for real confidential financial documents; production use requires an approved commercial agreement and privacy review.
 
+The public login page may expose credentials only for the dedicated fictional hackathon accounts. Selecting a role fills standard labelled email and password fields but does not submit them. These credentials must never be reused for production users, and the demo-account selector must be removed or disabled before production launch.
+
 ## Controls required in the MVP
 
 - Private storage buckets; time-limited signed URLs; no public document URLs
@@ -35,3 +37,13 @@ Use synthetic people, companies, documents, bank details, and amounts only. The 
 ## Production gaps to disclose
 
 Independent penetration testing, malware scanning, POPIA legal assessment, signature-enforceability review, qualified digital-signature trust services, retention/deletion automation, incident response, KYC/AML, regulated credit process, lender due diligence, bank/payment integration, and production monitoring are not represented as complete.
+
+## Buyer-system integrations
+
+- Demo Coupa contains synthetic records only and is labelled on every result and certificate.
+- Connector calls run server-side. Browser clients cannot read `credential_reference`; live tokens must be held by a secret vault and use read-only OAuth scopes.
+- Every connector response is untrusted until strict Zod validation succeeds. Coupa responses are never sent to Gemini.
+- Canonical snapshots contain only transaction evidence needed for C001-C010, are SHA-256 hashed, immutable to ordinary clients, and subject to application RLS.
+- Buyer organizations see only their connection and mappings. SMEs see only their own transaction result. Funders see system evidence only after eligibility.
+- A missing record is a review result, not fraud. A paid invoice blocks progression. Connection failure falls back to signed confirmation.
+- Live activation additionally requires buyer-admin authorization, credential rotation/revocation, retention/deletion policy, audit monitoring, and POPIA/contract review.
