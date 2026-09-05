@@ -14,8 +14,10 @@ describe("role-aware navigation", () => {
     render(<Navigation role={role} />);
     for (const label of labels) expect(screen.getByText(label)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Overview" })).toHaveAttribute("aria-current", "page");
-    expect(screen.getAllByTitle("Available in the next completed build unit")).toHaveLength(role==="funder"?4:role==="sme"?2:3);
+    expect(screen.queryAllByTitle("Available in the next completed build unit")).toHaveLength(0);
     if(role==="sme")expect(screen.getByRole("link",{name:"Trust Passport"})).toHaveAttribute("href","/trust-passport");
     if(role==="buyer")expect(screen.getByRole("link",{name:"Confirmations"})).toHaveAttribute("href","/dashboard#confirmations");
+    expect(screen.getByRole("link",{name:"Help"})).toHaveAttribute("href","/help");
+    expect(screen.getByRole("link",{name:"Account"})).toHaveAttribute("href","/account");
   });
 });

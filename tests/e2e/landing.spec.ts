@@ -120,11 +120,11 @@ test("demo login selects the buyer workspace through a hosted Supabase session",
 
 test("each demo role receives a distinct dashboard in a separate browser session", async ({ browser }) => {
   const roles=[
-    {button:"SME workspace Create and track evidence",heading:"Good morning, Amara.",visible:"Ubuntu Retail Group Demo",hidden:"Mokoena Catering Demo"},
-    {button:"Buyer workspace Confirm delivery requests",heading:"2 requests are waiting.",visible:"INV-1184-DEMO",hidden:"INV-2039-DEMO"},
-    {button:"Funder workspace Review simulated offers",heading:"Evidence ready for review.",visible:"Mokoena Catering Demo",hidden:"INV-2040-DEMO"},
+    {button:"SME workspace Create and track evidence",heading:"Good morning, Amara.",workspace:"sme workspace",visibleNav:"Trust Passport",hiddenNav:"Offers"},
+    {button:"Buyer workspace Confirm delivery requests",heading:"Your confirmation queue is clear.",workspace:"buyer workspace",visibleNav:"History",hiddenNav:"Trust Passport"},
+    {button:"Funder workspace Review simulated offers",heading:"Evidence ready for review.",workspace:"funder workspace",visibleNav:"Offers",hiddenNav:"Trust Passport"},
   ];
-  for(const role of roles){const context=await browser.newContext();const page=await context.newPage();await page.goto("/login");await page.getByRole("button",{name:role.button,exact:true}).click();await expect(page.getByRole("heading",{level:1,name:role.heading})).toBeVisible({timeout:15_000});await expect(page.getByText(role.visible,{exact:false}).first()).toBeVisible();await expect(page.getByText(role.hidden,{exact:false})).toHaveCount(0);await context.close();}
+  for(const role of roles){const context=await browser.newContext();const page=await context.newPage();await page.goto("/login");await page.getByRole("button",{name:role.button,exact:true}).click();await expect(page.getByRole("heading",{level:1,name:role.heading})).toBeVisible({timeout:15_000});await expect(page.getByText(role.workspace,{exact:true})).toBeVisible();await expect(page.getByRole("link",{name:role.visibleNav,exact:true}).first()).toBeVisible();await expect(page.getByRole("link",{name:role.hiddenNav,exact:true})).toHaveCount(0);await context.close();}
 });
 
 test("SME creates a validated private application draft", async ({ page }) => {

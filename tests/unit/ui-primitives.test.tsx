@@ -5,6 +5,7 @@ import { describe, expect, it, vi } from "vitest";
 import { ErrorSummary } from "@/components/error-summary";
 import { StatusBadge } from "@/components/status-badge";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
 
 describe("shared UI primitives", () => {
@@ -32,5 +33,15 @@ describe("shared UI primitives", () => {
     render(<ErrorSummary errors={[{ id: "invoice-number", message: "Enter the invoice number" }]} />);
     expect(screen.getByRole("alert")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Enter the invoice number" })).toHaveAttribute("href", "#invoice-number");
+  });
+
+  it("traps dialog interaction and restores focus to its trigger", async () => {
+    const user = userEvent.setup();
+    render(<Dialog><DialogTrigger>Review decision</DialogTrigger><DialogContent title="Confirm decision"><button>Continue</button></DialogContent></Dialog>);
+    const trigger = screen.getByRole("button", { name: "Review decision" });
+    await user.click(trigger);
+    expect(screen.getByRole("dialog", { name: "Confirm decision" })).toBeInTheDocument();
+    await user.click(screen.getByRole("button", { name: "Close dialog" }));
+    expect(trigger).toHaveFocus();
   });
 });

@@ -324,20 +324,20 @@ Dependencies: P7.
 
 Dependencies: P3–P8 surfaces.
 
-- [ ] **P9-01 MUST — Sample packs.** Add synthetic `valid`, `mismatch`, and `duplicate` PDF/image sets with obvious demo branding and matching expected extraction JSON.
+- [x] **P9-01 MUST — Sample packs.** Add synthetic `valid`, `mismatch`, and `duplicate` PDF/image sets with obvious demo branding and matching expected extraction JSON.
   - Accept: no real identities/logos/bank data; expected rule outcomes documented and proven.
-- [ ] **P9-02 MUST — Complete UI state audit.** Use the route/state matrix in `UX-SPEC.md`; verify every page's loading, empty, error, success, disabled, and permission states.
+- [x] **P9-02 MUST — Complete UI state audit.** Use the route/state matrix in `UX-SPEC.md`; verify every page's loading, empty, error, success, disabled, and permission states.
   - Accept: results recorded route by route in implementation log; no dead controls or placeholder copy.
-- [ ] **P9-03 MUST — Responsive audit.** Test 390×844, 768×1024, and 1440×900 for every core route.
+- [x] **P9-03 MUST — Responsive audit.** Test 390×844, 768×1024, and 1440×900 for every core route.
   - Accept: no horizontal overflow/clipped dialogs; sticky actions do not cover content; document review remains usable.
-- [ ] **P9-04 MUST — Accessibility audit.** Test keyboard-only completion, focus restoration in dialogs, heading/landmark structure, persistent labels, error summary links, status live regions, contrast, touch size, and 200% zoom.
+- [x] **P9-04 MUST — Accessibility audit.** Test keyboard-only completion, focus restoration in dialogs, heading/landmark structure, persistent labels, error summary links, status live regions, contrast, touch size, and 200% zoom.
   - Accept: all critical-path blockers fixed; remaining non-blocking limitations logged.
-- [ ] **P9-05 MUST — Motion/performance.** Add only purposeful state transitions; honor reduced motion; stabilize skeleton dimensions; optimize fonts/assets and avoid unnecessary client components.
+- [x] **P9-05 MUST — Motion/performance.** Add only purposeful state transitions; honor reduced motion; stabilize skeleton dimensions; optimize fonts/assets and avoid unnecessary client components.
   - Accept: action feedback begins immediately; no long/looping ornament; no visible layout shifts on core pages.
-- [ ] **P9-06 MUST — Failure rehearsal.** Simulate Gemini timeout/malformed response, upload failure, expired signed link, duplicate submission, stale status, offline/slow network, and database denial.
+- [x] **P9-06 MUST — Failure rehearsal.** Simulate Gemini timeout/malformed response, upload failure, expired signed link, duplicate submission, stale status, offline/slow network, and database denial.
   - Accept: user receives a safe explanation and recovery action; no corruption or cross-tenant detail leak.
 
-**P9 gate:** a first-time user can complete each role's job on mobile without verbal coaching, and failures are recoverable.
+**P9 gate: PASS.** A first-time user can complete each role's job on mobile without verbal coaching, and failures are recoverable.
 
 ### P10 — Final verification, deployment, and judging evidence
 

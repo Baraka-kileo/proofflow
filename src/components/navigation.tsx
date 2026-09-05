@@ -19,7 +19,7 @@ import type { Role } from "@/types/domain";
 
 interface NavItem {
   label: string;
-  href?: string;
+  href: string;
   icon: ComponentType<{ className?: string; "aria-hidden"?: boolean }>;
 }
 
@@ -28,22 +28,22 @@ const navByRole: Record<Role, NavItem[]> = {
     { label: "Overview", href: "/dashboard", icon: Home },
     { label: "Applications", href: "/applications/new", icon: FileText },
     { label: "Trust Passport", href: "/trust-passport", icon: Fingerprint },
-    { label: "Help", icon: CircleHelp },
-    { label: "Account", icon: UserRound },
+    { label: "Help", href: "/help", icon: CircleHelp },
+    { label: "Account", href: "/account", icon: UserRound },
   ],
   buyer: [
     { label: "Overview", href: "/dashboard", icon: Home },
     { label: "Confirmations", href: "/dashboard#confirmations", icon: FileCheck2 },
-    { label: "History", icon: History },
-    { label: "Help", icon: CircleHelp },
-    { label: "Account", icon: UserRound },
+    { label: "History", href: "/dashboard#history", icon: History },
+    { label: "Help", href: "/help", icon: CircleHelp },
+    { label: "Account", href: "/account", icon: UserRound },
   ],
   funder: [
     { label: "Overview", href: "/dashboard", icon: Home },
-    { label: "Applications", icon: FileText },
-    { label: "Offers", icon: HandCoins },
-    { label: "Help", icon: CircleHelp },
-    { label: "Account", icon: UserRound },
+    { label: "Applications", href: "/dashboard#applications", icon: FileText },
+    { label: "Offers", href: "/dashboard#offers", icon: HandCoins },
+    { label: "Help", href: "/help", icon: CircleHelp },
+    { label: "Account", href: "/account", icon: UserRound },
   ],
 };
 
@@ -60,19 +60,6 @@ function NavEntry({ item, mobile = false }: { item: NavItem; mobile?: boolean })
       ? "min-w-[70px] flex-1 flex-col justify-center gap-1 px-2 text-[10px]"
       : "w-full justify-start",
   );
-
-  if (!item.href) {
-    return (
-      <span
-        className={cn(styles, "cursor-not-allowed opacity-45")}
-        aria-disabled="true"
-        title="Available in the next completed build unit"
-      >
-        <Icon aria-hidden={true} className="size-5 shrink-0" />
-        {item.label}
-      </span>
-    );
-  }
 
   return (
     <Link href={item.href} className={styles} aria-current={active ? "page" : undefined}>

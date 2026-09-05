@@ -23,15 +23,16 @@ a { text-decoration:none; }
 button, a { -webkit-tap-highlight-color:transparent; }
 a:focus-visible, button:focus-visible { outline:3px solid var(--focus); outline-offset:3px; }
 .site-header { width:min(1280px,calc(100% - 48px)); height:88px; margin:auto; display:flex; align-items:center; justify-content:space-between; }
-.brand { display:inline-flex; align-items:center; gap:10px; color:inherit; font-weight:760; letter-spacing:-.03em; font-size:20px; }
+.brand { min-height:44px; display:inline-flex; align-items:center; gap:10px; color:inherit; font-weight:760; letter-spacing:-.03em; font-size:20px; }
 .brand-mark { position:relative; width:28px; height:28px; border-radius:9px; background:var(--green); display:grid; place-items:center; transform:rotate(-6deg); }
 .brand-mark::before,.brand-mark span { content:""; display:block; width:13px; height:3px; border-radius:10px; background:white; transform:translateY(-3px); }
 .brand-mark span { transform:translateY(3px); width:9px; margin-left:4px; }
 .site-header nav { display:flex; align-items:center; gap:32px; font-size:14px; color:#4f5c57; }
+.site-header nav a { min-height:44px; display:inline-flex; align-items:center; }
 .site-header nav a:hover { color:var(--ink); }
 .button { min-height:48px; padding:0 20px; border-radius:12px; display:inline-flex; align-items:center; justify-content:center; gap:9px; font-weight:680; font-size:14px; transition:background-color .16s ease,color .16s ease,transform .16s ease,border-color .16s ease; }
 .button:hover { transform:translateY(-1px); }
-.button-small { min-height:42px; padding:0 16px; }
+.button-small { min-height:44px; padding:0 16px; }
 .button-quiet { border:1px solid var(--border); background:rgba(255,255,255,.5); }
 .button-quiet:hover { background:white; border-color:#c6c8c1; }
 .button-primary { background:var(--green); color:white; }

@@ -44,8 +44,8 @@ export function calculateTrustPassportMetrics(rows: PassportEvidenceInput[]): Tr
     disputedCount: completed.filter((row) => row.confirmationStatus === "disputed").length,
     distinctBuyerCount: new Set(confirmed.map((row) => row.buyerOrganizationId)).size,
     verifiedValueByCurrency,
-    history: completed
-      .toSorted((left, right) => Date.parse(right.decidedAt) - Date.parse(left.decidedAt))
+    history: [...completed]
+      .sort((left, right) => Date.parse(right.decidedAt) - Date.parse(left.decidedAt))
       .map((row) => ({
         ...row,
         applicationHref: `/applications/${row.applicationId}`,

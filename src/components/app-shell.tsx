@@ -1,4 +1,5 @@
-import { Bell, LogOut } from "lucide-react";
+import { LogOut, UserRound } from "lucide-react";
+import Link from "next/link";
 import { ConnectionStatus } from "@/components/connection-status";
 import { Logo } from "@/components/logo";
 import { Navigation, OrganizationBadge } from "@/components/navigation";
@@ -38,23 +39,15 @@ export function AppShell({ user, children }: { user: SessionUser; children: Reac
 
       <div className="app-main">
         <header className="app-topbar">
-          <div>
+          <Link href="/account" className="group min-w-0 rounded-lg focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-[var(--focus)]" aria-label="Open your account">
             <span className="text-xs font-semibold uppercase tracking-[.12em] text-[var(--primary)]">
               {user.organization}
             </span>
-            <p className="mt-1 text-sm text-[var(--muted)]">
-              {user.name} · <span className="capitalize">{user.role}</span>
+            <p className="mt-1 flex items-center gap-2 text-sm text-[var(--muted)] group-hover:text-[var(--ink)]">
+              <UserRound aria-hidden="true" className="size-4" />{user.name} · <span className="capitalize">{user.role}</span>
             </p>
-          </div>
+          </Link>
           <div className="flex items-center gap-2">
-            <button
-              className="grid size-11 place-items-center rounded-xl border border-[var(--border)] bg-[var(--surface)] text-[var(--muted)]"
-              aria-label="Notifications"
-              disabled
-              title="Notifications arrive after live data is connected"
-            >
-              <Bell aria-hidden="true" className="size-5" />
-            </button>
             <form action={signOut}>
               <button
                 aria-label="Sign out"
