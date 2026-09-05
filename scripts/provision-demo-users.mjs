@@ -73,11 +73,24 @@ const { error: checksError } = await admin.from("verification_checks").upsert([
 ]);
 if (checksError) throw checksError;
 
-const { error: cleanupError } = await admin
+const { data:browserTestApplications, error:browserTestLookupError } = await admin
   .from("applications")
-  .delete()
-  .eq("status", "draft")
+  .select("id")
   .like("invoice_number", "INV-E2E-DEMO-%");
+if (browserTestLookupError) throw browserTestLookupError;
+const browserTestIds = (browserTestApplications ?? []).map((application) => application.id);
+if (browserTestIds.length) {
+  const { data:browserTestDocuments, error:browserTestDocumentsError } = await admin.from("documents").select("storage_path").in("application_id", browserTestIds);
+  if (browserTestDocumentsError) throw browserTestDocumentsError;
+  const paths = (browserTestDocuments ?? []).map((document) => document.storage_path);
+  if (paths.length) {
+    const { error:storageCleanupError } = await admin.storage.from("application-documents").remove(paths);
+    if (storageCleanupError) throw storageCleanupError;
+  }
+}
+const { error: cleanupError } = browserTestIds.length
+  ? await admin.from("applications").delete().in("id", browserTestIds)
+  : { error: null };
 if (cleanupError) throw cleanupError;
 
 console.log("PASS: hosted Demo identities, memberships, and dashboard workflow records are provisioned.");

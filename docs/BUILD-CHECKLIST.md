@@ -223,7 +223,7 @@ Dependencies: P2.
   - Accept: server creates only an SME-owned `draft`; invalid buyer/amount/date or missing consent returns field messages plus linked error summary.
 - [x] **P3-02 MUST — Guided task layout.** Implement five-step task list: Details → Documents → Review → Verification → Buyer. Persist current completed step from server data, not local animation state.
   - Accept: refresh/back preserves progress; locked steps explain prerequisites.
-- [ ] **P3-03 MUST — Three upload slots.** Each document type has one named slot with purpose/help, drag/drop and browse, PDF/JPEG/PNG allowlist, configured maximum size, filename sanitization, upload progress, cancel/retry/remove, and preview.
+- [x] **P3-03 MUST — Three upload slots.** Each document type has one named slot with purpose/help, drag/drop and browse, PDF/JPEG/PNG allowlist, configured maximum size, filename sanitization, upload progress, cancel/retry/remove, and preview.
   - Accept: wrong type, too large, duplicate slot, interruption, removal, and successful upload are tested; no public object URL.
 - [ ] **P3-04 MUST — Hash and exact duplicate.** Calculate SHA-256 in a trusted server workflow, save it, and reject an existing exact hash before extraction.
   - Accept: re-uploading the same bytes under a different filename produces `V009 fail`; another tenant's hash does not leak its identity/details.

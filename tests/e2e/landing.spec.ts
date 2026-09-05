@@ -1,4 +1,5 @@
 import { expect, test, type Page } from "@playwright/test";
+import { PDFDocument } from "pdf-lib";
 
 test.describe.configure({ mode: "serial" });
 
@@ -8,6 +9,8 @@ async function enterDemoRole(page: Page, role: "SME" | "Buyer" | "Funder") {
   await expect(page).toHaveURL(/\/dashboard$/, { timeout: 15_000 });
   await expect(page.locator("#main-content")).toBeVisible({ timeout: 15_000 });
 }
+
+async function syntheticPdf(name:string){const pdf=await PDFDocument.create();pdf.setTitle(name);pdf.addPage([420,594]);return Buffer.from(await pdf.save());}
 
 test("landing page renders its primary story without overflow", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
@@ -120,6 +123,7 @@ test("each demo role receives a distinct dashboard in a separate browser session
 });
 
 test("SME creates a validated private application draft", async ({ page }) => {
+  test.setTimeout(120_000);
   await enterDemoRole(page,"SME");
   await page.goto("/applications/new");
   await expect(page.getByRole("heading",{name:"Start with the invoice story."})).toBeVisible();
@@ -143,9 +147,26 @@ test("SME creates a validated private application draft", async ({ page }) => {
   await expect(progress).toContainText("1 of 5 complete");
   await expect(progress.getByText("Documents",{exact:true})).toBeVisible();
   await expect(progress).toContainText("Upload all three evidence documents first.");
-  await expect(page.getByRole("button",{name:"Upload documents"})).toBeDisabled();
+  const invoiceSlot=page.getByTestId("document-slot-invoice");
+  await invoiceSlot.getByLabel("Upload Invoice").setInputFiles({name:"notes.txt",mimeType:"text/plain",buffer:Buffer.from("not evidence")});
+  await expect(invoiceSlot.getByRole("alert")).toContainText("Choose a PDF, JPEG, or PNG file.");
+  await invoiceSlot.getByLabel("Upload Invoice").setInputFiles({name:"too-large.pdf",mimeType:"application/pdf",buffer:Buffer.alloc(10*1024*1024+1)});
+  await expect(invoiceSlot.getByRole("alert")).toContainText("larger than the 10 MB limit");
+  for(const item of [
+    {testId:"document-slot-purchase_order",label:"Upload Purchase order",name:"purchase-order-demo.pdf"},
+    {testId:"document-slot-delivery_evidence",label:"Upload Delivery evidence",name:"delivery-evidence-demo.pdf"},
+    {testId:"document-slot-invoice",label:"Upload Invoice",name:"invoice-demo.pdf"},
+  ]){const slot=page.getByTestId(item.testId);await slot.getByLabel(item.label).setInputFiles({name:item.name,mimeType:"application/pdf",buffer:await syntheticPdf(item.name)});await expect(slot).toContainText("1 page",{timeout:25_000});}
+  await expect(page.getByText("3 / 3 uploaded")).toBeVisible();
+  await expect(page.getByRole("complementary",{name:"Application progress"}).getByText("Review",{exact:true})).toBeVisible();
+  await expect(invoiceSlot.getByRole("button",{name:"Preview"})).toBeVisible();
+  const purchaseOrderSlot=page.getByTestId("document-slot-purchase_order");
+  await purchaseOrderSlot.getByRole("button",{name:"Remove"}).click();
+  await expect(purchaseOrderSlot.getByText("Browse files")).toBeVisible({timeout:15_000});
+  await expect(page.getByText("2 / 3 uploaded")).toBeVisible();
   await page.reload();
   await expect(page.getByRole("heading",{name:invoice})).toBeVisible();
+  await expect(page.getByText("2 / 3 uploaded")).toBeVisible();
   await expect(page.getByRole("complementary",{name:"Application progress"})).toContainText("1 of 5 complete");
   await page.goto("/dashboard");
   await page.goBack();

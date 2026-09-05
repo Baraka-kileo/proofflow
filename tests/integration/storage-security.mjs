@@ -108,6 +108,21 @@ try {
   const { error: signInError } = await member.auth.signInWithPassword({ email, password });
   if (signInError) throw signInError;
 
+  const duplicateDocumentId = crypto.randomUUID();
+  const { error: duplicateSlotError } = await member.from("documents").insert({
+    id: duplicateDocumentId,
+    application_id: application.id,
+    owner_organization_id: organizationId,
+    uploaded_by: userId,
+    kind: "invoice",
+    original_filename: "second-invoice.pdf",
+    storage_path: `${organizationId}/${application.id}/${duplicateDocumentId}/second-invoice.pdf`,
+    mime_type: "application/pdf",
+    byte_size: 20,
+    sha256: "b".repeat(64),
+  });
+  assert(duplicateSlotError?.code === "23505", "An authenticated SME placed a second file in the same document slot.");
+
   const pdf = new TextEncoder().encode("%PDF-1.4\n% Demo only\n");
   const { error: uploadError } = await member.storage
     .from("application-documents")
@@ -120,10 +135,10 @@ try {
 
   const { data: signed, error: signedError } = await member.storage
     .from("application-documents")
-    .createSignedUrl(path, 1);
+    .createSignedUrl(path, 3);
   if (signedError) throw signedError;
   assert((await fetch(signed.signedUrl)).ok, "Authorized signed preview did not load.");
-  await new Promise((resolve) => setTimeout(resolve, 2200));
+  await new Promise((resolve) => setTimeout(resolve, 4500));
   assert(!(await fetch(signed.signedUrl)).ok, "Expired signed preview still loaded.");
 
   const malformed = `${organizationId}/${application.id}/too-short.pdf`;
@@ -143,7 +158,7 @@ try {
     .upload(path, oversized, { contentType: "application/pdf", upsert: true });
   assert(sizeError, "Oversized document was accepted.");
 
-  console.log("PASS: private URL, expiring signed preview, path, MIME, and 10 MiB limits verified.");
+  console.log("PASS: private URL, expiring signed preview, duplicate slot, path, MIME, and 10 MiB limits verified.");
 } finally {
   if (path) await admin.storage.from("application-documents").remove([path]);
   if (applicationId) await admin.from("applications").delete().eq("id", applicationId);

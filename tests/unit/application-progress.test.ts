@@ -11,5 +11,5 @@ describe("application progress",()=>{
     ["sme_reviewed",3,3],
     ["checks_complete",4,4],
     ["buyer_confirmed",4,5],
-  ] as const)("derives %s progress from server status",(status,currentIndex,completedCount)=>{const progress=deriveApplicationProgress({...draft,status});expect(progress.currentIndex).toBe(currentIndex);expect(progress.completedCount).toBe(completedCount);});
+  ] as const)("derives %s progress from server status",(status,currentIndex,completedCount)=>{const progress=deriveApplicationProgress({...draft,status},["invoice","purchase_order","delivery_evidence"]);expect(progress.currentIndex).toBe(currentIndex);expect(progress.completedCount).toBe(completedCount);});
 });

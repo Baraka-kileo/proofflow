@@ -36,11 +36,7 @@ export function deriveApplicationProgress(application: Application | null, docum
       application.invoice_due_on &&
       application.ai_processing_consented_at,
   );
-  const documentsComplete = Boolean(
-    application &&
-      (requiredDocuments.every((kind) => documentKinds.includes(kind)) ||
-        reached(application.status, "documents_uploaded")),
-  );
+  const documentsComplete = Boolean(application && requiredDocuments.every((kind) => documentKinds.includes(kind)));
   const reviewComplete = Boolean(application && reached(application.status, "sme_reviewed"));
   const verificationComplete = Boolean(application && reached(application.status, "checks_complete"));
   const buyerComplete = Boolean(application && reached(application.status, "buyer_confirmed"));
