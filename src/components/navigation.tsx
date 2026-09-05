@@ -10,7 +10,7 @@ import type { Role } from "@/types/domain";
 interface NavItem { label: string; href?: string; icon: ComponentType<{ className?: string; "aria-hidden"?: boolean }> }
 const navByRole: Record<Role, NavItem[]> = {
   sme: [
-    { label:"Overview", href:"/dashboard", icon:Home }, { label:"Applications", icon:FileText }, { label:"Trust Passport", icon:Fingerprint }, { label:"Help", icon:CircleHelp }, { label:"Account", icon:UserRound },
+    { label:"Overview", href:"/dashboard", icon:Home }, { label:"Applications", href:"/applications/new", icon:FileText }, { label:"Trust Passport", icon:Fingerprint }, { label:"Help", icon:CircleHelp }, { label:"Account", icon:UserRound },
   ],
   buyer: [
     { label:"Overview", href:"/dashboard", icon:Home }, { label:"Confirmations", icon:FileCheck2 }, { label:"History", icon:History }, { label:"Help", icon:CircleHelp }, { label:"Account", icon:UserRound },
@@ -21,7 +21,7 @@ const navByRole: Record<Role, NavItem[]> = {
 };
 
 function NavEntry({ item, mobile=false }: { item:NavItem; mobile?:boolean }) {
-  const pathname=usePathname(); const active=Boolean(item.href && pathname===item.href); const Icon=item.icon;
+  const pathname=usePathname(); const active=Boolean(item.href && (pathname===item.href || pathname.startsWith(`${item.href}/`))); const Icon=item.icon;
   const styles=cn("group flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-semibold transition-colors duration-150 focus-visible:outline-none focus-visible:ring-3 focus-visible:ring-[var(--focus)] motion-reduce:transition-none",active?"bg-[var(--primary)] text-white":"text-[var(--muted)] hover:bg-[var(--soft)] hover:text-[var(--ink)]",mobile&&"min-w-[70px] flex-col justify-center gap-1 px-2 text-[10px]");
   if(!item.href) return <span className={cn(styles,"cursor-not-allowed opacity-45")} aria-disabled="true" title="Available in the next completed build unit"><Icon aria-hidden={true} className="size-5" />{item.label}</span>;
   return <Link href={item.href} className={styles} aria-current={active?"page":undefined}><Icon aria-hidden={true} className="size-5" />{item.label}</Link>;

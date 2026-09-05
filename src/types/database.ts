@@ -16,6 +16,7 @@ export type Database = {
     Tables: {
       applications: {
         Row: {
+          ai_processing_consented_at: string | null
           buyer_organization_id: string
           created_at: string
           created_by: string
@@ -26,6 +27,7 @@ export type Database = {
           invoice_number: string | null
           invoice_total_minor: number | null
           owner_organization_id: string
+          purchase_order_reference: string | null
           requested_amount_minor: number | null
           status: Database["public"]["Enums"]["application_status"]
           submitted_at: string | null
@@ -33,6 +35,7 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          ai_processing_consented_at?: string | null
           buyer_organization_id: string
           created_at?: string
           created_by: string
@@ -43,6 +46,7 @@ export type Database = {
           invoice_number?: string | null
           invoice_total_minor?: number | null
           owner_organization_id: string
+          purchase_order_reference?: string | null
           requested_amount_minor?: number | null
           status?: Database["public"]["Enums"]["application_status"]
           submitted_at?: string | null
@@ -50,6 +54,7 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          ai_processing_consented_at?: string | null
           buyer_organization_id?: string
           created_at?: string
           created_by?: string
@@ -60,6 +65,7 @@ export type Database = {
           invoice_number?: string | null
           invoice_total_minor?: number | null
           owner_organization_id?: string
+          purchase_order_reference?: string | null
           requested_amount_minor?: number | null
           status?: Database["public"]["Enums"]["application_status"]
           submitted_at?: string | null

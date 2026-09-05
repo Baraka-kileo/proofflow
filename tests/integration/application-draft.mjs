@@ -1,0 +1,26 @@
+import { createClient } from "@supabase/supabase-js";
+
+const url=process.env.PROOFFLOW_TEST_SUPABASE_URL;
+const key=process.env.PROOFFLOW_TEST_PUBLISHABLE_KEY;
+const password=process.env.PROOFFLOW_DEMO_PASSWORD;
+if(!url||!key||!password)throw new Error("Hosted draft test credentials were not supplied.");
+const client=createClient(url,key,{auth:{persistSession:false,autoRefreshToken:false}});
+const {data:auth,error:authError}=await client.auth.signInWithPassword({email:"sme.demo@proofflow.example",password});
+if(authError)throw authError;
+const {data:membership,error:membershipError}=await client.from("memberships").select("organization_id").eq("profile_id",auth.user.id).single();
+if(membershipError)throw membershipError;
+const {data:hasRole,error:roleError}=await client.rpc("has_organization_role",{target_organization_id:membership.organization_id,target_role:"sme"});
+if(roleError)throw roleError;
+const {data:buyer,error:buyerError}=await client.from("organizations").select("id,kind").eq("id","22222222-2222-4222-8222-222222222222").maybeSingle();
+if(buyerError)throw buyerError;
+if(!hasRole||buyer?.kind!=="buyer")throw new Error(`Draft prerequisites unavailable: role=${Boolean(hasRole)}, buyer=${buyer?.kind??"hidden"}.`);
+const invoice=`INV-INTEGRATION-DEMO-${Date.now()}`;
+const draftId=crypto.randomUUID();
+const {error}=await client.from("applications").insert({id:draftId,owner_organization_id:membership.organization_id,buyer_organization_id:"22222222-2222-4222-8222-222222222222",created_by:auth.user.id,title:`Invoice ${invoice} evidence`,purchase_order_reference:"PO-INTEGRATION-DEMO",invoice_number:invoice,invoice_total_minor:4875025,requested_amount_minor:3900020,currency:"ZAR",invoice_due_on:"2099-10-19",ai_processing_consented_at:new Date().toISOString(),status:"draft"});
+if(error)throw error;
+const {data,error:readError}=await client.from("applications").select("id,purchase_order_reference,invoice_total_minor,ai_processing_consented_at").eq("id",draftId).single();
+if(readError)throw readError;
+if(data.purchase_order_reference!=="PO-INTEGRATION-DEMO"||data.invoice_total_minor!==4875025||!data.ai_processing_consented_at)throw new Error("Stored draft fields did not round-trip.");
+const {error:deleteError}=await client.from("applications").delete().eq("id",draftId);
+if(deleteError)throw deleteError;
+console.log("PASS: SME created, read, and cleaned up a consented hosted application draft.");

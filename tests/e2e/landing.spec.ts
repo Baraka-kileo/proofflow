@@ -118,3 +118,32 @@ test("each demo role receives a distinct dashboard in a separate browser session
   ];
   for(const role of roles){const context=await browser.newContext();const page=await context.newPage();await page.goto("/login");await page.getByRole("button",{name:role.button,exact:true}).click();await expect(page.getByRole("heading",{level:1,name:role.heading})).toBeVisible({timeout:15_000});await expect(page.getByText(role.visible,{exact:false}).first()).toBeVisible();await expect(page.getByText(role.hidden,{exact:false})).toHaveCount(0);await context.close();}
 });
+
+test("SME creates a validated private application draft", async ({ page }) => {
+  await enterDemoRole(page,"SME");
+  await page.goto("/applications/new");
+  await expect(page.getByRole("heading",{name:"Start with the invoice story."})).toBeVisible();
+  await page.getByRole("button",{name:/Create private draft/}).click();
+  const summary=page.getByRole("alert").filter({hasText:"Please fix the following"});
+  await expect(summary).toContainText("Choose a valid buyer organization");
+  await expect(summary).toContainText("Invoice amount");
+  await expect(summary).toContainText("Expected due date");
+  await expect(summary).toContainText("Consent is required");
+  await page.getByLabel(/Buyer organization/).selectOption({label:"Ubuntu Retail Group Demo"});
+  await page.getByLabel(/Purchase-order reference/).fill("PO-E2E-DEMO-1042");
+  const invoice=`INV-E2E-DEMO-${Date.now()}`;
+  await page.getByLabel(/Invoice number/).fill(invoice);
+  await page.getByLabel(/Invoice amount/).fill("48750.25");
+  await page.getByLabel(/Expected payment date/).fill("2099-10-19");
+  await page.getByRole("checkbox",{name:/I understand and consent/}).click();
+  await page.getByRole("button",{name:/Create private draft/}).click();
+  await expect(page).toHaveURL(/\/applications\/[0-9a-f-]+$/,{timeout:15_000});
+  await expect(page.getByRole("heading",{name:invoice})).toBeVisible();
+  await expect(page.getByText("Draft saved securely")).toBeVisible();
+});
+
+test("buyer receives generic denial for the SME draft route",async({page})=>{
+  await enterDemoRole(page,"Buyer");
+  await page.goto("/applications/new");
+  await expect(page.getByRole("heading",{name:"This page is not part of the evidence trail."})).toBeVisible();
+});

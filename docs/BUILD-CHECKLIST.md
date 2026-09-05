@@ -219,7 +219,7 @@ Dependencies: P1-01, P1-02, P1-04, P1-06.
 
 Dependencies: P2.
 
-- [ ] **P3-01 MUST — Create draft.** `/applications/new` business step collects buyer organization, PO reference, invoice number, invoice amount/currency, expected due date, and consent to AI processing.
+- [x] **P3-01 MUST — Create draft.** `/applications/new` business step collects buyer organization, PO reference, invoice number, invoice amount/currency, expected due date, and consent to AI processing.
   - Accept: server creates only an SME-owned `draft`; invalid buyer/amount/date or missing consent returns field messages plus linked error summary.
 - [ ] **P3-02 MUST — Guided task layout.** Implement five-step task list: Details → Documents → Review → Verification → Buyer. Persist current completed step from server data, not local animation state.
   - Accept: refresh/back preserves progress; locked steps explain prerequisites.

@@ -73,4 +73,11 @@ const { error: checksError } = await admin.from("verification_checks").upsert([
 ]);
 if (checksError) throw checksError;
 
+const { error: cleanupError } = await admin
+  .from("applications")
+  .delete()
+  .eq("status", "draft")
+  .like("invoice_number", "INV-E2E-DEMO-%");
+if (cleanupError) throw cleanupError;
+
 console.log("PASS: hosted Demo identities, memberships, and dashboard workflow records are provisioned.");
