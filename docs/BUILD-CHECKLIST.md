@@ -244,10 +244,10 @@ Dependencies: P3.
   - Accept: fallback cannot silently activate after a live failure; unknown documents do not receive invented fixture values.
 - [x] **P4-04 MUST — Review UI.** Show signed document preview and editable extracted fields together. Mark low-confidence/missing fields `Please check`; show source category; preserve original and edited value.
   - Accept: every material v1 field can be reviewed; money/date normalization is visible; mobile can switch preview/fields without losing edits.
-- [ ] **P4-05 MUST — Review submission.** Server validates completeness/ownership, writes reviewed fields and audit event, then allows checking. AI cannot mark `userReviewed`.
+- [x] **P4-05 MUST — Review submission.** Server validates completeness/ownership, writes reviewed fields and audit event, then allows checking. AI cannot mark `userReviewed`.
   - Accept: verification endpoint rejects unreviewed fields; repeat save is idempotent; edit provenance is displayed.
 
-**P4 gate:** live extraction is proven with a synthetic file or explicitly documented as blocked; fallback is honest; malformed AI output never reaches verification; SME can correct and approve the complete record.
+**P4 gate: PASS.** Live extraction is explicitly blocked only by the absent Gemini API key; the exact-hash Demo fallback is visibly labelled and never activates from a live failure. Malformed output is rejected, and only an authenticated SME can correct and atomically approve all 21 fields before Verification unlocks.
 
 ### P5 — Deterministic verification report
 

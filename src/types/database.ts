@@ -704,6 +704,10 @@ export type Database = {
         }
         Returns: string
       }
+      submit_application_field_review: {
+        Args: { reviewed_fields: Json; target_application_id: string }
+        Returns: Json
+      }
     }
     Enums: {
       application_status:
