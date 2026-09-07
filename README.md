@@ -33,22 +33,6 @@ The tour uses fictional records created for testing. It demonstrates the working
 
 ProofFlow prepares trusted evidence. **The regulated funding partner owns the risk and makes the funding decision.**
 
-## Automated confirmation through SAP and Coupa APIs
-
-The SAP/Coupa integration automates the large customer's transaction-confirmation step. With authorised, read-only access, ProofFlow retrieves the customer's purchase order, supplier, invoice, goods-receipt and payment-status records and compares them with the SME's evidence.
-
-For this hackathon, that API journey runs as a **sandbox simulation using fictional test data**. No production SAP or Coupa tenant, customer data or live OAuth credentials are connected.
-
-| Integration behaviour | What the current demonstration shows |
-|---|---|
-| **Automatic confirmation** | When the enterprise records match, ProofFlow records a system confirmation and can issue a traceable confirmation certificate |
-| **Automatic comparison** | Fixed rules compare the PO, supplier, invoice, currency, amount, delivery receipt and payment status—without sending private documents to AI |
-| **Human exception review** | Missing records, mismatches or an already-paid invoice are routed to the large customer for review; they are never silently approved |
-| **Secure fallback** | If SAP or Coupa is not authorised or connected, ProofFlow requests the six-question authenticated confirmation from the large customer |
-| **Production activation** | Requires customer approval, a real sandbox test, restricted credentials, security and privacy review, monitoring and signed integration agreements |
-
-The automated confirmation proves that the transaction appears in the customer's system. It does not approve funding: the regulated funding partner still owns KYC/KYB, underwriting, pricing, contracting, disbursement and credit risk.
-
 ## The problem
 
 An SME may have completed real work and issued a valid invoice, yet still wait weeks for payment. A potential funder cannot responsibly act on an invoice alone: the purchase order, delivery, invoice and buyer acknowledgement must agree, while confidential documents must remain controlled. The resulting manual back-and-forth is slow for the SME and expensive to review.
@@ -103,12 +87,14 @@ flowchart LR
 
 ProofFlow combines automated evidence confirmation, a shared multi-party workflow and a clear trust boundary:
 
-- **It automates confirmation through systems companies already use.** Large companies commonly manage purchase orders, invoices, goods receipts and payment status in enterprise platforms such as SAP and Coupa. With authorised read-only API access, ProofFlow compares those company records with the SME's evidence. An exact match creates a traceable system confirmation and certificate, while a mismatch goes to a person for review. The hackathon version demonstrates this innovation with fictional sandbox data.
+- **Automated confirmation through systems companies already use.** Large customers commonly manage purchase orders, invoices, deliveries and payment status in SAP or Coupa. ProofFlow's read-only API adapter compares those records with the SME's evidence: a match creates a traceable system confirmation and certificate; a mismatch goes to human review; and no connection falls back to secure customer confirmation.
 - **Evidence lineage, not a black-box score.** Each entered fact retains its source document, actor and timestamp.
 - **Explainable checks.** Every result shows the compared values and why it passed, needs review or failed rather than returning an opaque score.
 - **Privacy-minimising design.** Sensitive files are not sent to an AI service; KYC/KYB documents and screening reasoning remain with the regulated party.
 - **No manufactured certainty.** Missing integrations fail closed and route to authenticated confirmation. “Evidence verified” never becomes “funding approved.”
 - **One product, three perspectives.** SME, customer and funder views share the same application and audit history while enforcing different permissions.
+
+> **Integration status:** SAP/Coupa is demonstrated with fictional sandbox data. No production customer tenant or live OAuth credentials are connected. Production activation requires customer authorisation, restricted read-only access, security and privacy review, monitoring and signed agreements.
 
 See the complete [judging-criteria evidence map](docs/JUDGING-GUIDE.md).
 
