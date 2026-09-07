@@ -6,6 +6,7 @@ This index separates the final product decisions from the chronological build re
 
 | Document | Purpose |
 |---|---|
+| [Narrated product tour](assets/proofflow-product-demo.mp4) | A 2:51 visual overview of the problem, three-role workflow, certificate and funding boundary |
 | [Judging guide](JUDGING-GUIDE.md) | Maps every scoring category to working product and repository evidence |
 | [Visual feature guide](FEATURE-GUIDE.md) | Shows the three portals, checks, certificate and funder responsibilities |
 | [Document-check guide](VERIFICATION-CHECKS.md) | Explains every V001–V012 audit label in plain language |

@@ -9,11 +9,29 @@
 
 ProofFlow is a privacy-first evidence workflow for invoice finance. It turns a purchase order, delivery evidence, an invoice and authenticated customer confirmation into one structured, traceable package that a funding partner can independently review.
 
-**[Open the live application](https://proofflow-sepia.vercel.app)** · **[Visual feature guide](docs/FEATURE-GUIDE.md)** · **[Judge's guide](docs/JUDGING-GUIDE.md)** · **[Documentation index](docs/README.md)** · **[Security model](docs/SECURITY.md)**
+**[Watch the 2:51 product tour](docs/assets/proofflow-product-demo.mp4)** · **[Open the live application](https://proofflow-sepia.vercel.app)** · **[Judge's guide](docs/JUDGING-GUIDE.md)** · **[Visual feature guide](docs/FEATURE-GUIDE.md)** · **[Documentation index](docs/README.md)**
 
 ![ProofFlow landing page showing a confirmed invoice-evidence package](docs/assets/proofflow-home.png)
 
 > **Decision boundary:** ProofFlow verifies transaction evidence. It does not perform KYC/KYB, approve credit, lend money, set rates, hold funds or guarantee repayment.
+
+## Watch ProofFlow in under three minutes
+
+[![Play the narrated ProofFlow product tour](docs/assets/proofflow-demo-cover.png)](docs/assets/proofflow-product-demo.mp4)
+
+**[▶ Play the narrated product tour](docs/assets/proofflow-product-demo.mp4)** — see the SME evidence journey, understandable document checks, customer confirmation, confirmation certificate and independent funder review.
+
+The tour uses fictional records created for testing. It demonstrates the working product and its responsibility boundaries; it does not claim a live bank, SAP, Coupa or KYC-provider connection.
+
+## ProofFlow at a glance
+
+| Who | What they do | What they receive |
+|---|---|---|
+| **SME supplier** | Uploads the purchase order, delivery evidence and invoice, then enters the important facts | A checked, traceable application and reusable Trust Passport |
+| **Large customer** | Confirms or disputes six transaction facts through an authenticated workspace | A signed confirmation record and downloadable certificate |
+| **Funding partner** | Reviews the original evidence, completes KYC/KYB and underwriting externally, then proposes or declines | One decision-ready evidence package with a complete activity trail |
+
+ProofFlow prepares trusted evidence. **The regulated funding partner owns the risk and makes the funding decision.**
 
 ## The problem
 
@@ -28,14 +46,13 @@ ProofFlow creates a shared evidence trail without pretending to replace regulate
 
 ## Judge fast path
 
-Allow about five minutes:
+Allow about five minutes. No local setup is needed:
 
-1. Open the [live application](https://proofflow-sepia.vercel.app) and review the problem, workflow, pricing and trust boundary.
-2. Select **Log in**. The optional **Sample credentials for testing** panel offers SME, large-customer and funder accounts; selecting a role fills the form but never signs in automatically.
-3. As the SME, inspect the application journey, private evidence, 12 document-check results and Trust Passport.
-4. Sign out and inspect the large-customer confirmation workspace.
-5. Sign out and inspect the funder's external-compliance and proposal workspace.
-6. Open the public [security page](https://proofflow-sepia.vercel.app/security).
+1. Watch the [2:51 narrated product tour](docs/assets/proofflow-product-demo.mp4).
+2. Open the [live application](https://proofflow-sepia.vercel.app) and select **Log in**.
+3. Use the **Sample credentials for testing** panel to enter as the SME, large customer or funder. Selecting a role fills the form but never signs in automatically.
+4. Inspect the SME evidence checks and Trust Passport, the customer's confirmation history and certificate, and the funder's proposal or decline workspace.
+5. Review the public [security page](https://proofflow-sepia.vercel.app/security) and the [judging evidence map](docs/JUDGING-GUIDE.md).
 
 All hosted records are fictional. They exercise the same role-based workflow as any other account; there is no separate simulation product.
 
