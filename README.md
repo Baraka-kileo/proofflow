@@ -19,7 +19,7 @@ ProofFlow is a privacy-first evidence workflow for invoice finance. It turns a p
 
 https://github.com/user-attachments/assets/09878094-c52b-4fa8-855b-cc0175130878
 
-The narrated tour shows the SME evidence journey, understandable document checks, customer confirmation, confirmation certificate and independent funder review. **[Open the video in a new tab](https://github.com/user-attachments/assets/09878094-c52b-4fa8-855b-cc0175130878).**
+The narrated tour shows the SME evidence journey, understandable document checks, customer confirmation, confirmation certificate, SAP/Coupa automated-confirmation path and independent funder review. **[Open the video in a new tab](https://github.com/user-attachments/assets/09878094-c52b-4fa8-855b-cc0175130878).**
 
 The tour uses fictional records created for testing. It demonstrates the working product and its responsibility boundaries; it does not claim a live bank, SAP, Coupa or KYC-provider connection.
 
@@ -32,6 +32,22 @@ The tour uses fictional records created for testing. It demonstrates the working
 | **Funding partner** | Reviews the original evidence, completes KYC/KYB and underwriting externally, then proposes or declines | One decision-ready evidence package with a complete activity trail |
 
 ProofFlow prepares trusted evidence. **The regulated funding partner owns the risk and makes the funding decision.**
+
+## Automated confirmation through SAP and Coupa APIs
+
+The SAP/Coupa integration automates the large customer's transaction-confirmation step. With authorised, read-only access, ProofFlow retrieves the customer's purchase order, supplier, invoice, goods-receipt and payment-status records and compares them with the SME's evidence.
+
+For this hackathon, that API journey runs as a **sandbox simulation using fictional test data**. No production SAP or Coupa tenant, customer data or live OAuth credentials are connected.
+
+| Integration behaviour | What the current demonstration shows |
+|---|---|
+| **Automatic confirmation** | When the enterprise records match, ProofFlow records a system confirmation and can issue a traceable confirmation certificate |
+| **Automatic comparison** | Fixed rules compare the PO, supplier, invoice, currency, amount, delivery receipt and payment status—without sending private documents to AI |
+| **Human exception review** | Missing records, mismatches or an already-paid invoice are routed to the large customer for review; they are never silently approved |
+| **Secure fallback** | If SAP or Coupa is not authorised or connected, ProofFlow requests the six-question authenticated confirmation from the large customer |
+| **Production activation** | Requires customer approval, a real sandbox test, restricted credentials, security and privacy review, monitoring and signed integration agreements |
+
+The automated confirmation proves that the transaction appears in the customer's system. It does not approve funding: the regulated funding partner still owns KYC/KYB, underwriting, pricing, contracting, disbursement and credit risk.
 
 ## The problem
 
@@ -62,7 +78,10 @@ All hosted records are fictional. They exercise the same role-based workflow as 
 flowchart LR
     SME["SME supplier"] -->|"Uploads PO, delivery evidence and invoice"| ENTRY["Manual evidence entry"]
     ENTRY --> RULES["12 transparent document checks"]
-    RULES --> BUYER["Authenticated customer confirmation"]
+    RULES --> API{"Authorised SAP/Coupa API?"}
+    API -->|"Yes — sandbox in this demo"| AUTO["Automated customer-system confirmation"]
+    API -->|"No"| BUYER["Authenticated customer confirmation"]
+    AUTO --> PACKAGE["Traceable funding package"]
     BUYER --> PACKAGE["Traceable funding package"]
     PACKAGE --> FUNDER["Independent funder review"]
     KYC["External KYC / KYB provider"] -->|"Status and reference only"| FUNDER
@@ -113,9 +132,10 @@ flowchart TB
 | Documents | Private Supabase Storage | Controlled paths and short-lived signed access rather than public URLs |
 | Validation | Zod plus database constraints | Complete payload validation before atomic persistence |
 | Evidence checks | Published TypeScript comparisons | The same 12 checks run every time and show the values and reason a person can challenge |
+| Enterprise integration | Provider-neutral adapter with SAP/Coupa sandbox boundary | Keeps test data clearly simulated and activates live read-only access only after enterprise authorization |
 | Delivery | Vercel and GitHub Actions | Reproducible production builds and automated quality gates |
 
-Historical database names relating to earlier prototypes remain only where required for migration compatibility. The current application contains no AI processing or interactive simulated connector.
+Historical database names relating to earlier prototypes remain only where required for migration compatibility. The application contains no AI processing. SAP/Coupa data shown for the hackathon is fictional sandbox data; live enterprise access remains disabled until an authorised customer connection is configured.
 
 ## Security and privacy
 
