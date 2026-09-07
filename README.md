@@ -9,7 +9,7 @@
 
 ProofFlow is a privacy-first evidence workflow for invoice finance. It turns a purchase order, delivery evidence, an invoice and authenticated customer confirmation into one structured, traceable package that a funding partner can independently review.
 
-**[Watch the 2:51 product tour](docs/assets/proofflow-product-demo.mp4)** · **[Open the live application](https://proofflow-sepia.vercel.app)** · **[Judge's guide](docs/JUDGING-GUIDE.md)** · **[Visual feature guide](docs/FEATURE-GUIDE.md)** · **[Documentation index](docs/README.md)**
+**[Watch the 2:51 product tour](https://github.com/user-attachments/assets/09878094-c52b-4fa8-855b-cc0175130878)** · **[Open the live application](https://proofflow-sepia.vercel.app)** · **[Judge's guide](docs/JUDGING-GUIDE.md)** · **[Visual feature guide](docs/FEATURE-GUIDE.md)** · **[Documentation index](docs/README.md)**
 
 ![ProofFlow landing page showing a confirmed invoice-evidence package](docs/assets/proofflow-home.png)
 
@@ -17,9 +17,9 @@ ProofFlow is a privacy-first evidence workflow for invoice finance. It turns a p
 
 ## Watch ProofFlow in under three minutes
 
-[![Play the narrated ProofFlow product tour](docs/assets/proofflow-demo-cover.png)](docs/assets/proofflow-product-demo.mp4)
+https://github.com/user-attachments/assets/09878094-c52b-4fa8-855b-cc0175130878
 
-**[▶ Play the narrated product tour](docs/assets/proofflow-product-demo.mp4)** — see the SME evidence journey, understandable document checks, customer confirmation, confirmation certificate and independent funder review.
+The narrated tour shows the SME evidence journey, understandable document checks, customer confirmation, confirmation certificate and independent funder review. **[Open the video in a new tab](https://github.com/user-attachments/assets/09878094-c52b-4fa8-855b-cc0175130878).**
 
 The tour uses fictional records created for testing. It demonstrates the working product and its responsibility boundaries; it does not claim a live bank, SAP, Coupa or KYC-provider connection.
 
@@ -48,7 +48,7 @@ ProofFlow creates a shared evidence trail without pretending to replace regulate
 
 Allow about five minutes. No local setup is needed:
 
-1. Watch the [2:51 narrated product tour](docs/assets/proofflow-product-demo.mp4).
+1. Watch the [2:51 narrated product tour](https://github.com/user-attachments/assets/09878094-c52b-4fa8-855b-cc0175130878).
 2. Open the [live application](https://proofflow-sepia.vercel.app) and select **Log in**.
 3. Use the **Sample credentials for testing** panel to enter as the SME, large customer or funder. Selecting a role fills the form but never signs in automatically.
 4. Inspect the SME evidence checks and Trust Passport, the customer's confirmation history and certificate, and the funder's proposal or decline workspace.
