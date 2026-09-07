@@ -101,8 +101,9 @@ flowchart LR
 
 ## What is innovative
 
-ProofFlow's novelty is the combination of a compact, multi-party workflow and a deliberately narrow trust boundary:
+ProofFlow combines automated evidence confirmation, a shared multi-party workflow and a clear trust boundary:
 
+- **It automates confirmation through systems companies already use.** Large companies commonly manage purchase orders, invoices, goods receipts and payment status in enterprise platforms such as SAP and Coupa. With authorised read-only API access, ProofFlow compares those company records with the SME's evidence. An exact match creates a traceable system confirmation and certificate, while a mismatch goes to a person for review. The hackathon version demonstrates this innovation with fictional sandbox data.
 - **Evidence lineage, not a black-box score.** Each entered fact retains its source document, actor and timestamp.
 - **Explainable checks.** Every result shows the compared values and why it passed, needs review or failed rather than returning an opaque score.
 - **Privacy-minimising design.** Sensitive files are not sent to an AI service; KYC/KYB documents and screening reasoning remain with the regulated party.
