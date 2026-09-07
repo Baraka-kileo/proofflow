@@ -9,7 +9,7 @@
 
 ProofFlow is a privacy-first evidence workflow for invoice finance. It turns a purchase order, delivery evidence, an invoice and either automated SAP/Coupa confirmation or authenticated customer confirmation into one structured, traceable package that a funding partner can independently review.
 
-**[Watch the 2:51 product tour](https://github.com/user-attachments/assets/09878094-c52b-4fa8-855b-cc0175130878)** · **[Open the live application](https://proofflow-sepia.vercel.app)** · **[Judge's guide](docs/JUDGING-GUIDE.md)** · **[Visual feature guide](docs/FEATURE-GUIDE.md)** · **[Documentation index](docs/README.md)**
+**[Watch the 2:58 product tour](https://github.com/user-attachments/assets/b4ef8e59-7ca4-4a71-a998-732fc997e341)** · **[Open the live application](https://proofflow-sepia.vercel.app)** · **[Judge's guide](docs/JUDGING-GUIDE.md)** · **[Visual feature guide](docs/FEATURE-GUIDE.md)** · **[Documentation index](docs/README.md)**
 
 ![ProofFlow landing page showing a confirmed invoice-evidence package](docs/assets/proofflow-home.png)
 
@@ -17,9 +17,9 @@ ProofFlow is a privacy-first evidence workflow for invoice finance. It turns a p
 
 ## Watch ProofFlow in under three minutes
 
-https://github.com/user-attachments/assets/09878094-c52b-4fa8-855b-cc0175130878
+https://github.com/user-attachments/assets/b4ef8e59-7ca4-4a71-a998-732fc997e341
 
-The narrated tour shows the SME evidence journey, understandable document checks, customer confirmation, confirmation certificate, SAP/Coupa automated-confirmation path and independent funder review. **[Open the video in a new tab](https://github.com/user-attachments/assets/09878094-c52b-4fa8-855b-cc0175130878).**
+The narrated tour shows the SME evidence journey, understandable document checks, both customer-confirmation paths, the signed confirmation certificate and independent funder review. **[Open the video in a new tab](https://github.com/user-attachments/assets/b4ef8e59-7ca4-4a71-a998-732fc997e341).**
 
 The tour uses fictional records created for testing. It demonstrates the working product and its responsibility boundaries; it does not claim a live bank, SAP, Coupa or KYC-provider connection.
 
@@ -48,7 +48,7 @@ ProofFlow creates a shared evidence trail without pretending to replace regulate
 
 Allow about five minutes. No local setup is needed:
 
-1. Watch the [2:51 narrated product tour](https://github.com/user-attachments/assets/09878094-c52b-4fa8-855b-cc0175130878).
+1. Watch the [2:58 narrated product tour](https://github.com/user-attachments/assets/b4ef8e59-7ca4-4a71-a998-732fc997e341).
 2. Open the [live application](https://proofflow-sepia.vercel.app) and select **Log in**.
 3. Use the **Sample credentials for testing** panel to enter as the SME, large customer or funder. Selecting a role fills the form but never signs in automatically.
 4. Inspect the SME evidence checks and Trust Passport, the customer's confirmation history and certificate, and the funder's proposal or decline workspace.
@@ -88,6 +88,7 @@ flowchart LR
 ProofFlow combines automated evidence confirmation, a shared multi-party workflow and a clear trust boundary:
 
 - **Automated confirmation through systems companies already use.** Large customers commonly manage purchase orders, invoices, deliveries and payment status in SAP or Coupa. ProofFlow's read-only API adapter compares those records with the SME's evidence: a match creates a traceable system confirmation and certificate; a mismatch goes to human review; and no connection falls back to secure customer confirmation.
+- **Two trustworthy certificate paths.** A manual confirmation certificate records the authorised representative, corporate email, role, six confirmed facts, captured signature, signing time and approval ID. An automated confirmation certificate records the connected system, evidence checks, retrieval time and evidence identity without inventing a human signature.
 - **Evidence lineage, not a black-box score.** Each entered fact retains its source document, actor and timestamp.
 - **Explainable checks.** Every result shows the compared values and why it passed, needs review or failed rather than returning an opaque score.
 - **Privacy-minimising design.** Sensitive files are not sent to an AI service; KYC/KYB documents and screening reasoning remain with the regulated party.
