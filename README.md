@@ -7,7 +7,7 @@
 [![Next.js](https://img.shields.io/badge/Next.js-16-111111)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178C6)](https://www.typescriptlang.org/)
 
-ProofFlow is a privacy-first evidence workflow for invoice finance. It turns a purchase order, delivery evidence, an invoice and authenticated customer confirmation into one structured, traceable package that a funding partner can independently review.
+ProofFlow is a privacy-first evidence workflow for invoice finance. It turns a purchase order, delivery evidence, an invoice and either automated SAP/Coupa confirmation or authenticated customer confirmation into one structured, traceable package that a funding partner can independently review.
 
 **[Watch the 2:51 product tour](https://github.com/user-attachments/assets/09878094-c52b-4fa8-855b-cc0175130878)** · **[Open the live application](https://proofflow-sepia.vercel.app)** · **[Judge's guide](docs/JUDGING-GUIDE.md)** · **[Visual feature guide](docs/FEATURE-GUIDE.md)** · **[Documentation index](docs/README.md)**
 
@@ -28,7 +28,7 @@ The tour uses fictional records created for testing. It demonstrates the working
 | Who | What they do | What they receive |
 |---|---|---|
 | **SME supplier** | Uploads the purchase order, delivery evidence and invoice, then enters the important facts | A checked, traceable application and reusable Trust Passport |
-| **Large customer** | Confirms or disputes six transaction facts through an authenticated workspace | A signed confirmation record and downloadable certificate |
+| **Large customer** | Uses authorised SAP/Coupa records for automated confirmation, or confirms and disputes facts through the secure workspace | A traceable system or signed confirmation certificate |
 | **Funding partner** | Reviews the original evidence, completes KYC/KYB and underwriting externally, then proposes or declines | One decision-ready evidence package with a complete activity trail |
 
 ProofFlow prepares trusted evidence. **The regulated funding partner owns the risk and makes the funding decision.**
@@ -57,7 +57,7 @@ ProofFlow creates a shared evidence trail without pretending to replace regulate
 
 - the **SME** uploads three private documents, enters 21 required facts and makes a declaration;
 - **ProofFlow** runs 12 transparent checks across names, references, currency, amounts, arithmetic, dates, delivery acknowledgement and duplicates;
-- the **large customer** confirms or disputes the underlying transaction;
+- the **large customer** confirms the transaction automatically through authorised SAP/Coupa records, or manually through the authenticated workspace;
 - the **funding partner** performs KYC/KYB and underwriting externally, then records its independent proposal or decline.
 
 ## Judge fast path
@@ -94,7 +94,7 @@ flowchart LR
 |---|---|---|
 | Evidence submission | SME | Private upload, structured manual entry and declaration |
 | Evidence checking | ProofFlow | Compares names, references, amounts, dates, delivery acknowledgement and duplicates, then records the result |
-| Transaction confirmation | Large customer | Supports authorised system evidence or authenticated confirmation |
+| Transaction confirmation | Large customer | Automates matching through authorised SAP/Coupa records, with authenticated confirmation as the fallback |
 | KYC/KYB and AML | Funder or approved provider | Stores only workflow status and an external reference |
 | Credit, pricing and underwriting | Funding partner | Presents evidence; never makes or disguises the decision |
 | Contracting and disbursement | Funding partner | Waits for a future authorised confirmation; never fabricates money movement |
